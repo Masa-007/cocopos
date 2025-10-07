@@ -165,3 +165,9 @@ cocopos は **「匿名性」×「投稿者自身による管理」** を重視�
 ### 開発環境
 
 - Docker
+
+---
+
+### 画面遷移図
+
+https://www.figma.com/design/4VLw1zL1ppcUPlM0KYXrHb/cocopos?node-id=7-136&p=f&t=Mab1Vxiia2kCB1gl-0
