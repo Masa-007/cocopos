@@ -177,6 +177,8 @@ cocopos は **「匿名性」×「投稿者自身による管理」** を重視�
 
 ### ER図
 
+```mermaid
+erDiagram
     %% USERSテーブル: サービス利用者
     USERS {
         bigint id PK "ユーザーID (主キー)"
