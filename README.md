@@ -179,7 +179,9 @@ cocopos は **「匿名性」×「投稿者自身による管理」** を重視�
 
 ```mermaid
 erDiagram
+    %% ========================
     %% USERSテーブル: サービス利用者
+    %% ========================
     USERS {
         bigint id PK "ユーザーID (主キー)"
         string name "ユーザー名"
@@ -189,30 +191,36 @@ erDiagram
         datetime updated_at "更新日時"
     }
 
+    %% ========================
     %% POSTSテーブル: 投稿内容
+    %% ========================
     POSTS {
         bigint id PK "投稿ID (主キー)"
         bigint user_id FK "投稿者ID (外部キー)"
         text body "投稿本文"
         string post_type "投稿タイプ (enum: future / organize / thanks)"
         boolean opinion_needed "意見の必要可否 (デフォルト 'true')"
-        string nickname "投稿者名 (初期値は'匿名さん'、任意で'ユーザー名' に変更可能)"
+        boolean is_anonymous "匿名投稿 true=匿名さん / false=ユーザー名表示"
         datetime created_at "作成日時"
         datetime updated_at "更新日時"
     }
 
+    %% ========================
     %% COMMENTSテーブル: 投稿へのコメント
+    %% ========================
     COMMENTS {
         bigint id PK "コメントID (主キー)"
         bigint user_id FK "コメント投稿者ID (外部キー)"
         bigint post_id FK "投稿ID (外部キー)"
         text body "コメント本文"
-        string nickname "コメント投稿者名 (初期値は'匿名さん'、任意で'ユーザー名' に変更可能))"
+        boolean is_anonymous "匿名コメント true=匿名さん / false=ユーザー名表示"
         datetime created_at "作成日時"
         datetime updated_at "更新日時"
     }
 
-    %% テーブル間のリレーション（1対多）
+    %% ========================
+    %% テーブル間のリレーション (1対多)
+    %% ========================
     USERS ||--o{ POSTS : "1ユーザーは複数の投稿を持つ (1:多)"
     USERS ||--o{ COMMENTS : "1ユーザーは複数のコメントを持つ (1:多)"
     POSTS ||--o{ COMMENTS : "1投稿は複数のコメントを持つ (1:多)"
