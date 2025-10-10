@@ -179,9 +179,7 @@ cocopos は **「匿名性」×「投稿者自身による管理」** を重視�
 
 ```mermaid
 erDiagram
-    %% ========================
-    %% USERSテーブル: サービス利用者
-    %% ========================
+
     USERS {
         bigint id PK "ユーザーID (主キー)"
         string name "ユーザー名"
@@ -191,9 +189,7 @@ erDiagram
         datetime updated_at "更新日時"
     }
 
-    %% ========================
-    %% POSTSテーブル: 投稿内容
-    %% ========================
+
     POSTS {
         bigint id PK "投稿ID (主キー)"
         bigint user_id FK "投稿者ID (外部キー)"
@@ -205,9 +201,6 @@ erDiagram
         datetime updated_at "更新日時"
     }
 
-    %% ========================
-    %% COMMENTSテーブル: 投稿へのコメント
-    %% ========================
     COMMENTS {
         bigint id PK "コメントID (主キー)"
         bigint user_id FK "コメント投稿者ID (外部キー)"
@@ -218,9 +211,6 @@ erDiagram
         datetime updated_at "更新日時"
     }
 
-    %% ========================
-    %% テーブル間のリレーション (1対多)
-    %% ========================
     USERS ||--o{ POSTS : "1ユーザーは複数の投稿を持つ (1:多)"
     USERS ||--o{ COMMENTS : "1ユーザーは複数のコメントを持つ (1:多)"
     POSTS ||--o{ COMMENTS : "1投稿は複数のコメントを持つ (1:多)"
