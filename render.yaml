@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: myapp
+    env: docker
+    dockerfilePath: ./Dockerfile
+    dockerTarget: production
+    port: 10000
+    healthCheckPath: /
+    envVars:
+      - key: RAILS_MASTER_KEY
+        scope: build_and_runtime
+      - key: DATABASE_URL
+        scope: runtime
+      - key: REDIS_URL
+        scope: runtime
