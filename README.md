@@ -218,3 +218,4 @@ erDiagram
     users ||--o{ posts : "1ユーザーは複数の投稿を持つ (1:多)"
     users ||--o{ comments : "1ユーザーは複数のコメントを持つ (1:多)"
     posts ||--o{ comments : "1投稿は複数のコメントを持つ (1:多)"
+
