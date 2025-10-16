@@ -1,5 +1,5 @@
 # ベースステージ（共通部分）
-FROM ruby:3.2.3 AS base
+FROM ruby:3.2.9 AS base
 ENV LANG C.UTF-8
 ENV TZ Asia/Tokyo
 
