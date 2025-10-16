@@ -1,0 +1,144 @@
+@import url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&display=swap');
+
+* { font-family: 'Zen Maru Gothic', sans-serif; }
+
+body {
+  background: linear-gradient(135deg, #fff5f0 0%, #ffe8e0 100%);
+  background-attachment: fixed;
+  margin: 0;
+  color: #333;
+}
+
+/* ヘッダー */
+.wooden-header {
+  background: linear-gradient(135deg, #ffd6cc 0%, #ffb3a4 100%);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* ボタン */
+.btn-primary {
+  background: linear-gradient(135deg, #ffb3a4 0%, #ff9a8e 100%);
+  color: #fff;
+  font-weight: bold;
+  border: 2px solid #ffb3a4;
+  box-shadow: 0 4px 10px rgba(255, 154, 142, 0.3);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+}
+
+/* 予告ボックス */
+.suggestion-box {
+  background: linear-gradient(135deg, #fff0eb 0%, #ffe4db 100%);
+  border: 4px solid #ffd6cc;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  border-radius: 24px;
+  padding: 60px 40px;
+  margin-bottom: 20px;
+}
+
+/* メールスロット */
+.mail-slot {
+  background: linear-gradient(180deg, #ffb3a4 0%, #ff9a8e 100%);
+  height: 60px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: inset 0 2px 6px rgba(0,0,0,0.15);
+  margin-bottom: 30px;
+}
+
+/* 浮遊アニメーション */
+.floating {
+  animation: floating 3s ease-in-out infinite;
+}
+@keyframes floating {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+/* モーダル */
+.modal {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(255,245,240,0.95); /* フォールバック */
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+  z-index: 1000;
+  overflow-y: auto;
+}
+.modal.active {
+  opacity: 1;
+  pointer-events: all;
+}
+.modal-content {
+  max-width: 1000px;
+  margin: 80px auto;
+  padding: 50px;
+  background: #fffaf8;
+  border-radius: 20px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+  transform: scale(0.9);
+  opacity: 0;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+.modal.active .modal-content {
+  opacity: 1;
+  transform: scale(1);
+}
+.modal-close {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  font-size: 32px;
+  color: #666;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.modal-close:hover { color: #ff9a8e; }
+
+/* カード系 */
+.box-card {
+  background: linear-gradient(135deg, #fff5f0 0%, #ffe8e0 100%);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+  border: 3px solid #ffd6cc;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.box-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 24px rgba(0,0,0,0.18);
+}
+.box-slot {
+  background: linear-gradient(180deg, #ffb3a4 0%, #ff9a8e 100%);
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: inset 0 2px 6px rgba(0,0,0,0.15);
+}
+.icon-box {
+  width: 100px;
+  height: 100px;
+  font-size: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+}
+.nav-link {
+  color: #666;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+.nav-link:hover { color: #333; }
