@@ -1,7 +1,16 @@
 .DS_Store
-.DS_Store
 
 # Ignore master key for decrypting credentials and more.
-/config/master.key
+ /config/master.key
 
 /tmp/cache/
+
+# Node modules
+/node_modules
+
+# Rails build assets
+/app/assets/builds
+
+# Logs and temp
+/log/*
+tmp/*
