@@ -1,15 +1,25 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>Myapp</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>cocopos - 心のポスト</title>
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
 
-    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
-  </head>
+  <!-- Tailwind ビルド済みCSS -->
+  <%= stylesheet_link_tag "application", "data-turbo-track": "reload", rel: "stylesheet" %>
+  <!-- custom.css を追加（Tailwindの後に） -->
+  <%= stylesheet_link_tag "custom", "data-turbo-track": "reload", rel: "stylesheet" %>
 
-  <body>
-    <%= yield %>
-  </body>
+  <!-- JavaScript -->
+  <%= javascript_importmap_tags %>
+</head>
+
+<body class="flex flex-col min-h-screen">
+  <%= render 'shared/header' %>
+  <%= yield %>
+  <%= render 'shared/modal' %> 
+  <%= render 'shared/footer' %>
+</body>
 </html>

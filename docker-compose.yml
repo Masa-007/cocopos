@@ -8,12 +8,15 @@ services:
       - "3000:3000"
     volumes:
       - .:/myapp
-    
     environment:
       - RAILS_ENV=development
       - DATABASE_URL=postgresql://postgres:password@db:5432/myapp_dev
     depends_on:
       - db
+    # Procfile.dev で定義した web/css/js をまとめて起動
+    command: bash -c "bundle exec foreman start -f Procfile.dev"
+    stdin_open: true   # stdin を開いたままにして watch が落ちないようにする
+    tty: true          # 擬似ターミナルを割り当てる
 
   db:
     image: postgres:15
