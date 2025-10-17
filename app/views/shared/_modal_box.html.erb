@@ -1,0 +1,40 @@
+<div class="box-card <%= color %>-box">
+  <!-- 投函口 -->
+  <div class="box-slot">
+    投函口
+  </div>
+
+  <div class="p-8">
+    <div class="flex items-start gap-6">
+      <!-- アイコン -->
+      <div class="icon-box flex-shrink-0"><%= icon %></div>
+
+      <div class="text-left">
+        <!-- タイトル -->
+        <h4 class="box-title"><%= title %></h4>
+
+        <!-- 説明文 -->
+        <p class="box-description">
+          <strong><%= description %></strong>
+        </p>
+
+        <!-- 特徴リスト -->
+        <ul class="box-features">
+          <% features.each do |feature| %>
+            <li class="feature-item">
+              <span class="checkmark">✓</span>
+              <span><%= feature %></span>
+            </li>
+          <% end %>
+        </ul>
+
+        <!-- 例ボックス -->
+        <div class="example-box">
+          <p class="example-text">
+            <strong>例：</strong><%= example %>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
