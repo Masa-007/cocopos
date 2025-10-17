@@ -14,3 +14,6 @@
 # Logs and temp
 /log/*
 tmp/*
+
+/app/assets/builds/*
+!/app/assets/builds/.keep
