@@ -1,4 +1,5 @@
 @import "custom.css";
+@import "auth.css";
 
 @tailwind base;
 @tailwind components;
