@@ -44,9 +44,6 @@ body {
 .nav-button:nth-of-type(2) { background:linear-gradient(135deg,#ffe2b3,#ffc56b); color:#5a3a00; border-color:#ffc56b; }
 .nav-button:nth-of-type(2):hover { background:linear-gradient(135deg,#ffd48c,#ffb74d); transform:translateY(-2px); }
 
-.nav-button:nth-of-type(3) { background:linear-gradient(135deg,#d7ecff,#a3d4ff); color:#003366; border-color:#a3d4ff; }
-.nav-button:nth-of-type(3):hover { background:linear-gradient(135deg,#bde0ff,#7fc3ff); transform:translateY(-2px); }
-
 .nav-button:nth-of-type(4) { background:linear-gradient(135deg,#c4f3d5,#8ee5a1); color:#0f3f1a; border-color:#8ee5a1; }
 .nav-button:nth-of-type(4):hover { background:linear-gradient(135deg,#a9eac1,#6fdb8a); transform:translateY(-2px); }
 
@@ -177,4 +174,82 @@ body {
 }
 .pink-box .example-box {
   background:#ffdbe2; border:1px solid #ff8fa2; color:#8b1a2b;
+}
+
+/* ---- ログインボタン ---- */
+.login-button {
+  background: linear-gradient(135deg, #a3d4ff, #7fc3ff);
+  color: #003366;
+  border: 1px solid #7fc3ff;
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: 8px;
+  text-decoration: none;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, .1);
+  transition: all .25s ease;
+}
+.login-button:hover {
+  background: linear-gradient(135deg, #7fc3ff, #5bb3ff);
+  transform: translateY(-2px);
+}
+
+/* ---- ログアウトボタン ---- */
+.logout-button {
+  background: linear-gradient(135deg, #ff5a5a, #e53935);
+  color: #fff;
+  border: 1px solid #d32f2f;
+  font-weight: 700;
+  padding: 8px 16px;
+  border-radius: 8px;
+  text-decoration: none;
+  box-shadow: 0 3px 8px rgba(229, 57, 53, 0.4);
+  transition: all .25s ease;
+}
+.logout-button:hover {
+  background: linear-gradient(135deg, #d32f2f, #b71c1c);
+  box-shadow: 0 5px 10px rgba(183, 28, 28, 0.45);
+  transform: translateY(-2px);
+}
+
+/* ==== フラッシュメッセージ ==== */
+#flash-container {
+  position: fixed;
+  top: 110px;
+  right: 24px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.flash {
+  min-width: 240px;
+  padding: 10px 16px;
+  border-radius: 10px;
+  font-weight: 600;
+  color: #fff;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  opacity: 0.95;
+  transition: opacity 0.5s ease, transform 0.3s ease;
+}
+
+/* ログイン（成功時） → ログインボタンカラーと統一 */
+.flash-notice {
+  background: linear-gradient(135deg, #d7ecff, #a3d4ff);
+  border: 1px solid #a3d4ff;
+  color: #003366;
+}
+
+/* ログアウト（成功時） → ログアウトボタンカラーと統一 */
+.flash-alert {
+  background: linear-gradient(135deg, #ffb3b3, #ff8080);
+  border: 1px solid #ff9999;
+  color: #fff;
+}
+
+/* 消えるアニメーション */
+.flash.fade-out {
+  opacity: 0;
+  transform: translateY(-10px);
 }
