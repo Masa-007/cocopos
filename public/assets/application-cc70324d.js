@@ -6186,4 +6186,4 @@ document.addEventListener("turbo:load", () => {
   Copyright © 2025 37signals LLC
    *)
 */
-//# sourceMappingURL=/assets/application.js.map
+//# sourceMappingURL=/assets/application-e88d617c.js.map
