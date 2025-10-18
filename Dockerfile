@@ -14,7 +14,9 @@ RUN apt-get update -qq \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 
+# -----------------------------------------------------------
 # アプリケーションセットアップ
+# -----------------------------------------------------------
 WORKDIR /myapp
 RUN gem install bundler foreman
 COPY Gemfile Gemfile.lock /myapp/
@@ -54,10 +56,12 @@ ENV RAILS_LOG_TO_STDOUT=true
 ENV RAILS_SERVE_STATIC_FILES=true
 
 # Tailwind の CSS を事前ビルドしてからアセットプリコンパイル
-RUN npm install -D tailwindcss && \
+RUN npm install tailwindcss && \
     npx tailwindcss -i ./app/assets/stylesheets/application.tailwind.css \
     -o ./app/assets/builds/application.css && \
     bundle exec rails assets:precompile
 
 EXPOSE 10000
+
+# Rails起動コマンド
 CMD ["bash", "-lc", "bin/rails server -b 0.0.0.0 -p ${PORT:-10000}"]
