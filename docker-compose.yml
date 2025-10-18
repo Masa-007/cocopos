@@ -10,46 +10,22 @@ services:
       - .:/myapp
     environment:
       - RAILS_ENV=development
-      - DATABASE_URL=postgresql://postgres:password@db:5432/myapp_dev
-    depends_on:
+      - DATABASE_URL=postgresql://postgres:password@db:5432/myapp_development
       - db
-    # Procfile.dev で定義した web/css/js をまとめて起動
     command: bash -c "bundle exec foreman start -f Procfile.dev"
-    stdin_open: true   # stdin を開いたままにして watch が落ちないようにする
-    tty: true          # 擬似ターミナルを割り当てる
+    stdin_open: true
+    tty: true
 
   db:
     image: postgres:15
     environment:
+      POSTGRES_USER: postgres     
       POSTGRES_PASSWORD: password
-      POSTGRES_DB: myapp_dev
+      POSTGRES_DB: myapp_development
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
 
-  # test:  # ← 一時的にコメントアウト
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile
-  #     target: test
-  #   volumes:
-  #     - .:/myapp
-  #   environment:
-  #     - RAILS_ENV=test
-  #     - DATABASE_URL=postgresql://postgres:password@db_test:5432/myapp_test
-  #   depends_on:
-  #     - db_test
-  #   command: bash -lc "bundle exec rspec"
-
-  # db_test:  # ← 一時的にコメントアウト
-  #   image: postgres:15
-  #   environment:
-  #     POSTGRES_PASSWORD: password
-  #     POSTGRES_DB: myapp_test
-  #   volumes:
-  #     - postgres_test_data:/var/lib/postgresql/data
-
 volumes:
   postgres_data:
-  # postgres_test_data:  # ← 一時的にコメントアウト
