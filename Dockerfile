@@ -26,7 +26,10 @@ COPY . /myapp
 # -----------------------------------------------------------
 # Entrypoint設定（Railsサーバー起動前にPIDファイル削除）
 # -----------------------------------------------------------
-RUN echo '#!/bin/bash\nset -e\nrm -f /myapp/tmp/pids/server.pid\nexec "$@"' > /usr/bin/entrypoint.sh \
+RUN echo '#!/bin/bash\n\
+set -e\n\
+rm -f /myapp/tmp/pids/server.pid\n\
+exec "$@"' > /usr/bin/entrypoint.sh \
   && chmod +x /usr/bin/entrypoint.sh
 ENTRYPOINT ["/usr/bin/entrypoint.sh"]
 
@@ -36,6 +39,29 @@ ENTRYPOINT ["/usr/bin/entrypoint.sh"]
 FROM base AS development
 ENV RAILS_ENV=development
 EXPOSE 3000
+WORKDIR /myapp
+
+# npm install（package.json が存在すれば実行）
+COPY package*.json ./
+RUN if [ -f package.json ]; then npm install; fi
+COPY . .
+
+# ✅ 開発専用 entrypoint（起動時にアセットを毎回リセット）
+RUN echo '#!/bin/bash\n\
+set -e\n\
+echo "🧹 Cleaning old Rails state and assets..."\n\
+rm -f tmp/pids/server.pid\n\
+rm -rf public/assets/*\n\
+rm -f public/assets/.manifest.json\n\
+if [ -f "./app/assets/stylesheets/application.tailwind.css" ]; then\n\
+  echo "🎨 Rebuilding Tailwind..."\n\
+  npx tailwindcss -i ./app/assets/stylesheets/application.tailwind.css -o ./app/assets/builds/application.css\n\
+fi\n\
+echo "📦 Precompiling Rails assets..."\n\
+bundle exec rails assets:precompile || echo "⚠️ skipped (dev mode)"\n\
+exec "$@"' > /usr/bin/dev-entrypoint.sh \
+  && chmod +x /usr/bin/dev-entrypoint.sh
+ENTRYPOINT ["/usr/bin/dev-entrypoint.sh"]
 
 # Foreman で Procfile.dev 内の Rails / Tailwind / JS を一括起動
 CMD ["foreman", "start", "-f", "Procfile.dev"]
@@ -54,14 +80,13 @@ FROM base AS production
 ENV RAILS_ENV=production
 ENV RAILS_LOG_TO_STDOUT=true
 ENV RAILS_SERVE_STATIC_FILES=true
-
-# Tailwind の CSS を事前ビルドしてからアセットプリコンパイル
-RUN npm install tailwindcss && \
-    npx tailwindcss -i ./app/assets/stylesheets/application.tailwind.css \
-    -o ./app/assets/builds/application.css && \
-    bundle exec rails assets:precompile
-
 EXPOSE 10000
+WORKDIR /myapp
+
+# ✅ 本番ではイメージビルド時に1回だけアセットを生成
+RUN npm install \
+  && npx tailwindcss -i ./app/assets/stylesheets/application.tailwind.css -o ./app/assets/builds/application.css \
+  && bundle exec rails assets:precompile
 
 # Rails起動コマンド
 CMD ["bash", "-lc", "bin/rails server -b 0.0.0.0 -p ${PORT:-10000}"]
