@@ -5,21 +5,30 @@ FROM ruby:3.2.9 AS base
 ENV LANG C.UTF-8
 ENV TZ Asia/Tokyo
 
-# Node.js / npm / yarn インストール（Tailwind ビルド用）
+# Node.js / npm / yarn / PostgreSQLクライアント インストール（Tailwind ビルド用）
 RUN apt-get update -qq \
-  && apt-get install -y ca-certificates curl build-essential libpq-dev vim \
+  && apt-get install -y ca-certificates curl build-essential libpq-dev postgresql-client vim \
   && curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
   && apt-get install -y nodejs \
   && npm install -g npm@10 yarn \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 
+# -----------------------------------------------------------
 # アプリケーションセットアップ
+# -----------------------------------------------------------
 WORKDIR /myapp
 RUN gem install bundler foreman
 COPY Gemfile Gemfile.lock /myapp/
 RUN bundle install
 COPY . /myapp
+
+# -----------------------------------------------------------
+# Entrypoint設定（Railsサーバー起動前にPIDファイル削除）
+# -----------------------------------------------------------
+RUN echo '#!/bin/bash\nset -e\nrm -f /myapp/tmp/pids/server.pid\nexec "$@"' > /usr/bin/entrypoint.sh \
+  && chmod +x /usr/bin/entrypoint.sh
+ENTRYPOINT ["/usr/bin/entrypoint.sh"]
 
 # -----------------------------------------------------------
 # 開発環境ステージ
@@ -47,10 +56,12 @@ ENV RAILS_LOG_TO_STDOUT=true
 ENV RAILS_SERVE_STATIC_FILES=true
 
 # Tailwind の CSS を事前ビルドしてからアセットプリコンパイル
-RUN npx tailwindcss -i ./app/assets/stylesheets/application.tailwind.css \
-  -o ./app/assets/builds/application.css && \
-  bundle exec rails assets:precompile
+RUN npm install tailwindcss && \
+    npx tailwindcss -i ./app/assets/stylesheets/application.tailwind.css \
+    -o ./app/assets/builds/application.css && \
+    bundle exec rails assets:precompile
 
 EXPOSE 10000
-CMD ["bash", "-lc", "bin/rails server -b 0.0.0.0 -p ${PORT:-10000}"]
 
+# Rails起動コマンド
+CMD ["bash", "-lc", "bin/rails server -b 0.0.0.0 -p ${PORT:-10000}"]
