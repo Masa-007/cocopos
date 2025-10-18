@@ -45,8 +45,8 @@ ja:
         log_in: "ログイン"
 
     sessions:
-      signed_in: "ログインしました。"
-      signed_out: "ログアウトしました。"
+      signed_in: "ログインしました"
+      signed_out: "ログアウトしました"
       new:
         sign_in: "ログイン"
         email: "メールアドレス"
