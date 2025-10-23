@@ -1,0 +1,48 @@
+# frozen_string_literal: true
+
+require 'active_support/core_ext/integer/time'
+
+Devise.setup do |config|
+  # ===🔑 本番での暗号化キー（必須）===
+  # Renderなど本番環境では、明示的にsecret_keyを指定する方が安全。
+  # credentials または ENV["DEVISE_SECRET_KEY"] を利用。
+  config.secret_key = ENV['DEVISE_SECRET_KEY'] if Rails.env.production?
+
+  # ===📮 メール送信設定（最低限）===
+  config.mailer_sender = 'no-reply@cocopos.onrender.com'
+
+  # ORM設定（標準）
+  require 'devise/orm/active_record'
+
+  # 認証キー設定
+  config.case_insensitive_keys = [:email]
+  config.strip_whitespace_keys = [:email]
+
+  # セッション設定
+  config.skip_session_storage = [:http_auth]
+
+  # bcryptコスト
+  config.stretches = Rails.env.test? ? 1 : 12
+
+  # メール変更確認
+  config.reconfirmable = true
+
+  # パスワード長
+  config.password_length = 6..128
+
+  # Emailバリデーション
+  config.email_regexp = /\A[^@\s]+@[^@\s]+\z/
+
+  # パスワードリセット有効期間
+  config.reset_password_within = 6.hours
+
+  # Remember me クッキー設定（HTTPS対応）
+  config.rememberable_options = { secure: true } if Rails.env.production?
+
+  # サインアウトメソッド
+  config.sign_out_via = :delete
+
+  # Hotwire/Turbo 用のレスポンダ設定
+  config.responder.error_status = :unprocessable_entity
+  config.responder.redirect_status = :see_other
+end

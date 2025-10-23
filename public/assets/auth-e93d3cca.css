@@ -1,0 +1,129 @@
+/* === 認証ページ共通レイアウト === */
+.auth-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #fff0ea 0%, #ffdcd0 100%);
+  padding: 2.5rem;
+}
+
+/* カード本体（横長調整） */
+.auth-card {
+  background: #ffffff;
+  border: 3px solid #ffb8a8;
+  border-radius: 20px;
+  padding: 3rem 3.2rem; /* 横に少し余裕を追加 */
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+  width: 100%;
+  max-width: 520px; /* 横幅を拡大（420px → 520px） */
+  text-align: center;
+}
+
+/* 見出し */
+.auth-card h2 {
+  margin-bottom: 1.6rem;
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #333;
+}
+
+/* 入力フォーム */
+.auth-card .field {
+  margin-bottom: 1.2rem;
+  text-align: left;
+}
+
+.auth-card label {
+  font-weight: 600;
+  color: #444;
+  display: block;
+  margin-bottom: 0.05rem;
+}
+
+.auth-card input[type="email"],
+.auth-card input[type="password"],
+.auth-card input[type="text"] {
+  width: 100%;
+  padding: 0.7rem 1rem; /* やや広めのボックスに */
+  border: 1.8px solid #ffb8a8;
+  border-radius: 10px;
+  font-size: 1rem;
+  background-color: #fff8f6;
+  color: #333;
+  transition: all 0.2s ease;
+}
+
+.auth-card input:focus {
+  border-color: #ff8a70;
+  box-shadow: 0 0 0 3px rgba(255, 138, 112, 0.25);
+  outline: none;
+  background-color: #fff;
+}
+
+/* ボタン */
+.auth-card .actions {
+  margin-top: 1.6rem;
+}
+
+.auth-card input[type="submit"] {
+  background: linear-gradient(135deg, #ff9b85 0%, #ff6f5b 100%);
+  color: white;
+  font-weight: 700;
+  padding: 0.8rem 1.6rem;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  width: 100%;
+  transition: 0.3s;
+}
+
+.auth-card input[type="submit"]:hover {
+  background: linear-gradient(135deg, #ff8570 0%, #ff5c47 100%);
+  transform: translateY(-2px);
+}
+
+/* 下部リンク */
+.auth-card .links {
+  margin-top: 1.8rem;
+  font-size: 0.95rem;
+  line-height: 1.9;
+}
+
+.auth-card .links a {
+  color: #ff6f5b;
+  text-decoration: none;
+  font-weight: 600;
+  margin: 0 0.5rem;
+  transition: color 0.2s ease;
+}
+
+.auth-card .links a:hover {
+  text-decoration: underline;
+  color: #ff4f3b;
+}
+
+/* === エラーメッセージの調整 === */
+#error_explanation {
+  margin-bottom: 1rem;
+  text-align: left;
+}
+
+#error_explanation h2 {
+  font-size: 0.95rem; /* フォントを少し小さく */
+  color: #d32f2f;
+  margin-bottom: 0.6rem;
+  font-weight: 700;
+}
+
+#error_explanation ul {
+  margin: 0;
+  padding-left: 1.2rem;
+  font-size: 0.9rem;
+  color: #b71c1c;
+  list-style-type: disc;
+}
+
+#error_explanation li {
+  margin-bottom: 0.25rem;
+}

@@ -1,0 +1,149 @@
+/* === マイページ タイトル === */
+.mypage-title {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: #1f2937;
+  text-align: center;
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.03em;
+  transition: color 0.3s ease;
+}
+
+/* 季節ごとのタイトルカラー */
+body.spring .mypage-title { color: #ec4899; }  /* 桜ピンク */
+body.summer .mypage-title { color: #0ea5e9; }  /* 澄んだ青 */
+body.autumn .mypage-title { color: #f97316; }  /* 柿オレンジ */
+body.winter .mypage-title { color: #3b82f6; }  /* 透明感のある青 */
+
+/* === サブタイトル === */
+.mypage-subtitle {
+  font-size: 1rem;
+  text-align: center;
+  margin-bottom: 2.5rem;
+  color: #4b5563;
+  letter-spacing: 0.02em;
+  transition: color 0.3s ease;
+}
+body.spring .mypage-subtitle { color: #db2777; }
+body.summer .mypage-subtitle { color: #0369a1; }
+body.autumn .mypage-subtitle { color: #b45309; }
+body.winter .mypage-subtitle { color: #1d4ed8; }
+
+/* === アクションボタン全体 === */
+.mypage-actions {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+
+/* === ボタンカード === */
+.action-btn {
+  display: block;
+  border-radius: 1.25rem;
+  padding: 1.75rem 1.25rem;
+  text-align: center;
+  text-decoration: none;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
+}
+.action-btn:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* === カラーごとの背景（柔らかく統一） === */
+.action-btn.green {
+  background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+}
+.action-btn.blue {
+  background: linear-gradient(135deg, #eff6ff, #dbeafe);
+}
+.action-btn.gray {
+  background: linear-gradient(135deg, #f9fafb, #f3f4f6);
+}
+
+/* === ボタン内テキスト構造 === */
+.action-content h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 0.4rem;
+}
+.action-content p {
+  color: #6b7280;
+  font-size: 0.9rem;
+  margin-bottom: 0.8rem;
+}
+.action-content span {
+  display: inline-block;
+  color: #fff;
+  font-weight: 700;
+  padding: 0.5rem 1.2rem;
+  border-radius: 0.6rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.action-content span:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* === アイコン（背景やや濃い、グラデ質感） === */
+.action-icon {
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  font-size: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 0.75rem;
+  color: #1f2937;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.action-btn:hover .action-icon {
+  transform: scale(1.1) rotate(3deg);
+}
+
+/* === カラーごとの背景（柔らかく統一・スカイブルー寄り） === */
+.action-btn.green {
+  background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+}
+.action-btn.blue {
+  background: linear-gradient(135deg, #ebf8ff, #cdeffd); /* 少し淡く透明感 */
+}
+.action-btn.gray {
+  background: linear-gradient(135deg, #e5e7eb, #d5d7db); /* やや濃く調整 */
+}
+
+/* === アイコン背景（淡く光沢あり） === */
+.action-btn.green .action-icon {
+  background: radial-gradient(circle at 30% 30%, #bbf7d0, #86efac 70%);
+}
+.action-btn.blue .action-icon {
+  background: radial-gradient(circle at 30% 30%, #cfefff, #93c5fd 70%);
+}
+.action-btn.gray .action-icon {
+  background: radial-gradient(circle at 30% 30%, #d1d5db, #9ca3af 70%);
+}
+
+/* === 下部ボタン色（くっきりしたスカイブルー） === */
+.action-btn.green span {
+  background: linear-gradient(135deg, #34d399, #059669);
+}
+.action-btn.blue span {
+  background: linear-gradient(135deg, #7dd3fc, #38bdf8); /* 薄く明るい空色 */
+}
+.action-btn.gray span {
+  background: linear-gradient(135deg, #9ca3af, #6b7280);
+}
+
+/* === 無効化状態 === */
+.action-btn.cursor-default {
+  opacity: 0.6;
+  pointer-events: none;
+  transform: none;
+  box-shadow: none;
+}
