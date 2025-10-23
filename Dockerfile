@@ -83,6 +83,10 @@ ENV RAILS_SERVE_STATIC_FILES=true
 WORKDIR /myapp
 EXPOSE 10000
 
+ARG RAILS_MASTER_KEY
+ENV RAILS_MASTER_KEY=$RAILS_MASTER_KEY
+
+
 # ✅ Tailwind ビルドと Rails アセットプリコンパイル
 RUN npm install \
   && npx tailwindcss -i ./app/assets/stylesheets/application.tailwind.css -o ./app/assets/builds/application.css \
