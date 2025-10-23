@@ -1,22 +1,24 @@
-require_relative "boot"
+# frozen_string_literal: true
 
-require "rails/all"
+require_relative 'boot'
+require 'rails/all' # Propshaftはこれに含まれています
+require 'devise'
 
-# Require the gems listed in Gemfile, including any gems
-# you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
 module Myapp
   class Application < Rails::Application
-    # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 7.0
+    config.load_defaults 7.1
 
-    # Configuration for the application, engines, and railties goes here.
-    #
-    # These settings can be overridden in specific environments using the files
-    # in config/environments, which are processed later.
-    #
-    # config.time_zone = "Central Time (US & Canada)"
-    # config.eager_load_paths << Rails.root.join("extras")
+    # Tailwind ビルド済みファイルを読み込むパスを追加
+    config.assets.paths << Rails.root.join('app/assets/builds')
+
+    # Propshaft では precompile 設定は不要（pathsにあるファイルを自動で解決）
+    
+    # 🌐 日本語をデフォルトロケールに設定
+    config.i18n.default_locale = :ja
+
+    # i18nファイルのロードパスを拡張（ymlファイルを自動読み込み）
+    config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.{rb,yml}')]
   end
 end

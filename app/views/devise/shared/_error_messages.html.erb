@@ -1,0 +1,17 @@
+<% if resource.errors.any? %>
+  <div id="error_explanation" data-turbo-cache="false" class="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+    <h2 class="text-red-700 font-bold mb-2">
+      <%= t(
+            "errors.template.header",
+            model: resource.class.model_name.human,
+            count: resource.errors.count
+          ) %>
+    </h2>
+
+    <ul class="list-disc list-inside text-red-600">
+      <% resource.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>

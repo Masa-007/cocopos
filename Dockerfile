@@ -1,48 +1,92 @@
-# ベースステージ（共通部分）
+# -----------------------------------------------------------
+# ベースステージ（共通設定）
+# -----------------------------------------------------------
 FROM ruby:3.2.9 AS base
 ENV LANG C.UTF-8
 ENV TZ Asia/Tokyo
 
+# Node.js / npm / yarn / PostgreSQLクライアント インストール（Tailwind ビルド用）
 RUN apt-get update -qq \
-  && apt-get install -y ca-certificates curl gnupg wget \
-  && mkdir -p /etc/apt/keyrings \
-  && curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg \
-  && NODE_MAJOR=20 \
-  && echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_$NODE_MAJOR.x nodistro main" > /etc/apt/sources.list.d/nodesource.list \
-  && curl -fsSL https://dl.yarnpkg.com/debian/pubkey.gpg | gpg --dearmor -o /etc/apt/keyrings/yarn.gpg \
-  && echo "deb [signed-by=/etc/apt/keyrings/yarn.gpg] https://dl.yarnpkg.com/debian/ stable main" > /etc/apt/sources.list.d/yarn.list \
-  && apt-get update -qq \
-  && apt-get install -y build-essential libpq-dev nodejs yarn vim \
+  && apt-get install -y ca-certificates curl build-essential libpq-dev postgresql-client vim \
+  && curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
+  && apt-get install -y nodejs \
+  && npm install -g npm@10 yarn \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 
-RUN mkdir /myapp
+# -----------------------------------------------------------
+# アプリケーションセットアップ
+# -----------------------------------------------------------
 WORKDIR /myapp
-
-RUN gem install bundler
+RUN gem install bundler foreman
 COPY Gemfile Gemfile.lock /myapp/
 RUN bundle install
 COPY . /myapp
 
-# 開発環境ステージ（ローカルメイン）
+# -----------------------------------------------------------
+# Entrypoint設定（Railsサーバー起動前にPIDファイル削除）
+# -----------------------------------------------------------
+RUN echo '#!/bin/bash\n\
+set -e\n\
+rm -f /myapp/tmp/pids/server.pid\n\
+exec "$@"' > /usr/bin/entrypoint.sh \
+  && chmod +x /usr/bin/entrypoint.sh
+ENTRYPOINT ["/usr/bin/entrypoint.sh"]
+
+# -----------------------------------------------------------
+# 開発環境ステージ
+# -----------------------------------------------------------
 FROM base AS development
 ENV RAILS_ENV=development
 EXPOSE 3000
-# ホットリロード対応、ローカル開発用
-CMD ["bash", "-lc", "bin/rails server -b 0.0.0.0 -p 3000"]
+WORKDIR /myapp
 
-# テスト環境ステージ（CI/CD用）
+# npm install（package.json が存在すれば実行）
+COPY package*.json ./
+RUN if [ -f package.json ]; then npm install; fi
+COPY . .
+
+# ✅ 開発専用 entrypoint（起動時にアセットを毎回リセット）
+RUN echo '#!/bin/bash\n\
+set -e\n\
+echo "🧹 Cleaning old Rails state and assets..."\n\
+rm -f tmp/pids/server.pid\n\
+rm -rf public/assets/*\n\
+rm -f public/assets/.manifest.json\n\
+if [ -f "./app/assets/stylesheets/application.tailwind.css" ]; then\n\
+  echo "🎨 Rebuilding Tailwind..."\n\
+  npx tailwindcss -i ./app/assets/stylesheets/application.tailwind.css -o ./app/assets/builds/application.css\n\
+fi\n\
+echo "📦 Precompiling Rails assets..."\n\
+bundle exec rails assets:precompile || echo "⚠️ skipped (dev mode)"\n\
+exec "$@"' > /usr/bin/dev-entrypoint.sh \
+  && chmod +x /usr/bin/dev-entrypoint.sh
+ENTRYPOINT ["/usr/bin/dev-entrypoint.sh"]
+
+# Foreman で Procfile.dev 内の Rails / Tailwind / JS を一括起動
+CMD ["foreman", "start", "-f", "Procfile.dev"]
+
+# -----------------------------------------------------------
+# テスト環境ステージ
+# -----------------------------------------------------------
 FROM base AS test
 ENV RAILS_ENV=test
-# テスト実行用
 CMD ["bash", "-lc", "bundle exec rspec"]
 
-# 本番環境ステージ（Render用・無料枠節約）
+# -----------------------------------------------------------
+# 本番環境ステージ
+# -----------------------------------------------------------
 FROM base AS production
 ENV RAILS_ENV=production
 ENV RAILS_LOG_TO_STDOUT=true
 ENV RAILS_SERVE_STATIC_FILES=true
-RUN bundle exec rake assets:precompile
 EXPOSE 10000
-# Renderのポート設定に対応
+WORKDIR /myapp
+
+# ✅ 本番ではイメージビルド時に1回だけアセットを生成
+RUN npm install \
+  && npx tailwindcss -i ./app/assets/stylesheets/application.tailwind.css -o ./app/assets/builds/application.css \
+  && bundle exec rails assets:precompile
+
+# Rails起動コマンド
 CMD ["bash", "-lc", "bin/rails server -b 0.0.0.0 -p ${PORT:-10000}"]
