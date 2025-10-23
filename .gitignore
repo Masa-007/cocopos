@@ -1,7 +1,7 @@
 .DS_Store
 
 # Ignore master key for decrypting credentials and more.
- /config/master.key
+config/master.key
 
 /tmp/cache/
 
@@ -17,3 +17,5 @@ tmp/*
 
 /app/assets/builds/*
 !/app/assets/builds/.keep
+
+/config/master.key
