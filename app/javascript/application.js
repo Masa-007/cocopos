@@ -1,5 +1,7 @@
 import "@hotwired/turbo-rails";
 import "./modal";
+import "./controllers/season_controller";
+
 
 ["turbo:load", "turbo:render"].forEach((event) => {
   document.addEventListener(event, () => {

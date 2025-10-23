@@ -4,47 +4,21 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>cocopos - 心のポスト</title>
+
   <%= csrf_meta_tags %>
   <%= csp_meta_tag %>
 
-  <!-- Tailwind & Custom CSS -->
+  <!-- ✅ Tailwind & Custom CSS -->
   <%= stylesheet_link_tag "application", "data-turbo-track": "reload", rel: "stylesheet" %>
 
-  <!-- JavaScript -->
+  <!-- ✅ JavaScript（Importmap使用） -->
   <%= javascript_importmap_tags %>
-</head>
 
-<body class="flex flex-col min-h-screen bg-gradient-to-br from-rose-50 to-orange-50 text-gray-800">
-
-  <!-- ヘッダー -->
-  <%= render 'shared/header' %>
-
-  <!-- 🔔 フラッシュメッセージ（右上固定・数秒で消える） -->
-  <div id="flash-container">
-    <% if notice.present? %>
-      <div class="flash flash-notice"><%= notice %></div>
-    <% end %>
-    <% if alert.present? %>
-      <div class="flash flash-alert"><%= alert %></div>
-    <% end %>
-  </div>
-
-  <!-- メインコンテンツ -->
-  <main class="flex-grow relative z-0">
-    <%= yield %>
-  </main>
-
-  <!-- モーダル -->
-  <%= render 'shared/modal' %> 
-
-  <!-- フッター -->
-  <%= render 'shared/footer' %>
-
-  <!-- フラッシュ自動非表示スクリプト -->
+  <!-- ✅ フラッシュ自動非表示スクリプト -->
   <script>
     document.addEventListener("turbo:load", () => {
       const flashes = document.querySelectorAll(".flash");
-      flashes.forEach(flash => {
+      flashes.forEach((flash) => {
         setTimeout(() => {
           flash.classList.add("fade-out");
           setTimeout(() => flash.remove(), 500);
@@ -52,5 +26,36 @@
       });
     });
   </script>
+</head>
+
+<body class="flex flex-col min-h-screen bg-gradient-to-br from-rose-50 to-orange-50 text-gray-800 <%= @season %>">
+
+  <!-- 🌸 ヘッダー -->
+  <%= render "shared/header" %>
+
+  <!-- 🔔 フラッシュメッセージ（右上固定・数秒でフェードアウト） -->
+  <div id="flash-container" class="fixed top-4 right-4 space-y-2 z-50">
+    <% if notice.present? %>
+      <div class="flash flash-notice bg-green-100 border border-green-300 text-green-700 px-4 py-2 rounded-md shadow-sm transition-all">
+        <%= notice %>
+      </div>
+    <% end %>
+    <% if alert.present? %>
+      <div class="flash flash-alert bg-red-100 border border-red-300 text-red-700 px-4 py-2 rounded-md shadow-sm transition-all">
+        <%= alert %>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- 🌼 メインコンテンツ -->
+  <main class="flex-grow relative z-0">
+    <%= yield %>
+  </main>
+
+  <!-- 💬 モーダル（共通） -->
+  <%= render "shared/modal" %> 
+
+  <!-- 🌙 フッター -->
+  <%= render "shared/footer" %>
 </body>
 </html>
