@@ -1,43 +1,41 @@
 # ------------------------------------------------------------
 # PostgreSQL 設定ファイル (config/database.yml)
 # ------------------------------------------------------------
-# Rails が使用するデータベースを定義します。
-# ここでは Docker Compose で起動する PostgreSQL コンテナと接続します。
-# ------------------------------------------------------------
 
 default: &default
   adapter: postgresql
   encoding: unicode
-  host: db                  # Docker Compose 内のサービス名（PostgreSQLコンテナ）
-  username: postgres        # docker-compose.yml の POSTGRES_USER と一致させる
-  password: password        # docker-compose.yml の POSTGRES_PASSWORD と一致させる
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  url: <%= ENV["DATABASE_URL"] %>
 
 # ------------------------------------------------------------
 # 開発環境
 # ------------------------------------------------------------
 development:
   <<: *default
+  host: db
+  username: postgres
+  password: password
   database: myapp_development
-
-  # 任意: 接続ポートを明示する場合
-  # port: 5432
 
 # ------------------------------------------------------------
 # テスト環境
 # ------------------------------------------------------------
 test:
   <<: *default
+  host: db
+  username: postgres
+  password: password
   database: myapp_test
+
+# ------------------------------------------------------------
+# ステージング環境
+# ------------------------------------------------------------
+staging:
+  <<: *default
 
 # ------------------------------------------------------------
 # 本番環境
 # ------------------------------------------------------------
-# Render や Railway, Fly.io などのホスティングサービスでは、
-# DATABASE_URL 環境変数が自動的に設定されるため、そちらを使用します。
-# DATABASE_URL 形式: postgres://ユーザー名:パスワード@ホスト名:ポート/データベース名
-# ------------------------------------------------------------
 production:
   <<: *default
-  url: <%= ENV["DATABASE_URL"] %>     # Render の環境変数で接続設定を自動取得
-  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
