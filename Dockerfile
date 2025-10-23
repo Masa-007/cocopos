@@ -74,19 +74,19 @@ ENV RAILS_ENV=test
 CMD ["bash", "-lc", "bundle exec rspec"]
 
 # -----------------------------------------------------------
-# 本番環境ステージ
+# 本番環境ステージ（Render 用）
 # -----------------------------------------------------------
 FROM base AS production
 ENV RAILS_ENV=production
 ENV RAILS_LOG_TO_STDOUT=true
 ENV RAILS_SERVE_STATIC_FILES=true
-EXPOSE 10000
 WORKDIR /myapp
+EXPOSE 10000
 
-# ✅ 本番ではイメージビルド時に1回だけアセットを生成
+# ✅ Tailwind ビルドと Rails アセットプリコンパイル
 RUN npm install \
   && npx tailwindcss -i ./app/assets/stylesheets/application.tailwind.css -o ./app/assets/builds/application.css \
   && bundle exec rails assets:precompile
 
-# Rails起動コマンド
-CMD ["bash", "-lc", "bin/rails server -b 0.0.0.0 -p ${PORT:-10000}"]
+# ✅ Rails 起動前にDBマイグレーションを実行してからPumaを起動
+CMD bundle exec rails db:migrate && bundle exec puma -C config/puma.rb -b tcp://0.0.0.0:${PORT:-10000}
