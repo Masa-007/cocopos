@@ -10,6 +10,6 @@ services:
       - key: RAILS_MASTER_KEY
         scope: build_and_runtime
       - key: DATABASE_URL
-        scope: runtime
+        scope: build_and_runtime
       - key: REDIS_URL
         scope: runtime
