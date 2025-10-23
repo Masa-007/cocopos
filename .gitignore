@@ -3,6 +3,7 @@
 # Ignore master key for decrypting credentials and more.
 config/master.key
 
+# Cache
 /tmp/cache/
 
 # Node modules
@@ -10,12 +11,13 @@ config/master.key
 
 # Rails build assets
 /app/assets/builds
-
-# Logs and temp
-/log/*
-tmp/*
-
 /app/assets/builds/*
 !/app/assets/builds/.keep
 
+# Logs and temp
+/log/*
+!/log/.keep
+/tmp/*
+
+# Credentials
 /config/master.key
