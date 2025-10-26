@@ -6183,6 +6183,141 @@ function updateSeason() {
   console.log(`\u{1F338} Petals regenerated for: ${season}`);
 }
 
+// app/javascript/post_form.js
+document.addEventListener("turbo:load", () => {
+  const postForm = document.getElementById("postForm");
+  if (!postForm) return;
+  const postTypeRadios = document.querySelectorAll(".post-type-radio");
+  const opinionSection = document.getElementById("opinionSection");
+  postTypeRadios.forEach((radio) => {
+    radio.addEventListener("change", (e) => {
+      if (e.target.value === "organize") {
+        opinionSection.classList.remove("hidden");
+      } else {
+        opinionSection.classList.add("hidden");
+      }
+    });
+  });
+  const bodyTextarea = postForm.querySelector('textarea[name="post[body]"]');
+  const charCount = document.getElementById("charCount");
+  if (bodyTextarea && charCount) {
+    bodyTextarea.addEventListener("input", () => {
+      charCount.textContent = bodyTextarea.value.length;
+    });
+  }
+  postForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const postType = postForm.querySelector(
+      'input[name="post[post_type]"]:checked'
+    );
+    const body = bodyTextarea.value.trim();
+    if (!postType) {
+      alert("\u6295\u51FD\u3059\u308B\u7BB1\u3092\u9078\u629E\u3057\u3066\u304F\u3060\u3055\u3044");
+      return;
+    }
+    if (!body) {
+      alert("\u672C\u6587\u3092\u5165\u529B\u3057\u3066\u304F\u3060\u3055\u3044");
+      return;
+    }
+    const loadingScreen = document.getElementById("loadingScreen");
+    loadingScreen.classList.remove("hidden");
+    const formData = new FormData(postForm);
+    fetch(postForm.action, {
+      method: "POST",
+      body: formData,
+      headers: {
+        "X-CSRF-Token": document.querySelector('[name="csrf-token"]').content,
+        Accept: "application/json"
+      }
+    }).then((response) => response.json()).then((data) => {
+      loadingScreen.classList.add("hidden");
+      if (data.success) {
+        document.getElementById("completionScreen").classList.add("active");
+      } else {
+        alert("\u6295\u7A3F\u306B\u5931\u6557\u3057\u307E\u3057\u305F: " + data.errors.join(", "));
+      }
+    }).catch((error) => {
+      loadingScreen.classList.add("hidden");
+      alert("\u30A8\u30E9\u30FC\u304C\u767A\u751F\u3057\u307E\u3057\u305F");
+      console.error("Error:", error);
+    });
+  });
+});
+
+// app/javascript/posts.js
+document.addEventListener("turbo:load", () => {
+  document.querySelectorAll(".filter-btn, .flower-btn, #sortSelect").forEach((el) => el.replaceWith(el.cloneNode(true)));
+  const filterButtons = document.querySelectorAll(".filter-btn");
+  const postCards = Array.from(document.querySelectorAll(".post-card"));
+  const postsGrid = document.getElementById("posts-grid");
+  if (filterButtons.length && postCards.length && postsGrid) {
+    filterButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        filterButtons.forEach((btn) => btn.classList.remove("active"));
+        button.classList.add("active");
+        const filter = button.dataset.filter;
+        postCards.forEach((card) => {
+          const match = filter === "all" || card.dataset.category === filter;
+          card.style.display = match ? "block" : "none";
+          card.style.animation = "none";
+          if (match) {
+            setTimeout(() => {
+              card.style.animation = "fadeIn 0.5s ease-out";
+            }, 10);
+          }
+        });
+      });
+    });
+  }
+  const sortSelect = document.querySelector("#sortSelect");
+  if (sortSelect && postsGrid) {
+    sortSelect.addEventListener("change", () => {
+      const selected = sortSelect.value;
+      const sortedCards = [...postCards];
+      sortedCards.sort((a, b) => {
+        const dateA = new Date(a.dataset.createdAt);
+        const dateB = new Date(b.dataset.createdAt);
+        return selected === "\u53E4\u3044\u9806" ? dateA - dateB : dateB - dateA;
+      });
+      postsGrid.innerHTML = "";
+      sortedCards.forEach((card) => postsGrid.appendChild(card));
+      sortedCards.forEach((card) => {
+        card.style.animation = "none";
+        setTimeout(() => card.style.animation = "fadeIn 0.5s ease-out", 10);
+      });
+    });
+  }
+  postCards.forEach((card) => {
+    card.addEventListener("click", (e) => {
+      if (e.target.closest(".action-icon")) return;
+      console.log(`\u6295\u7A3F\u8A73\u7D30\u30DA\u30FC\u30B8\u3078\u9077\u79FB\u4E88\u5B9A: ${card.dataset.id}`);
+    });
+  });
+  const flowerButtons = document.querySelectorAll(".post-actions .action-icon");
+  const flowerStages = ["\u{1F331}", "\u{1F33F}", "\u{1F337}", "\u{1F339}", "\u{1F338}", "\u{1F33A}", "\u{1F490}"];
+  flowerButtons.forEach((button) => {
+    if (button.textContent.includes("\u{1F4AC}")) return;
+    let clickCount = 0;
+    let stage = 0;
+    let maxStage = flowerStages.length - 1;
+    button.addEventListener("click", (e) => {
+      e.stopPropagation();
+      clickCount++;
+      if (clickCount % 5 === 0 && stage < maxStage) {
+        stage++;
+        button.textContent = flowerStages[stage];
+      }
+      button.style.transition = "transform 0.3s ease, text-shadow 0.3s ease";
+      button.style.transform = "scale(1.5) rotate(5deg)";
+      button.style.textShadow = "0 0 15px rgba(255, 182, 193, 0.9)";
+      setTimeout(() => {
+        button.style.transform = "scale(1)";
+        button.style.textShadow = "none";
+      }, 300);
+    });
+  });
+});
+
 // app/javascript/application.js
 ["turbo:load", "turbo:render"].forEach((event) => {
   document.addEventListener(event, () => {

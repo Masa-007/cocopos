@@ -11,9 +11,10 @@
     <!-- 右：ナビゲーション -->
     <nav class="header-nav">
       <a href="#" id="howToLink" class="nav-button">使い方</a>
-      <a href="#" class="nav-button">みんなの投稿一覧</a>
+      <%= link_to "みんなの投稿一覧", posts_path, class: "nav-button" %>
 
       <% if user_signed_in? %>
+
         <%= link_to "マイページ", mypage_path, class: "nav-button" %>
         <%= link_to "ログアウト", destroy_user_session_path,
                     data: { turbo_method: :delete },

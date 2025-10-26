@@ -1,0 +1,164 @@
+<main class="flex-grow pt-24 pb-12">
+  <div class="container mx-auto max-w-4xl px-6">
+    
+    <!-- ページタイトル -->
+    <div class="text-center mb-8">
+      <h1 class="text-4xl font-bold text-gray-800 mb-2">✏️ 新しい投稿</h1>
+      <p class="text-gray-600">あなたの心を投函してください</p>
+    </div>
+
+    <!-- 投稿フォーム -->
+    <div class="bg-white rounded-3xl shadow-lg p-8">
+      <%= form_with model: @post, id: "postForm", local: false do |f| %>
+        
+        <!-- 投稿タイプ選択 -->
+        <div class="mb-8">
+          <label class="block text-lg font-bold text-gray-800 mb-4">📦 投函する箱を選んでください</label>
+          <div class="grid md:grid-cols-3 gap-4">
+            
+            <!-- 未来宣言箱 -->
+            <label class="post-type-card future">
+              <%= f.radio_button :post_type, :future, class: "post-type-radio", required: true %>
+              <div class="post-type-content">
+                <div class="text-5xl mb-3">🌱</div>
+                <h3 class="text-xl font-bold mb-2">未来宣言箱</h3>
+                <p class="text-sm text-gray-600">目標や決意を投函</p>
+              </div>
+            </label>
+
+            <!-- 心の整理箱 -->
+            <label class="post-type-card organize">
+              <%= f.radio_button :post_type, :organize, class: "post-type-radio", required: true %>
+              <div class="post-type-content">
+                <div class="text-5xl mb-3">🌈</div>
+                <h3 class="text-xl font-bold mb-2">心の整理箱</h3>
+                <p class="text-sm text-gray-600">気持ちを吐き出す</p>
+              </div>
+            </label>
+
+            <!-- 感謝箱 -->
+            <label class="post-type-card thanks">
+              <%= f.radio_button :post_type, :thanks, class: "post-type-radio", required: true %>
+              <div class="post-type-content">
+                <div class="text-5xl mb-3">💌</div>
+                <h3 class="text-xl font-bold mb-2">感謝箱</h3>
+                <p class="text-sm text-gray-600">感謝の気持ちを記録</p>
+              </div>
+            </label>
+
+          </div>
+        </div>
+
+        <!-- 意見の可否（心の整理箱のみ表示） -->
+        <div id="opinionSection" class="mb-8 hidden">
+          <label class="block text-lg font-bold text-gray-800 mb-4">💬 意見について</label>
+          <div class="flex gap-4">
+            <label class="opinion-card flex-1 cursor-pointer">
+              <%= f.radio_button :opinion_needed, true, checked: true, class: "hidden opinion-radio" %>
+              <div class="opinion-content p-4 border-2 border-gray-200 rounded-xl text-center transition-all hover:border-orange-400">
+                <span class="text-3xl block mb-2">💬</span>
+                <span class="font-bold text-gray-800">意見が欲しい</span>
+                <p class="text-sm text-gray-600 mt-1">他の人からアドバイスを受け取る</p>
+              </div>
+            </label>
+            <label class="opinion-card flex-1 cursor-pointer">
+              <%= f.radio_button :opinion_needed, false, class: "hidden opinion-radio" %>
+              <div class="opinion-content p-4 border-2 border-gray-200 rounded-xl text-center transition-all hover:border-orange-400">
+                <span class="text-3xl block mb-2">💭</span>
+                <span class="font-bold text-gray-800">意見不要</span>
+                <p class="text-sm text-gray-600 mt-1">ただ吐き出したいだけ</p>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- 匿名設定 -->
+        <div class="mb-8">
+          <label class="flex items-center gap-3 cursor-pointer p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition">
+            <%= f.check_box :is_anonymous, checked: true, class: "w-5 h-5 text-orange-400 rounded focus:ring-orange-400" %>
+            <div>
+              <span class="text-gray-800 font-medium block">匿名で投稿する</span>
+              <span class="text-sm text-gray-600">チェックを外すとユーザー名が表示されます</span>
+            </div>
+          </label>
+        </div>
+
+        <!-- 投稿タイトル -->
+        <div class="mb-8">
+          <label class="block text-lg font-bold text-gray-800 mb-4">🖋 タイトル</label>
+          <%= f.text_field :title,
+              placeholder: "例：来年こそは〇〇を達成したい！",
+              class: "w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-orange-400 focus:outline-none",
+              maxlength: 100,
+              required: true %>
+          <div class="text-right text-sm text-gray-500 mt-2">
+            100文字以内
+          </div>
+        </div>
+
+        <!-- 投稿本文 -->
+        <div class="mb-8">
+          <label class="block text-lg font-bold text-gray-800 mb-4">📝 本文</label>
+          <%= f.text_area :body, 
+              rows: 8, 
+              placeholder: "ここにあなたの想いを書いてください。", 
+              class: "w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-orange-400 focus:outline-none resize-none",
+              maxlength: 1000,
+              required: true %>
+          <div class="text-right text-sm text-gray-500 mt-2">
+            <span id="charCount">0</span> / 1000文字
+          </div>
+        </div>
+
+        <!-- 送信ボタン -->
+        <div class="flex justify-center gap-4">
+          <%= link_to "キャンセル", :back, class: "px-8 py-3 bg-gray-200 text-gray-700 font-bold rounded-full hover:bg-gray-300 transition" %>
+          <%= f.submit "投函する 📮", 
+              class: "px-12 py-3 bg-gradient-to-r from-orange-400 to-pink-400 text-white text-lg font-bold rounded-full hover:shadow-xl transition transform hover:scale-105 cursor-pointer" %>
+        </div>
+
+      <% end %>
+    </div>
+
+  </div>
+</main>
+
+<!-- ローディング画面 -->
+<div id="loadingScreen" class="loading-screen hidden">
+  <div class="postbox-animation">
+    <div class="letter"></div>
+    <div class="postbox">
+      <div class="postbox-slot"></div>
+    </div>
+    <div class="loading-text">投函中...</div>
+  </div>
+</div>
+
+<!-- 完了画面 -->
+<div id="completionScreen" class="completion-screen">
+  <div class="completion-content">
+    <div class="checkmark"></div>
+    <h1 class="text-4xl font-bold text-gray-800 mb-4">投函が完了しました</h1>
+    <p class="text-xl text-gray-600 mb-12">あなたの心が引き続き穏やかでありますように。</p>
+
+    <div class="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto px-6">
+      <%= link_to posts_path, class: "action-card no-underline" do %>
+        <div class="action-icon">📮</div>
+        <h3 class="text-xl font-bold text-gray-800 mb-2">投稿一覧に戻る</h3>
+        <p class="text-gray-600 text-sm">みんなの投稿を見る</p>
+      <% end %>
+
+      <%= link_to mypage_path, class: "action-card no-underline" do %>
+        <div class="action-icon">👤</div>
+        <h3 class="text-xl font-bold text-gray-800 mb-2">マイページを見る</h3>
+        <p class="text-gray-600 text-sm">あなたの記録を確認</p>
+      <% end %>
+
+      <a href="#" class="action-card no-underline" onclick="shareOnX(event)">
+        <div class="action-icon">🐦</div>
+        <h3 class="text-xl font-bold text-gray-800 mb-2">Xで共有する</h3>
+        <p class="text-gray-600 text-sm">投稿を共有する</p>
+      </a>
+    </div>
+  </div>
+</div>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_10_18_071248) do
+ActiveRecord::Schema[7.1].define(version: 2025_10_25_162436) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -28,10 +28,12 @@ ActiveRecord::Schema[7.1].define(version: 2025_10_18_071248) do
   create_table "posts", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.text "body"
-    t.string "post_type"
     t.boolean "opinion_needed"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "is_anonymous"
+    t.integer "post_type", default: 0
+    t.string "title"
     t.index ["user_id"], name: "index_posts_on_user_id"
   end
 

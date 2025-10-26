@@ -4,9 +4,16 @@
   <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
     <%= render "devise/shared/error_messages", resource: resource %>
 
+    <!-- 名前 -->
+    <div class="field">
+      <%= f.label :name, t('activerecord.attributes.user.name', default: "名前") %><br />
+      <%= f.text_field :name, autofocus: true, autocomplete: "name" %>
+    </div>
+
+    <!-- メールアドレス -->
     <div class="field">
       <%= f.label :email, t('activerecord.attributes.user.email') %><br />
-      <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+      <%= f.email_field :email, autocomplete: "email" %>
     </div>
 
     <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
@@ -15,6 +22,7 @@
       </p>
     <% end %>
 
+    <!-- パスワード -->
     <div class="field">
       <%= f.label :password, t('activerecord.attributes.user.password') %><br />
       <em class="text-sm text-gray-500"><%= t('devise.registrations.edit.password_hint', default: "変更しない場合は空欄で構いません") %></em><br />
@@ -24,17 +32,20 @@
       <% end %>
     </div>
 
+    <!-- パスワード確認 -->
     <div class="field">
       <%= f.label :password_confirmation, t('activerecord.attributes.user.password_confirmation') %><br />
       <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
     </div>
 
+    <!-- 現在のパスワード -->
     <div class="field">
       <%= f.label :current_password, t('devise.registrations.edit.current_password', default: "現在のパスワード") %><br />
       <%= f.password_field :current_password, autocomplete: "current-password" %>
       <em class="text-sm text-gray-500"><%= t('devise.registrations.edit.current_password_hint', default: "変更を反映するために入力してください") %></em>
     </div>
 
+    <!-- 更新ボタン -->
     <div class="actions mt-6">
       <%= f.submit t('devise.registrations.edit.update', default: "更新する"), class: "btn-primary w-full" %>
     </div>

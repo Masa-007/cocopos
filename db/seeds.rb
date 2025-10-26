@@ -1,6 +1,20 @@
 # frozen_string_literal: true
 
-docker compose exec web rails c
-User.create(name: 'Masa', email: 'masa@example.com')
-Post.create(user_id: 1, body: 'これはテスト投稿です', post_type: 'future', opinion_needed: true)
-Comment.create(user_id: 1, post_id: 1, body: 'いいですね！', is_anonymous: false)
+user = User.create!(
+  name: 'Masa',
+  email: 'masa@example.com',
+  password: 'password',
+  password_confirmation: 'password'
+)
+
+post = user.posts.create!(
+  body: 'これはテスト投稿です',
+  post_type: 'future',
+  opinion_needed: true
+)
+
+post.comments.create!(
+  user: user,
+  body: 'いいですね！',
+  is_anonymous: false
+)

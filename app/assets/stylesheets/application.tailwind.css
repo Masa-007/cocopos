@@ -3,6 +3,8 @@
 @import "auth.css";
 @import "mypage_actions.css";
 @import "calendar.css";
+@import "posts.css";
+@import "post_form.css";
 
 @tailwind base;
 @tailwind components;

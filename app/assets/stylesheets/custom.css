@@ -31,21 +31,113 @@ body {
 
 /* ---- ナビ ---- */
 .header-nav {
-  display: flex; justify-content: flex-end; align-items: center; gap: 16px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 16px;
 }
+
+/* ナビ共通ボタン */
 .nav-button {
-  font-weight: 600; padding: 8px 16px; border-radius: 8px; text-decoration: none;
-  transition: all .25s ease; box-shadow: 0 2px 5px rgba(0,0,0,.1);
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: all .25s ease;
+  box-shadow: 0 2px 5px rgba(0,0,0,.1);
+  border: 1px solid transparent;
 }
-#howToLink, .nav-button:nth-of-type(2), .nav-button:nth-of-type(3), .nav-button:nth-of-type(4) { border: 1px solid; }
-#howToLink { background: linear-gradient(135deg,#fff7cc,#ffe680); color:#554400; border-color:#ffe680; }
-#howToLink:hover { background: linear-gradient(135deg,#ffec99,#ffd84d); transform: translateY(-2px); }
 
-.nav-button:nth-of-type(2) { background:linear-gradient(135deg,#ffe2b3,#ffc56b); color:#5a3a00; border-color:#ffc56b; }
-.nav-button:nth-of-type(2):hover { background:linear-gradient(135deg,#ffd48c,#ffb74d); transform:translateY(-2px); }
+/* ---- 不要なチェックマークを非表示 ---- */
+/* ナビゲーションや他コンポーネント内のものだけ除外 */
+.header-nav .checkmark,
+.nav-button .checkmark {
+  display: none !important;
+}
 
-.nav-button:nth-of-type(4) { background:linear-gradient(135deg,#c4f3d5,#8ee5a1); color:#0f3f1a; border-color:#8ee5a1; }
-.nav-button:nth-of-type(4):hover { background:linear-gradient(135deg,#a9eac1,#6fdb8a); transform:translateY(-2px); }
+/* 使い方（モーダルや説明ボックス）内のレ点は表示 */
+.modal .checkmark,
+.green-box .checkmark,
+.purple-box .checkmark,
+.pink-box .checkmark {
+  display: inline !important;
+  font-size: 1.2rem;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+
+/* 不要な大きな緑丸を削除（背景などリセット） */
+.checkmark {
+  display: inline !important;
+  font-size: 1rem;         /* 小さく */
+  margin-right: 6px;
+  color: #15803d;          /* 緑を保ちつつ控えめに */
+  background: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  width: auto !important;
+  height: auto !important;
+  line-height: 1;
+  vertical-align: middle;
+}
+
+/* 丸い背景を付与している親 */
+.checkmark::before,
+.checkmark::after {
+  content: none !important;
+  background: none !important;
+}
+
+
+/* 「使い方」ボタン */
+#howToLink {
+  background: linear-gradient(135deg, #fff7cc, #ffe680);
+  color: #554400;
+  border-color: #ffe680;
+}
+#howToLink:hover {
+  background: linear-gradient(135deg, #ffec99, #ffd84d);
+  transform: translateY(-2px);
+}
+
+/* 投稿ページボタン */
+.nav-button:nth-of-type(2) {
+  background: linear-gradient(135deg, #ffe2b3, #ffc56b);
+  color: #5a3a00;
+  border-color: #ffc56b;
+}
+.nav-button:nth-of-type(2):hover {
+  background: linear-gradient(135deg, #ffd48c, #ffb74d);
+  transform: translateY(-2px);
+}
+
+/* 投稿一覧ボタン */
+.nav-button:nth-of-type(3) {
+  background: linear-gradient(135deg, #b9f6ca, #8de6a1);
+  color: #104e25;
+  border: 1px solid #8de6a1;
+  border-radius: 8px;
+  padding: 8px 16px;
+  text-decoration: none;
+  font-weight: 600;
+  box-shadow: 0 2px 5px rgba(0,0,0,.1);
+  transition: all .25s ease;
+}
+.nav-button:nth-of-type(3):hover {
+  background: linear-gradient(135deg, #a2edb5, #73da8e);
+  transform: translateY(-2px);
+}
+
+/* マイページボタン */
+.nav-button:nth-of-type(4) {
+  background: linear-gradient(135deg, #c4f3d5, #8ee5a1);
+  color: #0f3f1a;
+  border-color: #8ee5a1;
+}
+.nav-button:nth-of-type(4):hover {
+  background: linear-gradient(135deg, #a9eac1, #6fdb8a);
+  transform: translateY(-2px);
+}
 
 /* ---- ボタン ---- */
 .btn-primary {
@@ -253,3 +345,28 @@ body {
   opacity: 0;
   transform: translateY(-10px);
 }
+
+/* ==== マイページ ==== */
+.mypage-title {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 0.5rem;
+  text-align: center;
+  letter-spacing: 0.03em;
+  transition: color 0.3s ease;
+}
+body.spring .mypage-title { color: #e879f9; }
+body.summer .mypage-title { color: #38bdf8; }
+body.autumn .mypage-title { color: #f59e0b; }
+body.winter .mypage-title { color: #60a5fa; }
+
+.mypage-subtitle {
+  font-size: 1rem;
+  margin-bottom: 2.5rem;
+  text-align: center;
+  color: #555;
+  letter-spacing: 0.02em;
+  transition: color 0.3s ease;
+}
+
