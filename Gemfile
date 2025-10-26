@@ -14,6 +14,9 @@ gem 'rails', '~> 7.1.3'
 
 gem 'devise'
 
+gem 'kaminari'
+
+
 # --- フロントエンド / アセット ---
 gem 'foreman', '~> 0.90.0'
 gem 'importmap-rails'     # JS管理

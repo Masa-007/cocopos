@@ -1,6 +1,5 @@
 <main class="flex-grow pt-24 pb-12">
   <div class="container mx-auto max-w-4xl px-6">
-    
     <!-- ページタイトル -->
     <div class="text-center mb-8">
       <h1 class="text-4xl font-bold text-gray-800 mb-2">✏️ 新しい投稿</h1>
@@ -10,62 +9,41 @@
     <!-- 投稿フォーム -->
     <div class="bg-white rounded-3xl shadow-lg p-8">
       <%= form_with model: @post, id: "postForm", local: false do |f| %>
-        
+
         <!-- 投稿タイプ選択 -->
         <div class="mb-8">
           <label class="block text-lg font-bold text-gray-800 mb-4">📮 投函する箱を選んでください</label>
           <div class="grid md:grid-cols-3 gap-4">
-            
-            <!-- 未来宣言箱 -->
-            <label class="post-type-card future">
-              <%= f.radio_button :post_type, :future, class: "post-type-radio", required: true %>
-              <div class="post-type-content">
-                <div class="text-5xl mb-3">🌱</div>
-                <h3 class="text-xl font-bold mb-2">未来宣言箱</h3>
-                <p class="text-sm text-gray-600">目標や決意を投函</p>
-              </div>
-            </label>
-
-            <!-- 心の整理箱 -->
-            <label class="post-type-card organize">
-              <%= f.radio_button :post_type, :organize, class: "post-type-radio", required: true %>
-              <div class="post-type-content">
-                <div class="text-5xl mb-3">🌈</div>
-                <h3 class="text-xl font-bold mb-2">心の整理箱</h3>
-                <p class="text-sm text-gray-600">気持ちを書き出す</p>
-              </div>
-            </label>
-
-            <!-- 感謝箱 -->
-            <label class="post-type-card thanks">
-              <%= f.radio_button :post_type, :thanks, class: "post-type-radio", required: true %>
-              <div class="post-type-content">
-                <div class="text-5xl mb-3">💌</div>
-                <h3 class="text-xl font-bold mb-2">感謝箱</h3>
-                <p class="text-sm text-gray-600">感謝の気持ちを記録</p>
-              </div>
-            </label>
-
+            <% { future: ["🌱", "未来宣言箱", "目標や決意を投函"],
+                 organize: ["🌈", "心の整理箱", "気持ちを書き出す"],
+                 thanks: ["💌", "感謝箱", "感謝の気持ちを記録"] }.each do |type, (icon, title, desc)| %>
+              <label class="post-type-card <%= type %>">
+                <%= f.radio_button :post_type, type, class: "post-type-radio", required: true %>
+                <div class="post-type-content text-center">
+                  <div class="text-5xl mb-3"><%= icon %></div>
+                  <h3 class="text-xl font-bold mb-2"><%= title %></h3>
+                  <p class="text-sm text-gray-600"><%= desc %></p>
+                </div>
+              </label>
+            <% end %>
           </div>
         </div>
 
-        <!-- 意見の可否（心の整理箱のみ表示） -->
+        <!-- 意見可否 -->
         <div id="opinionSection" class="mb-8 hidden">
           <label class="block text-lg font-bold text-gray-800 mb-4">💬 意見について</label>
           <div class="flex gap-4">
-            <label class="opinion-card flex-1 cursor-pointer">
+            <label class="opinion-card flex-1">
               <%= f.radio_button :opinion_needed, true, checked: true, class: "hidden opinion-radio" %>
-              <div class="opinion-content p-4 border-2 border-gray-200 rounded-xl text-center transition-all hover:border-orange-400">
-                <span class="text-3xl block mb-2">💬</span>
-                <span class="font-bold text-gray-800">意見が欲しい</span>
+              <div class="opinion-content p-4 border-2 border-gray-200 rounded-xl text-center hover:border-orange-400 transition-all">
+                💬<br><strong>意見が欲しい</strong>
                 <p class="text-sm text-gray-600 mt-1">他の人からアドバイスを受け取る</p>
               </div>
             </label>
-            <label class="opinion-card flex-1 cursor-pointer">
+            <label class="opinion-card flex-1">
               <%= f.radio_button :opinion_needed, false, class: "hidden opinion-radio" %>
-              <div class="opinion-content p-4 border-2 border-gray-200 rounded-xl text-center transition-all hover:border-orange-400">
-                <span class="text-3xl block mb-2">💭</span>
-                <span class="font-bold text-gray-800">意見不要</span>
+              <div class="opinion-content p-4 border-2 border-gray-200 rounded-xl text-center hover:border-orange-400 transition-all">
+                💭<br><strong>意見不要</strong>
                 <p class="text-sm text-gray-600 mt-1">ただ書き出したいだけ</p>
               </div>
             </label>
@@ -83,45 +61,79 @@
           </label>
         </div>
 
-        <!-- 投稿タイトル -->
+        <!-- タイトル -->
         <div class="mb-8">
           <label class="block text-lg font-bold text-gray-800 mb-4">🖋 タイトル</label>
           <%= f.text_field :title,
-              id: "post_title",
               placeholder: "例：来年こそは〇〇を達成したい！",
               class: "w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-orange-400 focus:outline-none",
               maxlength: 100,
               required: true %>
-          <div class="text-right text-sm text-gray-500 mt-2">
-            100文字以内
-          </div>
+          <p class="text-right text-sm text-gray-500 mt-2">100文字以内</p>
         </div>
 
-        <!-- 投稿本文 -->
+        <!-- 本文 -->
         <div class="mb-8">
           <label class="block text-lg font-bold text-gray-800 mb-4">📝 本文</label>
-          <%= f.text_area :body, 
-              rows: 8, 
-              placeholder: "ここにあなたの想いを書いてください。", 
+          <%= f.text_area :body,
+              rows: 8,
+              placeholder: "ここにあなたの想いを書いてください。",
               class: "w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-orange-400 focus:outline-none resize-none",
               id: "post_body",
               maxlength: 1000,
               required: true %>
-          <div class="text-right text-sm text-gray-500 mt-2">
-            <span id="charCount">0</span> / 1000文字
-          </div>
+          <p class="text-right text-sm text-gray-500 mt-2"><span id="charCount">0</span> / 1000文字</p>
         </div>
 
-        <!-- 送信ボタン -->
+        <!-- ボタン -->
         <div class="flex justify-center gap-4">
           <%= link_to "キャンセル", :back, class: "px-8 py-3 bg-gray-200 text-gray-700 font-bold rounded-full hover:bg-gray-300 transition" %>
-          <%= f.submit "投函する 📮", 
-              class: "px-12 py-3 bg-gradient-to-r from-orange-400 to-pink-400 text-white text-lg font-bold rounded-full hover:shadow-xl transition transform hover:scale-105 cursor-pointer" %>
+          <%= f.submit "投函する 📮", class: "px-12 py-3 bg-gradient-to-r from-orange-400 to-pink-400 text-white text-lg font-bold rounded-full hover:shadow-xl transition transform hover:scale-105" %>
         </div>
-
       <% end %>
     </div>
   </div>
 </main>
 
-<%= javascript_import_module_tag "posts/placeholder_switch" %>
+<!-- === ローディング画面 === -->
+<div id="loadingScreen" class="loading-screen">
+  <div class="postbox-animation">
+    <div class="letter"></div>
+    <div class="postbox"><div class="postbox-slot"></div></div>
+  </div>
+  <p class="loading-text">投函中...</p>
+</div>
+
+<!-- === 完了画面 === -->
+<div id="completionScreen" class="completion-screen">
+  <div class="completion-content">
+    <div class="checkmark"></div>
+
+    <div class="completion-message">
+      <h1 class="text-5xl font-extrabold text-gray-800 mb-4 tracking-wide fade-in">
+        📮 投函が完了しました！
+      </h1>
+      <p class="text-lg text-gray-600 mb-10 fade-in-delay2">
+        少し軽くなった心と一緒に、新しい一歩を踏み出していきましょう。
+      </p>
+    </div>
+
+
+    <div class="completion-actions">
+      <%= link_to posts_path, class: "action-card" do %>
+        <div class="action-icon">📮</div>
+        <h3 class="text-lg font-bold mb-1 text-gray-800">投稿一覧に戻る</h3>
+      <% end %>
+
+      <%= link_to mypage_path, class: "action-card" do %>
+        <div class="action-icon">👤</div>
+        <h3 class="text-lg font-bold mb-1 text-gray-800">マイページを見る</h3>
+      <% end %>
+
+      <a href="#" class="action-card" onclick="shareOnX(event)">
+        <div class="action-icon">🐦</div>
+        <h3 class="text-lg font-bold mb-1 text-gray-800">Xで共有する</h3>
+      </a>
+    </div>
+  </div>
+</div>

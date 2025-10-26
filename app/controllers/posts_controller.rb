@@ -1,19 +1,30 @@
+# app/controllers/posts_controller.rb
 class PostsController < ApplicationController
-  before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy]
-  before_action :set_post, only: [:show, :edit, :update, :destroy]
-  before_action :authorize_user!, only: [:edit, :update, :destroy]
+  before_action :authenticate_user!, only: %i[new create edit update destroy]
+  before_action :set_post, only: %i[show edit update destroy]
+  before_action :authorize_user!, only: %i[edit update destroy]
 
   def index
-    @posts = Post.includes(:user).recent
+    @posts = Post.includes(:user)
 
-    if params[:filter].present?
+    # === 絞り込み ===
+    if params[:filter].present? && params[:filter] != "all"
       @posts = @posts.where(post_type: params[:filter])
     end
+
+    # === ソート（デフォルト：新着順） ===
+    @posts = case params[:sort]
+             when "old"
+               @posts.order(created_at: :asc)
+             else
+               @posts.order(created_at: :desc)
+             end
+
+    # === ページネーション（1ページ10件） ===
+    @posts = @posts.page(params[:page]).per(10)
   end
 
-  def show
-    # @postはbefore_actionで設定済み
-  end
+  def show; end
 
   def new
     @post = Post.new
@@ -25,7 +36,7 @@ class PostsController < ApplicationController
     if @post.save
       respond_to do |format|
         format.json { render json: { success: true, post_id: @post.id }, status: :created }
-        format.html { redirect_to @post, notice: '投稿が完了しました' }
+        format.html { redirect_to @post, notice: "投稿が完了しました" }
       end
     else
       respond_to do |format|
@@ -35,13 +46,11 @@ class PostsController < ApplicationController
     end
   end
 
-  def edit
-    # @postはbefore_actionで設定済み
-  end
+  def edit; end
 
   def update
     if @post.update(post_params)
-      redirect_to @post, notice: '投稿を更新しました'
+      redirect_to @post, notice: "投稿を更新しました"
     else
       render :edit, status: :unprocessable_entity
     end
@@ -49,7 +58,7 @@ class PostsController < ApplicationController
 
   def destroy
     @post.destroy
-    redirect_to posts_path, notice: '投稿を削除しました'
+    redirect_to posts_path, notice: "投稿を削除しました"
   end
 
   private
@@ -60,11 +69,11 @@ class PostsController < ApplicationController
 
   def authorize_user!
     unless @post.user == current_user
-      redirect_to posts_path, alert: '権限がありません'
+      redirect_to posts_path, alert: "権限がありません"
     end
   end
 
   def post_params
-    params.require(:post).permit(:body, :post_type, :opinion_needed, :is_anonymous)
+    params.require(:post).permit(:title, :body, :post_type, :opinion_needed, :is_anonymous)
   end
 end
