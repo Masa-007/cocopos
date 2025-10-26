@@ -6,7 +6,7 @@
 @import "posts.css";
 @import "post_form.css";
 @import "loading.css";
-
+@import "post_detail.css";
 
 @tailwind base;
 @tailwind components;

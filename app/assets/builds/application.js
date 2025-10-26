@@ -6183,7 +6183,82 @@ function updateSeason() {
   console.log(`\u{1F338} Petals regenerated for: ${season}`);
 }
 
-// app/javascript/post_form.js
+// app/javascript/posts/posts.js
+document.addEventListener("turbo:render", () => {
+  console.log("\u{1F338} posts.js reloaded");
+  const filterButtons = document.querySelectorAll(".filter-btn");
+  const postCards = Array.from(document.querySelectorAll(".post-card"));
+  const postsGrid = document.getElementById("posts-grid");
+  if (filterButtons.length && postCards.length && postsGrid) {
+    filterButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        filterButtons.forEach((btn) => btn.classList.remove("active"));
+        button.classList.add("active");
+        const filter = button.dataset.filter;
+        postCards.forEach((card) => {
+          const match = filter === "all" || card.dataset.category === filter;
+          card.style.display = match ? "block" : "none";
+          card.style.animation = "none";
+          if (match) {
+            setTimeout(() => {
+              card.style.animation = "fadeIn 0.5s ease-out";
+            }, 10);
+          }
+        });
+      });
+    });
+  }
+  const sortSelect = document.querySelector("#sortSelect");
+  if (sortSelect && postsGrid) {
+    sortSelect.addEventListener("change", () => {
+      const selected = sortSelect.value;
+      const sortedCards = [...postCards];
+      sortedCards.sort((a, b) => {
+        const dateA = new Date(a.dataset.createdAt);
+        const dateB = new Date(b.dataset.createdAt);
+        return selected === "\u53E4\u3044\u9806" ? dateA - dateB : dateB - dateA;
+      });
+      postsGrid.innerHTML = "";
+      sortedCards.forEach((card) => postsGrid.appendChild(card));
+      sortedCards.forEach((card) => {
+        card.style.animation = "none";
+        setTimeout(() => card.style.animation = "fadeIn 0.5s ease-out", 10);
+      });
+    });
+  }
+  postCards.forEach((card) => {
+    card.addEventListener("click", (e) => {
+      if (e.target.closest(".action-icon")) return;
+      console.log(`\u6295\u7A3F\u8A73\u7D30\u30DA\u30FC\u30B8\u3078\u9077\u79FB\u4E88\u5B9A: ${card.dataset.id}`);
+    });
+  });
+  const flowerButtons = document.querySelectorAll(".post-actions .action-icon");
+  const flowerStages = ["\u{1F331}", "\u{1F33F}", "\u{1F337}", "\u{1F339}", "\u{1F338}", "\u{1F33A}", "\u{1F490}"];
+  flowerButtons.forEach((button) => {
+    if (button.textContent.includes("\u{1F4AC}")) return;
+    let clickCount = 0;
+    let stage = 0;
+    const maxStage = flowerStages.length - 1;
+    button.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      clickCount++;
+      if (clickCount % 5 === 0 && stage < maxStage) {
+        stage++;
+        button.textContent = flowerStages[stage];
+      }
+      button.style.transition = "transform 0.3s ease, text-shadow 0.3s ease";
+      button.style.transform = "scale(1.5) rotate(5deg)";
+      button.style.textShadow = "0 0 15px rgba(255, 182, 193, 0.9)";
+      setTimeout(() => {
+        button.style.transform = "scale(1)";
+        button.style.textShadow = "none";
+      }, 300);
+    });
+  });
+});
+
+// app/javascript/posts/post_form.js
 document.addEventListener("turbo:load", () => {
   const postForm = document.getElementById("postForm");
   if (!postForm) return;
@@ -6251,76 +6326,55 @@ document.addEventListener("turbo:load", () => {
   });
 });
 
-// app/javascript/posts.js
+// app/javascript/posts/post_edit.js
 document.addEventListener("turbo:load", () => {
-  document.querySelectorAll(".filter-btn, .flower-btn, #sortSelect").forEach((el) => el.replaceWith(el.cloneNode(true)));
-  const filterButtons = document.querySelectorAll(".filter-btn");
-  const postCards = Array.from(document.querySelectorAll(".post-card"));
-  const postsGrid = document.getElementById("posts-grid");
-  if (filterButtons.length && postCards.length && postsGrid) {
-    filterButtons.forEach((button) => {
-      button.addEventListener("click", () => {
-        filterButtons.forEach((btn) => btn.classList.remove("active"));
-        button.classList.add("active");
-        const filter = button.dataset.filter;
-        postCards.forEach((card) => {
-          const match = filter === "all" || card.dataset.category === filter;
-          card.style.display = match ? "block" : "none";
-          card.style.animation = "none";
-          if (match) {
-            setTimeout(() => {
-              card.style.animation = "fadeIn 0.5s ease-out";
-            }, 10);
-          }
-        });
-      });
+  const textarea = document.querySelector('textarea[name="post[body]"]');
+  const charCount = document.getElementById("charCount");
+  if (textarea && charCount) {
+    charCount.textContent = textarea.value.length;
+    textarea.addEventListener("input", () => {
+      charCount.textContent = textarea.value.length;
     });
   }
-  const sortSelect = document.querySelector("#sortSelect");
-  if (sortSelect && postsGrid) {
-    sortSelect.addEventListener("change", () => {
-      const selected = sortSelect.value;
-      const sortedCards = [...postCards];
-      sortedCards.sort((a, b) => {
-        const dateA = new Date(a.dataset.createdAt);
-        const dateB = new Date(b.dataset.createdAt);
-        return selected === "\u53E4\u3044\u9806" ? dateA - dateB : dateB - dateA;
+  const opinionRadios = document.querySelectorAll(".opinion-radio");
+  opinionRadios.forEach((radio) => {
+    radio.addEventListener("change", () => {
+      document.querySelectorAll(".opinion-card .opinion-content").forEach((content) => {
+        content.classList.remove("border-orange-400", "bg-orange-50");
+        content.classList.add("border-gray-200");
       });
-      postsGrid.innerHTML = "";
-      sortedCards.forEach((card) => postsGrid.appendChild(card));
-      sortedCards.forEach((card) => {
-        card.style.animation = "none";
-        setTimeout(() => card.style.animation = "fadeIn 0.5s ease-out", 10);
-      });
-    });
-  }
-  postCards.forEach((card) => {
-    card.addEventListener("click", (e) => {
-      if (e.target.closest(".action-icon")) return;
-      console.log(`\u6295\u7A3F\u8A73\u7D30\u30DA\u30FC\u30B8\u3078\u9077\u79FB\u4E88\u5B9A: ${card.dataset.id}`);
+      radio.parentElement.querySelector(".opinion-content").classList.remove("border-gray-200");
+      radio.parentElement.querySelector(".opinion-content").classList.add("border-orange-400", "bg-orange-50");
     });
   });
-  const flowerButtons = document.querySelectorAll(".post-actions .action-icon");
-  const flowerStages = ["\u{1F331}", "\u{1F33F}", "\u{1F337}", "\u{1F339}", "\u{1F338}", "\u{1F33A}", "\u{1F490}"];
-  flowerButtons.forEach((button) => {
-    if (button.textContent.includes("\u{1F4AC}")) return;
-    let clickCount = 0;
-    let stage = 0;
-    let maxStage = flowerStages.length - 1;
-    button.addEventListener("click", (e) => {
-      e.stopPropagation();
-      clickCount++;
-      if (clickCount % 5 === 0 && stage < maxStage) {
-        stage++;
-        button.textContent = flowerStages[stage];
-      }
-      button.style.transition = "transform 0.3s ease, text-shadow 0.3s ease";
-      button.style.transform = "scale(1.5) rotate(5deg)";
-      button.style.textShadow = "0 0 15px rgba(255, 182, 193, 0.9)";
-      setTimeout(() => {
-        button.style.transform = "scale(1)";
-        button.style.textShadow = "none";
-      }, 300);
+});
+
+// app/javascript/posts/placeholder_switch.js
+document.addEventListener("turbo:load", () => {
+  console.log("\u270F\uFE0F placeholder_switch loaded");
+  const postBody = document.getElementById("post_body");
+  const postTitle = document.getElementById("post_title");
+  const typeRadios = document.querySelectorAll(".post-type-radio");
+  if (!typeRadios.length || !postBody || !postTitle) return;
+  const placeholders = {
+    future: {
+      title: "\u4F8B\uFF1A\u6765\u5E74\u3053\u305D\u306F\u8CC7\u683C\u3092\u53D6\u3063\u3066\u65B0\u3057\u3044\u4ED5\u4E8B\u306B\u6311\u6226\u3057\u305F\u3044\uFF01",
+      body: "\u4F8B\uFF1A\u4ECA\u5E74\u306F\u4F55\u304B\u3092\u5909\u3048\u305F\u3044\u3002\u81EA\u5206\u306E\u529B\u3092\u8A66\u3057\u305F\u3044\u3002\u305D\u3093\u306A\u60F3\u3044\u3092\u66F8\u3044\u3066\u304F\u3060\u3055\u3044\u3002"
+    },
+    organize: {
+      title: "\u4F8B\uFF1A\u6700\u8FD1\u305A\u3063\u3068\u6C17\u306B\u306A\u3063\u3066\u3044\u308B\u3053\u3068\u304C\u3042\u308B",
+      body: "\u4F8B\uFF1A\u3042\u306E\u65E5\u306E\u8A00\u8449\u304C\u307E\u3060\u5FC3\u306B\u6B8B\u3063\u3066\u3044\u308B\u3002\u3069\u3046\u53D7\u3051\u6B62\u3081\u308C\u3070\u3044\u3044\u306E\u304B\u5206\u304B\u3089\u306A\u3044\u2026\u3002"
+    },
+    thanks: {
+      title: "\u4F8B\uFF1A\u5BB6\u65CF\u306B\u4F1D\u3048\u305F\u3044\u611F\u8B1D\u306E\u6C17\u6301\u3061",
+      body: "\u4F8B\uFF1A\u3044\u3064\u3082\u652F\u3048\u3066\u304F\u308C\u308B\u4EBA\u3078\u3001\u3042\u308A\u304C\u3068\u3046\u3002\u5C0F\u3055\u306A\u3053\u3068\u3067\u3082\u69CB\u3044\u307E\u305B\u3093\u3002"
+    }
+  };
+  typeRadios.forEach((radio) => {
+    radio.addEventListener("change", () => {
+      const type = radio.value;
+      postTitle.placeholder = placeholders[type]?.title || "";
+      postBody.placeholder = placeholders[type]?.body || "";
     });
   });
 });

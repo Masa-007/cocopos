@@ -13,7 +13,7 @@
         
         <!-- 投稿タイプ選択 -->
         <div class="mb-8">
-          <label class="block text-lg font-bold text-gray-800 mb-4">📦 投函する箱を選んでください</label>
+          <label class="block text-lg font-bold text-gray-800 mb-4">📮 投函する箱を選んでください</label>
           <div class="grid md:grid-cols-3 gap-4">
             
             <!-- 未来宣言箱 -->
@@ -32,7 +32,7 @@
               <div class="post-type-content">
                 <div class="text-5xl mb-3">🌈</div>
                 <h3 class="text-xl font-bold mb-2">心の整理箱</h3>
-                <p class="text-sm text-gray-600">気持ちを吐き出す</p>
+                <p class="text-sm text-gray-600">気持ちを書き出す</p>
               </div>
             </label>
 
@@ -66,7 +66,7 @@
               <div class="opinion-content p-4 border-2 border-gray-200 rounded-xl text-center transition-all hover:border-orange-400">
                 <span class="text-3xl block mb-2">💭</span>
                 <span class="font-bold text-gray-800">意見不要</span>
-                <p class="text-sm text-gray-600 mt-1">ただ吐き出したいだけ</p>
+                <p class="text-sm text-gray-600 mt-1">ただ書き出したいだけ</p>
               </div>
             </label>
           </div>
@@ -87,6 +87,7 @@
         <div class="mb-8">
           <label class="block text-lg font-bold text-gray-800 mb-4">🖋 タイトル</label>
           <%= f.text_field :title,
+              id: "post_title",
               placeholder: "例：来年こそは〇〇を達成したい！",
               class: "w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-orange-400 focus:outline-none",
               maxlength: 100,
@@ -103,6 +104,7 @@
               rows: 8, 
               placeholder: "ここにあなたの想いを書いてください。", 
               class: "w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-orange-400 focus:outline-none resize-none",
+              id: "post_body",
               maxlength: 1000,
               required: true %>
           <div class="text-right text-sm text-gray-500 mt-2">
@@ -119,54 +121,7 @@
 
       <% end %>
     </div>
-
   </div>
 </main>
 
-<!-- ローディング画面 -->
-<div id="loadingScreen" class="hidden fixed inset-0 flex flex-col items-center justify-center bg-[rgba(255,245,240,0.9)] backdrop-blur-md z-50">
-  <div class="relative w-48 h-64 flex flex-col items-center justify-end">
-    <!-- 手紙 -->
-    <div class="letter absolute bottom-32"></div>
-
-    <!-- ポスト本体 -->
-    <div class="postbox relative w-40 h-48 bg-gradient-to-b from-rose-400 to-rose-500 rounded-t-[60px] shadow-xl flex flex-col items-center">
-      <!-- 投函口 -->
-      <div class="post-slot w-28 h-6 bg-[#222] rounded-md mt-4 shadow-inner"></div>
-      <!-- 装飾ライン -->
-      <div class="w-24 h-1 bg-[#fff6f4] opacity-30 mt-2 rounded-full"></div>
-      <!-- 本体下 -->
-      <div class="flex-1"></div>
-    </div>
-  </div>
-  <p class="mt-10 text-lg font-semibold text-gray-700 animate-pulse">投函中...</p>
-</div>
-
-
-
-<!-- 完了画面 -->
-<div id="completionScreen" class="hidden fixed inset-0 flex flex-col items-center justify-center bg-[rgba(255,240,235,0.95)] backdrop-blur-lg z-50">
-  <div class="text-6xl mb-6 animate-bounce">📮</div>
-  <h1 class="text-4xl font-bold text-gray-800 mb-4">投函が完了しました</h1>
-  <p class="text-xl text-gray-600 mb-12">あなたの心が引き続き穏やかでありますように。</p>
-
-  <div class="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto px-6">
-    <%= link_to posts_path, class: "action-card no-underline" do %>
-      <div class="action-icon">📮</div>
-      <h3 class="text-xl font-bold text-gray-800 mb-2">投稿一覧に戻る</h3>
-      <p class="text-gray-600 text-sm">みんなの投稿を見る</p>
-    <% end %>
-
-    <%= link_to mypage_path, class: "action-card no-underline" do %>
-      <div class="action-icon">👤</div>
-      <h3 class="text-xl font-bold text-gray-800 mb-2">マイページを見る</h3>
-      <p class="text-gray-600 text-sm">あなたの記録を確認</p>
-    <% end %>
-
-    <a href="#" class="action-card no-underline" onclick="shareOnX(event)">
-      <div class="action-icon">🐦</div>
-      <h3 class="text-xl font-bold text-gray-800 mb-2">Xで共有する</h3>
-      <p class="text-gray-600 text-sm">投稿を共有する</p>
-    </a>
-  </div>
-</div>
+<%= javascript_import_module_tag "posts/placeholder_switch" %>
