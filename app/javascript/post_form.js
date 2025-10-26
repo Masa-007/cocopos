@@ -1,23 +1,18 @@
 document.addEventListener("turbo:load", () => {
   const postForm = document.getElementById("postForm");
-
   if (!postForm) return;
 
-  // 投稿タイプ選択で意見セクション表示切替
+  // === 投稿タイプ切替 ===
   const postTypeRadios = document.querySelectorAll(".post-type-radio");
   const opinionSection = document.getElementById("opinionSection");
 
   postTypeRadios.forEach((radio) => {
     radio.addEventListener("change", (e) => {
-      if (e.target.value === "organize") {
-        opinionSection.classList.remove("hidden");
-      } else {
-        opinionSection.classList.add("hidden");
-      }
+      opinionSection.classList.toggle("hidden", e.target.value !== "organize");
     });
   });
 
-  // 文字数カウント
+  // === 文字数カウント ===
   const bodyTextarea = postForm.querySelector('textarea[name="post[body]"]');
   const charCount = document.getElementById("charCount");
 
@@ -27,7 +22,7 @@ document.addEventListener("turbo:load", () => {
     });
   }
 
-  // フォーム送信
+  // === 投稿送信処理 ===
   postForm.addEventListener("submit", (e) => {
     e.preventDefault();
 
@@ -46,12 +41,12 @@ document.addEventListener("turbo:load", () => {
       return;
     }
 
-    // ローディング表示
     const loadingScreen = document.getElementById("loadingScreen");
     loadingScreen.classList.remove("hidden");
 
     const formData = new FormData(postForm);
 
+    // 投稿処理（演出付き）
     fetch(postForm.action, {
       method: "POST",
       body: formData,
@@ -62,22 +57,36 @@ document.addEventListener("turbo:load", () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        loadingScreen.classList.add("hidden");
+        // 3秒ローディング演出
+        setTimeout(() => {
+          loadingScreen.classList.add("hidden");
 
-        if (data.success) {
-          document.getElementById("completionScreen").classList.add("active");
-        } else {
-          alert("投稿に失敗しました: " + data.errors.join(", "));
-        }
+          if (data.success) {
+            const completion = document.getElementById("completionScreen");
+            -completion.classList.add("active");
+            +completion.classList.remove("hidden");
+
+            const letter = completion.querySelector(".letter");
+            if (letter) {
+              letter.classList.add("sent");
+              setTimeout(() => letter.classList.add("fade-out"), 1000);
+            }
+          } else {
+            alert("投稿に失敗しました: " + data.errors.join(", "));
+          }
+        }, 3000);
       })
       .catch((error) => {
-        loadingScreen.classList.add("hidden");
-        alert("エラーが発生しました");
-        console.error("Error:", error);
+        setTimeout(() => {
+          loadingScreen.classList.add("hidden");
+          alert("エラーが発生しました");
+          console.error("Error:", error);
+        }, 3000);
       });
   });
 });
 
+// === X（旧Twitter）共有 ===
 function shareOnX(event) {
   event.preventDefault();
   const text = "投稿しました📮 #cocopos";

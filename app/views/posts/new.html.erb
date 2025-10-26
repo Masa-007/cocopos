@@ -124,41 +124,49 @@
 </main>
 
 <!-- ローディング画面 -->
-<div id="loadingScreen" class="loading-screen hidden">
-  <div class="postbox-animation">
-    <div class="letter"></div>
-    <div class="postbox">
-      <div class="postbox-slot"></div>
+<div id="loadingScreen" class="hidden fixed inset-0 flex flex-col items-center justify-center bg-[rgba(255,245,240,0.9)] backdrop-blur-md z-50">
+  <div class="relative w-48 h-64 flex flex-col items-center justify-end">
+    <!-- 手紙 -->
+    <div class="letter absolute bottom-32"></div>
+
+    <!-- ポスト本体 -->
+    <div class="postbox relative w-40 h-48 bg-gradient-to-b from-rose-400 to-rose-500 rounded-t-[60px] shadow-xl flex flex-col items-center">
+      <!-- 投函口 -->
+      <div class="post-slot w-28 h-6 bg-[#222] rounded-md mt-4 shadow-inner"></div>
+      <!-- 装飾ライン -->
+      <div class="w-24 h-1 bg-[#fff6f4] opacity-30 mt-2 rounded-full"></div>
+      <!-- 本体下 -->
+      <div class="flex-1"></div>
     </div>
-    <div class="loading-text">投函中...</div>
   </div>
+  <p class="mt-10 text-lg font-semibold text-gray-700 animate-pulse">投函中...</p>
 </div>
 
+
+
 <!-- 完了画面 -->
-<div id="completionScreen" class="completion-screen">
-  <div class="completion-content">
-    <div class="checkmark"></div>
-    <h1 class="text-4xl font-bold text-gray-800 mb-4">投函が完了しました</h1>
-    <p class="text-xl text-gray-600 mb-12">あなたの心が引き続き穏やかでありますように。</p>
+<div id="completionScreen" class="hidden fixed inset-0 flex flex-col items-center justify-center bg-[rgba(255,240,235,0.95)] backdrop-blur-lg z-50">
+  <div class="text-6xl mb-6 animate-bounce">📮</div>
+  <h1 class="text-4xl font-bold text-gray-800 mb-4">投函が完了しました</h1>
+  <p class="text-xl text-gray-600 mb-12">あなたの心が引き続き穏やかでありますように。</p>
 
-    <div class="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto px-6">
-      <%= link_to posts_path, class: "action-card no-underline" do %>
-        <div class="action-icon">📮</div>
-        <h3 class="text-xl font-bold text-gray-800 mb-2">投稿一覧に戻る</h3>
-        <p class="text-gray-600 text-sm">みんなの投稿を見る</p>
-      <% end %>
+  <div class="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto px-6">
+    <%= link_to posts_path, class: "action-card no-underline" do %>
+      <div class="action-icon">📮</div>
+      <h3 class="text-xl font-bold text-gray-800 mb-2">投稿一覧に戻る</h3>
+      <p class="text-gray-600 text-sm">みんなの投稿を見る</p>
+    <% end %>
 
-      <%= link_to mypage_path, class: "action-card no-underline" do %>
-        <div class="action-icon">👤</div>
-        <h3 class="text-xl font-bold text-gray-800 mb-2">マイページを見る</h3>
-        <p class="text-gray-600 text-sm">あなたの記録を確認</p>
-      <% end %>
+    <%= link_to mypage_path, class: "action-card no-underline" do %>
+      <div class="action-icon">👤</div>
+      <h3 class="text-xl font-bold text-gray-800 mb-2">マイページを見る</h3>
+      <p class="text-gray-600 text-sm">あなたの記録を確認</p>
+    <% end %>
 
-      <a href="#" class="action-card no-underline" onclick="shareOnX(event)">
-        <div class="action-icon">🐦</div>
-        <h3 class="text-xl font-bold text-gray-800 mb-2">Xで共有する</h3>
-        <p class="text-gray-600 text-sm">投稿を共有する</p>
-      </a>
-    </div>
+    <a href="#" class="action-card no-underline" onclick="shareOnX(event)">
+      <div class="action-icon">🐦</div>
+      <h3 class="text-xl font-bold text-gray-800 mb-2">Xで共有する</h3>
+      <p class="text-gray-600 text-sm">投稿を共有する</p>
+    </a>
   </div>
 </div>
