@@ -5,6 +5,8 @@
 @import "calendar.css";
 @import "posts.css";
 @import "post_form.css";
+@import "loading.css";
+
 
 @tailwind base;
 @tailwind components;

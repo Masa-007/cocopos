@@ -6191,11 +6191,7 @@ document.addEventListener("turbo:load", () => {
   const opinionSection = document.getElementById("opinionSection");
   postTypeRadios.forEach((radio) => {
     radio.addEventListener("change", (e) => {
-      if (e.target.value === "organize") {
-        opinionSection.classList.remove("hidden");
-      } else {
-        opinionSection.classList.add("hidden");
-      }
+      opinionSection.classList.toggle("hidden", e.target.value !== "organize");
     });
   });
   const bodyTextarea = postForm.querySelector('textarea[name="post[body]"]');
@@ -6230,16 +6226,27 @@ document.addEventListener("turbo:load", () => {
         Accept: "application/json"
       }
     }).then((response) => response.json()).then((data) => {
-      loadingScreen.classList.add("hidden");
-      if (data.success) {
-        document.getElementById("completionScreen").classList.add("active");
-      } else {
-        alert("\u6295\u7A3F\u306B\u5931\u6557\u3057\u307E\u3057\u305F: " + data.errors.join(", "));
-      }
+      setTimeout(() => {
+        loadingScreen.classList.add("hidden");
+        if (data.success) {
+          const completion = document.getElementById("completionScreen");
+          -completion.classList.add("active");
+          +completion.classList.remove("hidden");
+          const letter = completion.querySelector(".letter");
+          if (letter) {
+            letter.classList.add("sent");
+            setTimeout(() => letter.classList.add("fade-out"), 1e3);
+          }
+        } else {
+          alert("\u6295\u7A3F\u306B\u5931\u6557\u3057\u307E\u3057\u305F: " + data.errors.join(", "));
+        }
+      }, 3e3);
     }).catch((error) => {
-      loadingScreen.classList.add("hidden");
-      alert("\u30A8\u30E9\u30FC\u304C\u767A\u751F\u3057\u307E\u3057\u305F");
-      console.error("Error:", error);
+      setTimeout(() => {
+        loadingScreen.classList.add("hidden");
+        alert("\u30A8\u30E9\u30FC\u304C\u767A\u751F\u3057\u307E\u3057\u305F");
+        console.error("Error:", error);
+      }, 3e3);
     });
   });
 });
