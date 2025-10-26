@@ -1,34 +1,46 @@
 <div class="auth-container">
   <div class="auth-card">
-    <h2><%= t('devise.registrations.new.sign_up') %></h2>
+    <h2><%= t('devise.registrations.new.sign_up', default: "新規登録") %></h2>
 
     <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
       <%= render "devise/shared/error_messages", resource: resource %>
 
+      <!-- 名前 -->
       <div class="field">
-        <%= f.label :email, t('devise.registrations.new.email') %><br />
-        <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+        <%= f.label :name, t('activerecord.attributes.user.name', default: "名前") %><br />
+        <%= f.text_field :name, autofocus: true, autocomplete: "name" %>
       </div>
 
+      <!-- メールアドレス -->
       <div class="field">
-        <%= f.label :password, t('devise.registrations.new.password') %>
+        <%= f.label :email, t('devise.registrations.new.email', default: "メールアドレス") %><br />
+        <%= f.email_field :email, autocomplete: "email" %>
+      </div>
+
+      <!-- パスワード -->
+      <div class="field">
+        <%= f.label :password, t('devise.registrations.new.password', default: "パスワード") %>
         <% if @minimum_password_length %>
-          <em><%= t('devise.registrations.new.minimum_password_length', count: @minimum_password_length) %></em>
+          <em class="text-sm text-gray-500">
+            <%= t('devise.registrations.new.minimum_password_length', count: @minimum_password_length, default: "（%{count}文字以上）") %>
+          </em>
         <% end %><br />
         <%= f.password_field :password, autocomplete: "new-password" %>
       </div>
 
+      <!-- パスワード確認 -->
       <div class="field">
-        <%= f.label :password_confirmation, t('devise.registrations.new.password_confirmation') %><br />
+        <%= f.label :password_confirmation, t('devise.registrations.new.password_confirmation', default: "パスワード（確認用）") %><br />
         <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
       </div>
 
-      <div class="actions">
-        <%= f.submit t('devise.registrations.new.sign_up') %>
+      <!-- 登録ボタン -->
+      <div class="actions mt-6">
+        <%= f.submit t('devise.registrations.new.sign_up', default: "登録する"), class: "btn-primary w-full" %>
       </div>
     <% end %>
 
-    <div class="links">
+    <div class="links mt-4 text-center">
       <%= render "devise/shared/links" %>
     </div>
   </div>

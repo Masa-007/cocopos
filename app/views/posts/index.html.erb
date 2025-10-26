@@ -1,0 +1,104 @@
+<main class="flex-grow pt-24 pb-12">
+  <div class="container mx-auto max-w-6xl px-6">
+
+    <!-- ページタイトル -->
+    <div class="text-center mb-8">
+      <h1 class="text-4xl font-bold text-gray-800 mb-2">📮 みんなの投稿一覧</h1>
+      <p class="text-gray-600">心の目安箱に投函された想い</p>
+    </div>
+
+    <!-- フィルター -->
+    <div class="bg-white rounded-2xl shadow-lg p-6 mb-8">
+      <div class="flex flex-wrap items-center justify-between gap-4">
+        <div class="flex items-center gap-3">
+          <span class="text-gray-700 font-bold">絞り込み：</span>
+          <button class="filter-btn active" data-filter="all">すべて</button>
+          <button class="filter-btn" data-filter="future">🌱 未来宣言箱</button>
+          <button class="filter-btn" data-filter="organize">🌈 心の整理箱</button>
+          <button class="filter-btn" data-filter="thanks">💌 感謝箱</button>
+        </div>
+
+        <div>
+          <select id="sortSelect" class="px-4 py-2 border-2 border-gray-200 rounded-lg focus:border-orange-400 focus:outline-none">
+            <option>新着順</option>
+            <option>古い順</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- 投稿グリッド -->
+    <div id="posts-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <% @posts.each do |post| %>
+        <div class="post-card"
+             data-category="<%= post.post_type %>"
+             data-created-at="<%= post.created_at.iso8601 %>">
+
+          <!-- 投稿ヘッダー -->
+          <div class="post-card-header <%= post.post_type %>">
+            <span class="post-type">
+              <% case post.post_type
+                 when 'future' then %>🌱 未来宣言箱
+                 <% when 'organize' then %>🌈 心の整理箱
+                 <% when 'thanks' then %>💌 感謝箱
+                 <% else %>📦 エラー
+                 <% end %>
+            </span>
+            <span class="post-date"><%= l post.created_at, format: :short %></span>
+          </div>
+
+          <!-- 投稿本文 -->
+          <div class="post-card-body">
+            <% if post.title.present? %>
+              <h3 class="post-title text-xl font-bold text-gray-800 mb-3 break-words">
+                <%= h(post.title) %>
+              </h3>
+            <% end %>
+
+            <p class="post-content text-gray-700 leading-relaxed">
+              <%= simple_format(h(post.body)) %>
+            </p>
+          </div>
+
+          <!-- 投稿フッター -->
+          <div class="post-card-footer">
+            <div class="post-meta">
+              <% if post.is_anonymous? %>
+                <span class="post-author">匿名さん</span>
+              <% else %>
+                <span class="post-author"><%= post.user&.name || '名無し' %> さん</span>
+              <% end %>
+
+              <% if post.opinion_needed? %>
+                <span class="comment-status">💬 意見募集中</span>
+              <% end %>
+            </div>
+
+            <div class="post-actions">
+              <% if post.opinion_needed? %>
+                <button class="action-icon comment-btn">💬</button>
+              <% end %>
+              <button class="action-icon flower-btn">🌱</button>
+            </div>
+          </div>
+        </div>
+      <% end %>
+
+      <% if @posts.empty? %>
+        <div class="col-span-3 text-center py-12 text-gray-500">
+          まだ投稿がありません。
+        </div>
+      <% end %>
+    </div>
+
+    <!-- ページネーション -->
+    <% if @posts.respond_to?(:current_page) %>
+      <div class="flex justify-center mt-12">
+        <%= paginate @posts, theme: 'bootstrap-5' %>
+      </div>
+    <% end %>
+
+  </div>
+</main>
+
+<%= javascript_include_tag "posts", "data-turbo-track": "reload", defer: true %>

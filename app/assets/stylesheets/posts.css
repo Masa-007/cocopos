@@ -1,0 +1,227 @@
+/* ===============================
+   投稿一覧ページ
+================================ */
+
+/* フィルターボタン */
+.filter-btn {
+  padding: 8px 20px;
+  background: white;
+  border: 2px solid #e5e7eb;
+  border-radius: 20px;
+  font-weight: 500;
+  color: #666;
+  transition: all 0.3s;
+  cursor: pointer;
+}
+
+.filter-btn:hover {
+  border-color: #ffb3a4;
+  color: #ff9a8e;
+  transform: translateY(-2px);
+}
+
+.filter-btn.active {
+  background: linear-gradient(135deg, #ffb3a4 0%, #ff9a8e 100%);
+  border-color: #ffb3a4;
+  color: white;
+  box-shadow: 0 4px 10px rgba(255, 154, 142, 0.3);
+}
+
+/* ===============================
+   フィルターコンテナ
+================================ */
+.filter-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.filter-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.filter-right {
+  margin-left: auto; /* ✅ 右寄せ */
+}
+
+.filter-select {
+  padding: 8px 16px;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  background: white;
+  color: #555;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.filter-select:hover,
+.filter-select:focus {
+  border-color: #ff9a8e;
+  outline: none;
+}
+
+/* ===============================
+   投稿カード
+================================ */
+.post-card {
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  animation: fadeIn 0.5s ease-out;
+}
+
+.post-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 投稿カードヘッダー */
+.post-card-header {
+  padding: 12px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.post-card-header.future {
+  background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+  color: #047857;
+}
+
+.post-card-header.organize {
+  background: linear-gradient(135deg, #e9d5ff 0%, #d8b4fe 100%);
+  color: #7c3aed;
+}
+
+.post-card-header.thanks {
+  background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%);
+  color: #db2777;
+}
+
+.post-type {
+  font-size: 14px;
+}
+
+.post-date {
+  font-size: 12px;
+  opacity: 0.8;
+}
+
+/* 投稿本文・タイトル */
+.post-card-body {
+  padding: 20px;
+  min-height: 120px;
+}
+
+.post-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 10px;
+  line-height: 1.4;
+}
+
+.post-content {
+  color: #374151;
+  line-height: 1.6;
+  font-size: 15px;
+  word-wrap: break-word;
+}
+
+/* 投稿フッター */
+.post-card-footer {
+  padding: 16px;
+  border-top: 1px solid #f3f4f6;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.post-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.post-author {
+  font-size: 13px;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.comment-status {
+  font-size: 12px;
+  padding: 2px 8px;
+  border-radius: 12px;
+  background: #dbeafe;
+  color: #1e40af;
+  display: inline-block;
+}
+
+/* アクションボタン */
+.post-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.action-icon {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 12px;
+  background: #f9fafb;
+  border: none;
+  border-radius: 12px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.action-icon:hover {
+  background: #ffb3a4;
+  color: white;
+  transform: scale(1.1);
+}
+
+.action-icon span {
+  font-weight: bold;
+  font-size: 13px;
+}
+
+/* ===============================
+   アニメーション
+================================ */
+.post-card.filter-hidden {
+  animation: fadeOut 0.3s ease-out forwards;
+}
+
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+    transform: scale(0.9);
+    height: 0;
+    margin: 0;
+    padding: 0;
+  }
+}
