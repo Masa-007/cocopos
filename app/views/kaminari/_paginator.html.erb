@@ -1,0 +1,23 @@
+<%= paginator.render do %>
+  <nav class="flex justify-center mt-8">
+    <ul class="flex items-center space-x-2">
+      <% each_page do |page| %>
+        <% if page.left_outer? || page.right_outer? || page.inside_window? %>
+          <% if page.current? %>
+            <li class="px-3 py-1 bg-orange-400 text-white rounded-full font-bold">
+              <%= page.number %>
+            </li>
+          <% else %>
+            <li>
+              <%= link_to page.number,
+                          url_for(params.permit!.merge(page: page.number)),
+                          class: "px-3 py-1 bg-white border border-gray-300 rounded-full hover:bg-orange-100" %>
+            </li>
+          <% end %>
+        <% elsif !page.was_truncated? %>
+          <li class="px-3 py-1 text-gray-400">...</li>
+        <% end %>
+      <% end %>
+    </ul>
+  </nav>
+<% end %>

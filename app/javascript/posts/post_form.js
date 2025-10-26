@@ -2,10 +2,14 @@ document.addEventListener("turbo:load", () => {
   const postForm = document.getElementById("postForm");
   if (!postForm) return;
 
-  // === 投稿タイプ切替 ===
   const postTypeRadios = document.querySelectorAll(".post-type-radio");
   const opinionSection = document.getElementById("opinionSection");
+  const bodyTextarea = postForm.querySelector("#post_body");
+  const charCount = document.getElementById("charCount");
+  const loadingScreen = document.getElementById("loadingScreen");
+  const completionScreen = document.getElementById("completionScreen");
 
+  // === 投稿タイプ切替 ===
   postTypeRadios.forEach((radio) => {
     radio.addEventListener("change", (e) => {
       opinionSection.classList.toggle("hidden", e.target.value !== "organize");
@@ -13,86 +17,62 @@ document.addEventListener("turbo:load", () => {
   });
 
   // === 文字数カウント ===
-  const bodyTextarea = postForm.querySelector('textarea[name="post[body]"]');
-  const charCount = document.getElementById("charCount");
-
   if (bodyTextarea && charCount) {
     bodyTextarea.addEventListener("input", () => {
       charCount.textContent = bodyTextarea.value.length;
     });
   }
 
-  // === 投稿送信処理 ===
-  postForm.addEventListener("submit", (e) => {
+  // === 投函処理 ===
+  postForm.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    const postType = postForm.querySelector(
-      'input[name="post[post_type]"]:checked'
-    );
-    const body = bodyTextarea.value.trim();
-
-    if (!postType) {
-      alert("投函する箱を選択してください");
-      return;
-    }
-
-    if (!body) {
-      alert("本文を入力してください");
-      return;
-    }
-
-    const loadingScreen = document.getElementById("loadingScreen");
-    loadingScreen.classList.remove("hidden");
-
     const formData = new FormData(postForm);
+    const postType = formData.get("post[post_type]");
+    const body = formData.get("post[body]")?.trim();
 
-    // 投稿処理（演出付き）
-    fetch(postForm.action, {
-      method: "POST",
-      body: formData,
-      headers: {
-        "X-CSRF-Token": document.querySelector('[name="csrf-token"]').content,
-        Accept: "application/json",
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        // 3秒ローディング演出
-        setTimeout(() => {
-          loadingScreen.classList.add("hidden");
+    if (!postType) return alert("投函する箱を選択してください");
+    if (!body) return alert("本文を入力してください");
 
-          if (data.success) {
-            const completion = document.getElementById("completionScreen");
-            -completion.classList.add("active");
-            +completion.classList.remove("hidden");
+    // 🎬 ローディング画面を表示
+    loadingScreen.classList.add("active");
 
-            const letter = completion.querySelector(".letter");
-            if (letter) {
-              letter.classList.add("sent");
-              setTimeout(() => letter.classList.add("fade-out"), 1000);
-            }
-          } else {
-            alert("投稿に失敗しました: " + data.errors.join(", "));
-          }
-        }, 3000);
-      })
-      .catch((error) => {
-        setTimeout(() => {
-          loadingScreen.classList.add("hidden");
-          alert("エラーが発生しました");
-          console.error("Error:", error);
-        }, 3000);
+    // 💌 手紙アニメーションを再起動（何度でも動くように）
+    const letter = loadingScreen.querySelector(".letter");
+    if (letter) {
+      letter.style.animation = "none";
+      void letter.offsetWidth; // 強制リフロー
+      letter.style.animation = "letterInsert 4.5s ease-in-out forwards";
+    }
+
+    try {
+      const response = await fetch(postForm.action, {
+        method: "POST",
+        body: formData,
+        headers: { Accept: "application/json" },
       });
+
+      if (!response.ok) throw new Error("サーバーエラー");
+
+      // 🎬 投函中アニメーションを5秒間見せる
+      setTimeout(() => {
+        loadingScreen.classList.remove("active");
+        completionScreen.classList.add("active");
+      }, 5000);
+    } catch (err) {
+      loadingScreen.classList.remove("active");
+      alert("投稿に失敗しました。");
+    }
   });
 });
 
 // === X（旧Twitter）共有 ===
-function shareOnX(event) {
+window.shareOnX = (event) => {
   event.preventDefault();
   const text = "投稿しました📮 #cocopos";
   const url = window.location.origin;
-  const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
+  const shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
     text
   )}&url=${encodeURIComponent(url)}`;
-  window.open(twitterUrl, "_blank", "width=550,height=420");
-}
+  window.open(shareUrl, "_blank", "width=550,height=420");
+};
