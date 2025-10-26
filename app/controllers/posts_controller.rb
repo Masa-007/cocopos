@@ -1,5 +1,7 @@
 class PostsController < ApplicationController
-  before_action :authenticate_user!, only: [:new, :create]
+  before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy]
+  before_action :set_post, only: [:show, :edit, :update, :destroy]
+  before_action :authorize_user!, only: [:edit, :update, :destroy]
 
   def index
     @posts = Post.includes(:user).recent
@@ -10,7 +12,7 @@ class PostsController < ApplicationController
   end
 
   def show
-    @post = Post.find(params[:id])
+    # @postはbefore_actionで設定済み
   end
 
   def new
@@ -23,7 +25,7 @@ class PostsController < ApplicationController
     if @post.save
       respond_to do |format|
         format.json { render json: { success: true, post_id: @post.id }, status: :created }
-        format.html { redirect_to posts_path, notice: '投稿が完了しました' }
+        format.html { redirect_to @post, notice: '投稿が完了しました' }
       end
     else
       respond_to do |format|
@@ -33,9 +35,36 @@ class PostsController < ApplicationController
     end
   end
 
+  def edit
+    # @postはbefore_actionで設定済み
+  end
+
+  def update
+    if @post.update(post_params)
+      redirect_to @post, notice: '投稿を更新しました'
+    else
+      render :edit, status: :unprocessable_entity
+    end
+  end
+
+  def destroy
+    @post.destroy
+    redirect_to posts_path, notice: '投稿を削除しました'
+  end
+
   private
 
+  def set_post
+    @post = Post.find(params[:id])
+  end
+
+  def authorize_user!
+    unless @post.user == current_user
+      redirect_to posts_path, alert: '権限がありません'
+    end
+  end
+
   def post_params
-    params.require(:post).permit(:title, :body, :post_type, :opinion_needed, :is_anonymous)
+    params.require(:post).permit(:body, :post_type, :opinion_needed, :is_anonymous)
   end
 end

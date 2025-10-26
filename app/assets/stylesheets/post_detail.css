@@ -1,0 +1,61 @@
+/* 投稿詳細カード */
+.post-detail-card {
+  animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ヘッダー色 */
+.post-header.future {
+  background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+}
+
+.post-header.organize {
+  background: linear-gradient(135deg, #e9d5ff 0%, #d8b4fe 100%);
+}
+
+.post-header.thanks {
+  background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%);
+}
+
+/* 本文 */
+.post-body {
+  min-height: 200px;
+}
+
+.prose {
+  line-height: 1.8;
+}
+
+/* アクションボタン */
+.action-btn:hover {
+  transform: scale(1.1);
+}
+
+/* 投稿一覧のリンク化 */
+.post-card {
+  transition: all 0.3s;
+  text-decoration: none;
+  color: inherit;
+}
+
+.post-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+}
+
+/* 意見カード選択状態 */
+.opinion-radio:checked ~ .opinion-content {
+  border-color: #ff9a8e !important;
+  background: linear-gradient(135deg, #fff0eb 0%, #ffe4db 100%) !important;
+  box-shadow: 0 4px 15px rgba(255, 154, 142, 0.3);
+}

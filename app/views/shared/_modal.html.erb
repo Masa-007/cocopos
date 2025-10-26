@@ -23,13 +23,13 @@
         icon: '🌈', 
         title: '心の整理箱', 
         color: 'purple',
-        description: '「モヤモヤした気持ち」「誰かに聞いてほしいこと」「悩み」を吐き出す箱です。',
+        description: '「モヤモヤした気持ち」「誰かに聞いてほしいこと」「悩み」を書き出す箱です。',
         features: [
           'コメントON：他の人からアドバイスや共感がほしい時に',
-          'コメントOFF：ただ吐き出したいだけの時に',
+          'コメントOFF：ただ書き出したいだけの時に',
           '匿名だから、本音を安心して書けます'
         ],
-        example: '「人間関係で悩んでいる」「将来が不安」「今日のイライラを吐き出したい」'
+        example: '「人間関係で悩んでいる」「将来が不安」「今日のモヤモヤを書き出したい」'
       %>
 
       <%= render 'shared/modal_box', 
@@ -48,7 +48,7 @@
 
     <div class="mt-12 text-center">
       <button class="btn-primary px-10 py-4 text-xl rounded-lg" onclick="document.getElementById('helpModal').classList.remove('active')">
-        箱を選んで投函する →
+        説明を閉じる
       </button>
     </div>
   </div>

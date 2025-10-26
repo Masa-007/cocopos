@@ -1,0 +1,121 @@
+<main class="flex-grow pt-24 pb-12">
+  <div class="container mx-auto max-w-4xl px-6">
+    
+    <!-- ページタイトル -->
+    <div class="text-center mb-8">
+      <h1 class="text-4xl font-bold text-gray-800 mb-2">✏️ 投稿を編集</h1>
+      <p class="text-gray-600">投稿内容を修正できます</p>
+    </div>
+
+    <!-- 編集フォーム -->
+    <div class="bg-white rounded-3xl shadow-lg p-8">
+      <%= form_with model: @post, local: true do |f| %>
+        
+        <!-- 投稿タイプ表示（変更不可） -->
+        <div class="mb-8">
+          <label class="block text-lg font-bold text-gray-800 mb-4">📦 投函した箱</label>
+          <div class="p-6 bg-gray-50 rounded-xl border-2 border-gray-200">
+            <div class="flex items-center gap-4">
+              <span class="text-5xl"><%= @post.post_type_icon %></span>
+              <div>
+                <h3 class="text-2xl font-bold text-gray-800"><%= @post.post_type_name %></h3>
+                <p class="text-sm text-gray-600">※投稿タイプは変更できません</p>
+              </div>
+            </div>
+          </div>
+          <%= f.hidden_field :post_type %>
+        </div>
+
+        <!-- 意見の可否（心の整理箱のみ） -->
+        <% if @post.organize? %>
+          <div class="mb-8">
+            <label class="block text-lg font-bold text-gray-800 mb-4">💬 意見について</label>
+            <div class="flex gap-4">
+              <label class="opinion-card flex-1 cursor-pointer">
+                <%= f.radio_button :opinion_needed, true, class: "hidden opinion-radio" %>
+                <div class="opinion-content p-4 border-2 border-gray-200 rounded-xl text-center transition-all hover:border-orange-400">
+                  <span class="text-3xl block mb-2">💬</span>
+                  <span class="font-bold text-gray-800">意見が欲しい</span>
+                </div>
+              </label>
+              <label class="opinion-card flex-1 cursor-pointer">
+                <%= f.radio_button :opinion_needed, false, class: "hidden opinion-radio" %>
+                <div class="opinion-content p-4 border-2 border-gray-200 rounded-xl text-center transition-all hover:border-orange-400">
+                  <span class="text-3xl block mb-2">💭</span>
+                  <span class="font-bold text-gray-800">意見不要</span>
+                </div>
+              </label>
+            </div>
+          </div>
+        <% end %>
+
+        <!-- 投稿本文 -->
+        <div class="mb-8">
+          <label class="block text-lg font-bold text-gray-800 mb-4">📝 本文</label>
+          <%= f.text_area :body, 
+              rows: 8, 
+              class: "w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-orange-400 focus:outline-none resize-none",
+              maxlength: 1000,
+              required: true %>
+          <div class="text-right text-sm text-gray-500 mt-2">
+            <span id="charCount"><%= @post.body.length %></span> / 1000文字
+          </div>
+        </div>
+
+        <!-- 匿名設定 -->
+        <div class="mb-8">
+          <label class="flex items-center gap-3 cursor-pointer p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition">
+            <%= f.check_box :is_anonymous, class: "w-5 h-5 text-orange-400 rounded focus:ring-orange-400" %>
+            <div>
+              <span class="text-gray-800 font-medium block">匿名で投稿する</span>
+              <span class="text-sm text-gray-600">チェックを外すとユーザー名が表示されます</span>
+            </div>
+          </label>
+        </div>
+
+        <!-- エラーメッセージ -->
+        <% if @post.errors.any? %>
+          <div class="mb-8 p-4 bg-red-50 border-l-4 border-red-500 rounded">
+            <h3 class="font-bold text-red-700 mb-2">エラーが発生しました</h3>
+            <ul class="list-disc list-inside text-red-600">
+              <% @post.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+
+        <!-- ボタン -->
+        <div class="flex justify-center gap-4">
+          <%= link_to "キャンセル", @post, class: "px-8 py-3 bg-gray-200 text-gray-700 font-bold rounded-full hover:bg-gray-300 transition" %>
+          <%= f.submit "更新する", class: "px-12 py-3 bg-gradient-to-r from-blue-400 to-blue-500 text-white text-lg font-bold rounded-full hover:shadow-xl transition transform hover:scale-105 cursor-pointer" %>
+        </div>
+
+      <% end %>
+    </div>
+
+    <!-- 削除ボタン -->
+    <div class="mt-8 text-center">
+      <%= button_to "この投稿を削除する", @post, 
+          method: :delete, 
+          data: { turbo_confirm: "本当に削除しますか？この操作は取り消せません。" },
+          class: "px-8 py-3 bg-red-500 text-white font-bold rounded-full hover:bg-red-600 transition" %>
+    </div>
+
+  </div>
+</main>
+
+<script>
+  // 文字数カウント
+  document.addEventListener('turbo:load', () => {
+    const textarea = document.querySelector('textarea[name="post[body]"]');
+    const charCount = document.getElementById('charCount');
+    
+    if (textarea && charCount) {
+      textarea.addEventListener('input', () => {
+        charCount.textContent = textarea.value.length;
+      });
+    }
+  });
+</script>
+

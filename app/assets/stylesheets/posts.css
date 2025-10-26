@@ -1,7 +1,3 @@
-/* ===============================
-   投稿一覧ページ
-================================ */
-
 /* フィルターボタン */
 .filter-btn {
   padding: 8px 20px;
@@ -45,7 +41,7 @@
 }
 
 .filter-right {
-  margin-left: auto; /* ✅ 右寄せ */
+  margin-left: auto; 
 }
 
 .filter-select {
@@ -188,12 +184,12 @@
 .action-icon {
   display: flex;
   align-items: center;
-  gap: 4px;
-  padding: 6px 12px;
+  gap: 3px;              /* ← 少し詰める */
+  padding: 2px 4px;      /* ← 一回り小さく */
   background: #f9fafb;
   border: none;
-  border-radius: 12px;
-  font-size: 14px;
+  border-radius: 6%;    /* ← 丸みも軽く */
+  font-size: 10px;       /* ← フォントサイズを小さめに */
   cursor: pointer;
   transition: all 0.2s;
 }
@@ -224,4 +220,12 @@
     margin: 0;
     padding: 0;
   }
+}
+
+/* ===============================
+   カウント非表示設定
+================================ */
+.like-count,
+.comment-count {
+  display: none;
 }
