@@ -19,7 +19,6 @@ gem 'kaminari'
 
 # --- フロントエンド / アセット ---
 gem 'foreman', '~> 0.90.0'
-gem 'importmap-rails'     # JS管理
 gem 'propshaft'           # Rails 7.1 デフォルトのアセット管理
 gem 'stimulus-rails'      # Stimulus(JS)
 gem 'turbo-rails'         # Turbo(Hotwire)

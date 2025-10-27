@@ -27,13 +27,14 @@ ActiveRecord::Schema[7.1].define(version: 2025_10_25_162436) do
 
   create_table "posts", force: :cascade do |t|
     t.bigint "user_id", null: false
-    t.text "body"
-    t.boolean "opinion_needed"
+    t.text "body", null: false
+    t.boolean "opinion_needed", default: true
+    t.boolean "is_anonymous", default: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.boolean "is_anonymous"
     t.integer "post_type", default: 0
     t.string "title"
+    t.index ["created_at"], name: "index_posts_on_created_at"
     t.index ["user_id"], name: "index_posts_on_user_id"
   end
 

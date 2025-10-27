@@ -8,7 +8,11 @@
 
     <!-- 投稿フォーム -->
     <div class="bg-white rounded-3xl shadow-lg p-8">
-      <%= form_with model: @post, id: "postForm", local: false do |f| %>
+      <%= form_with model: @post,
+              id: "postForm",
+              local: true,
+              data: { turbo: false },
+              html: { onsubmit: "return false;" } do |f| %>
 
         <!-- 投稿タイプ選択 -->
         <div class="mb-8">
@@ -87,7 +91,6 @@
 
         <!-- ボタン -->
         <div class="flex justify-center gap-4">
-          <%= link_to "キャンセル", :back, class: "px-8 py-3 bg-gray-200 text-gray-700 font-bold rounded-full hover:bg-gray-300 transition" %>
           <%= f.submit "投函する 📮", class: "px-12 py-3 bg-gradient-to-r from-orange-400 to-pink-400 text-white text-lg font-bold rounded-full hover:shadow-xl transition transform hover:scale-105" %>
         </div>
       <% end %>
@@ -99,9 +102,11 @@
 <div id="loadingScreen" class="loading-screen">
   <div class="postbox-animation">
     <div class="letter"></div>
-    <div class="postbox"><div class="postbox-slot"></div></div>
+    <div class="postbox">
+      <div class="postbox-slot"></div>
+    </div>
+    <p class="loading-text">投函中...</p> 
   </div>
-  <p class="loading-text">投函中...</p>
 </div>
 
 <!-- === 完了画面 === -->
@@ -117,7 +122,6 @@
         少し軽くなった心と一緒に、新しい一歩を踏み出していきましょう。
       </p>
     </div>
-
 
     <div class="completion-actions">
       <%= link_to posts_path, class: "action-card" do %>
@@ -137,3 +141,4 @@
     </div>
   </div>
 </div>
+

@@ -11,8 +11,8 @@
   <!-- ✅ Tailwind & Custom CSS -->
   <%= stylesheet_link_tag "application", "data-turbo-track": "reload", rel: "stylesheet" %>
 
-  <!-- ✅ JavaScript（Importmap使用） -->
-  <%= javascript_importmap_tags %>
+  <!-- ✅ JavaScript（esbuild / jsbundling 用） -->
+  <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
 
   <!-- ✅ フラッシュ自動非表示スクリプト -->
   <script>
