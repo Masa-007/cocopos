@@ -13,27 +13,28 @@
       <!-- 絞り込みボタン群 -->
       <div class="filter-buttons">
         <span class="filter-label">絞り込み：</span>
-        <%= link_to "すべて", posts_path(sort: params[:sort]), 
-              data: { turbo_frame: "_top" },
+
+        <%= link_to "すべて", posts_path(sort: params[:sort]),
+              data: { turbo: false },
               class: "filter-btn #{'active' if params[:filter].blank? || params[:filter] == 'all'}" %>
 
-        <%= link_to "🌱 未来宣言箱", posts_path(filter: 'future', sort: params[:sort]), 
-              data: { turbo_frame: "_top" },
+        <%= link_to "🌱 未来宣言箱", posts_path(filter: 'future', sort: params[:sort]),
+              data: { turbo: false },
               class: "filter-btn #{'active' if params[:filter] == 'future'}" %>
 
-        <%= link_to "🌈 心の整理箱", posts_path(filter: 'organize', sort: params[:sort]), 
-              data: { turbo_frame: "_top" },
+        <%= link_to "🌈 心の整理箱", posts_path(filter: 'organize', sort: params[:sort]),
+              data: { turbo: false },
               class: "filter-btn #{'active' if params[:filter] == 'organize'}" %>
 
-        <%= link_to "💌 感謝箱", posts_path(filter: 'thanks', sort: params[:sort]), 
-              data: { turbo_frame: "_top" },
+        <%= link_to "💌 感謝箱", posts_path(filter: 'thanks', sort: params[:sort]),
+              data: { turbo: false },
               class: "filter-btn #{'active' if params[:filter] == 'thanks'}" %>
       </div>
 
       <!-- 並び替えセレクト -->
-      <%= form_with url: posts_path, method: :get, data: { turbo_frame: "_top" }, local: true, class: "filter-right" do |f| %>
+      <%= form_with url: posts_path, method: :get, local: true, class: "filter-right" do |f| %>
         <%= f.hidden_field :filter, value: params[:filter] %>
-        <select name="sort" onchange="this.form.requestSubmit()" class="sort-select">
+        <select name="sort" onchange="this.form.submit()" class="sort-select">
           <option value="new" <%= 'selected' if params[:sort] != 'old' %>>新着順</option>
           <option value="old" <%= 'selected' if params[:sort] == 'old' %>>古い順</option>
         </select>
@@ -45,13 +46,15 @@
       <% @posts.each do |post| %>
         <%= link_to post_path(post),
           class: "post-card block no-underline text-gray-800",
-          data: { turbo_frame: "_top", id: post.id, category: post.post_type } do %>
+          data: { turbo: false, id: post.id, category: post.post_type } do %>
 
+          <!-- 投稿ヘッダー -->
           <div class="post-card-header <%= post.post_type %>">
             <span class="font-semibold"><%= post.post_type_icon %> <%= post.post_type_name %></span>
             <span class="text-sm text-gray-500"><%= l post.created_at, format: :short %></span>
           </div>
 
+          <!-- 投稿本文 -->
           <div class="post-card-body">
             <% if post.title.present? %>
               <h3 class="post-title"><%= h(post.title) %></h3>
@@ -59,6 +62,7 @@
             <p class="post-content"><%= truncate(strip_tags(post.body), length: 100) %></p>
           </div>
 
+          <!-- 投稿フッター -->
           <div class="post-card-footer">
             <span class="post-author"><%= post.display_name %></span>
             <% if post.opinion_needed? %>
@@ -76,6 +80,7 @@
       <% end %>
     </div>
 
+    <!-- === ページネーション === -->
     <% if @posts.respond_to?(:current_page) %>
       <div class="flex justify-center mt-12">
         <%= paginate @posts %>
