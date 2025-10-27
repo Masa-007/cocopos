@@ -16,7 +16,6 @@ gem 'devise'
 
 gem 'kaminari'
 
-
 # --- フロントエンド / アセット ---
 gem 'foreman', '~> 0.90.0'
 gem 'propshaft'           # Rails 7.1 デフォルトのアセット管理

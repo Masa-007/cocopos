@@ -1,6 +1,6 @@
 <main class="flex-grow pt-24 pb-12">
   <div class="container mx-auto max-w-4xl px-6">
-    
+
     <!-- ページタイトル -->
     <div class="text-center mb-8">
       <h1 class="text-4xl font-bold text-gray-800 mb-2">✏️ 投稿を編集</h1>
@@ -10,55 +10,101 @@
     <!-- 編集フォーム -->
     <div class="bg-white rounded-3xl shadow-lg p-8">
       <%= form_with model: @post, local: true do |f| %>
-        
-        <!-- 投稿タイプ表示（変更不可） -->
-        <div class="mb-8">
-          <label class="block text-lg font-bold text-gray-800 mb-4">📦 投函した箱</label>
-          <div class="p-6 bg-gray-50 rounded-xl border-2 border-gray-200">
-            <div class="flex items-center gap-4">
-              <span class="text-5xl"><%= @post.post_type_icon %></span>
-              <div>
-                <h3 class="text-2xl font-bold text-gray-800"><%= @post.post_type_name %></h3>
-                <p class="text-sm text-gray-600">※投稿タイプは変更できません</p>
-              </div>
-            </div>
+
+        <!-- 📮 投稿タイプ選択 -->
+        <div class="mb-8 relative z-10">
+          <label class="block text-lg font-bold text-gray-800 mb-4">📮 投函する箱を選んでください</label>
+          <div class="grid md:grid-cols-3 gap-4">
+            <% { future: ["🌱", "未来宣言箱", "目標や決意を投函"],
+                 organize: ["🌈", "心の整理箱", "気持ちを書き出す"],
+                 thanks: ["💌", "感謝箱", "感謝の気持ちを記録"] }.each do |type, (icon, title, desc)| %>
+              <label class="relative cursor-pointer select-none">
+                <%= f.radio_button :post_type, type,
+                      class: "absolute inset-0 opacity-0 cursor-pointer peer z-20",
+                      checked: @post.post_type == type.to_s,
+                      required: true %>
+                <div class="card-ui text-center border-3 border-gray-200 rounded-xl p-4 transition-all bg-white hover:bg-orange-50">
+                  <div class="text-5xl mb-3"><%= icon %></div>
+                  <h3 class="text-xl font-bold mb-2"><%= title %></h3>
+                  <p class="text-sm text-gray-600"><%= desc %></p>
+                </div>
+              </label>
+            <% end %>
           </div>
-          <%= f.hidden_field :post_type %>
         </div>
 
-        <!-- 意見の可否（心の整理箱のみ） -->
-        <% if @post.organize? %>
-          <div class="mb-8">
-            <label class="block text-lg font-bold text-gray-800 mb-4">💬 意見について</label>
-            <div class="flex gap-4">
-              <label class="opinion-card flex-1 cursor-pointer">
-                <%= f.radio_button :opinion_needed, true, class: "hidden opinion-radio" %>
-                <div class="opinion-content p-4 border-2 border-gray-200 rounded-xl text-center transition-all hover:border-orange-400">
-                  <span class="text-3xl block mb-2">💬</span>
-                  <span class="font-bold text-gray-800">意見が欲しい</span>
-                </div>
-              </label>
-              <label class="opinion-card flex-1 cursor-pointer">
-                <%= f.radio_button :opinion_needed, false, class: "hidden opinion-radio" %>
-                <div class="opinion-content p-4 border-2 border-gray-200 rounded-xl text-center transition-all hover:border-orange-400">
-                  <span class="text-3xl block mb-2">💭</span>
-                  <span class="font-bold text-gray-800">意見不要</span>
-                </div>
-              </label>
-            </div>
-          </div>
-        <% end %>
+        <!-- 🔒 公開設定 -->
+        <div class="mb-8 relative z-10">
+          <label class="block text-lg font-bold text-gray-800 mb-4">🔒 公開設定</label>
+          <div class="flex gap-4">
+            <label class="flex-1 relative cursor-pointer select-none">
+              <%= f.radio_button :is_public, "true",
+                    class: "absolute inset-0 opacity-0 cursor-pointer peer",
+                    checked: @post.is_public? %>
+              <div class="card-ui p-4 border-2 border-gray-200 rounded-xl text-center transition-all bg-white hover:bg-orange-50">
+                🌐<br><strong>みんなに公開</strong>
+                <p class="text-sm text-gray-600 mt-1">投稿一覧に表示されます</p>
+              </div>
+            </label>
 
-        <!-- 投稿本文 -->
+            <label class="flex-1 relative cursor-pointer select-none">
+              <%= f.radio_button :is_public, "false",
+                    class: "absolute inset-0 opacity-0 cursor-pointer peer",
+                    checked: !@post.is_public? %>
+              <div class="card-ui p-4 border-2 border-gray-200 rounded-xl text-center transition-all bg-white hover:bg-orange-50">
+                🔒<br><strong>非公開にする</strong>
+                <p class="text-sm text-gray-600 mt-1">自分だけが見られます</p>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- 💬 コメント設定 -->
+        <div class="mb-8 relative z-10">
+          <label class="block text-lg font-bold text-gray-800 mb-4">💬 コメント設定</label>
+          <div class="flex gap-4">
+            <label class="flex-1 relative cursor-pointer select-none z-10">
+              <%= f.radio_button :comment_allowed, "true",
+                    class: "absolute inset-0 opacity-0 cursor-pointer peer z-20",
+                    checked: @post.comment_allowed? %>
+              <div class="card-ui p-4 border-2 border-gray-200 rounded-xl text-center transition-all bg-white hover:bg-orange-50">
+                💬<br><strong>コメントを許可する</strong>
+                <p class="text-sm text-gray-600 mt-1">他の人が感想や励ましを書けます</p>
+              </div>
+            </label>
+
+            <label class="flex-1 relative cursor-pointer select-none z-10">
+              <%= f.radio_button :comment_allowed, "false",
+                    class: "absolute inset-0 opacity-0 cursor-pointer peer z-20",
+                    checked: !@post.comment_allowed? %>
+              <div class="card-ui p-4 border-2 border-gray-200 rounded-xl text-center transition-all bg-white hover:bg-orange-50">
+                🚫<br><strong>コメント不要</strong>
+                <p class="text-sm text-gray-600 mt-1">静かに残したい投稿に</p>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- 🖋 タイトル -->
+        <div class="mb-8">
+          <label class="block text-lg font-bold text-gray-800 mb-4">🖋 タイトル</label>
+          <%= f.text_field :title,
+              class: "w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-orange-400 focus:outline-none",
+              maxlength: 100,
+              required: true %>
+          <p class="text-right text-sm text-gray-500 mt-2">100文字以内</p>
+        </div>
+
+        <!-- 📝 本文 -->
         <div class="mb-8">
           <label class="block text-lg font-bold text-gray-800 mb-4">📝 本文</label>
-          <%= f.text_area :body, 
-              rows: 8, 
+          <%= f.text_area :body,
+              rows: 8,
               class: "w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-orange-400 focus:outline-none resize-none",
               maxlength: 1000,
               required: true %>
           <div class="text-right text-sm text-gray-500 mt-2">
-            <span id="charCount"><%= @post.body.length %></span> / 1000文字
+            <span id="charCount"><%= @post.body.to_s.length %></span> / 1000文字
           </div>
         </div>
 
@@ -87,8 +133,8 @@
 
         <!-- ボタン -->
         <div class="flex justify-center gap-4">
-          <%= link_to "キャンセル", @post, class: "px-8 py-3 bg-gray-200 text-gray-700 font-bold rounded-full hover:bg-gray-300 transition" %>
           <%= f.submit "更新する", class: "px-12 py-3 bg-gradient-to-r from-blue-400 to-blue-500 text-white text-lg font-bold rounded-full hover:shadow-xl transition transform hover:scale-105 cursor-pointer" %>
+          <%= link_to "キャンセル", @post, class: "px-8 py-3 bg-gray-200 text-gray-700 font-bold rounded-full hover:bg-gray-300 transition" %>
         </div>
 
       <% end %>
@@ -96,8 +142,8 @@
 
     <!-- 削除ボタン -->
     <div class="mt-8 text-center">
-      <%= button_to "この投稿を削除する", @post, 
-          method: :delete, 
+      <%= button_to "この投稿を削除する", @post,
+          method: :delete,
           data: { turbo_confirm: "本当に削除しますか？この操作は取り消せません。" },
           class: "px-8 py-3 bg-red-500 text-white font-bold rounded-full hover:bg-red-600 transition" %>
     </div>
@@ -110,12 +156,10 @@
   document.addEventListener('turbo:load', () => {
     const textarea = document.querySelector('textarea[name="post[body]"]');
     const charCount = document.getElementById('charCount');
-    
     if (textarea && charCount) {
-      textarea.addEventListener('input', () => {
-        charCount.textContent = textarea.value.length;
-      });
+      const update = () => { charCount.textContent = textarea.value.length; };
+      textarea.addEventListener('input', update);
+      update();
     }
   });
 </script>
-

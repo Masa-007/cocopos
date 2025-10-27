@@ -6221,6 +6221,7 @@ var initPostForm = () => {
         },
         body: data
       });
+      if (!response.ok) throw new Error(`HTTP\u30A8\u30E9\u30FC: ${response.status}`);
       const result = await response.json();
       if (result.success) {
         if (letter) {
@@ -6246,8 +6247,57 @@ var initPostForm = () => {
     }
   });
 };
-document.addEventListener("turbo:load", initPostForm);
-document.addEventListener("DOMContentLoaded", initPostForm);
+var initCardRadios = () => {
+  function refreshCardsByName(name) {
+    const group = document.querySelectorAll(
+      `input[type="radio"][name="${name}"]`
+    );
+    group.forEach((input) => {
+      const card = input.closest("label")?.querySelector(".card-ui");
+      if (!card) return;
+      card.classList.toggle("border-orange-400", input.checked);
+      card.classList.toggle("ring-2", input.checked);
+      card.classList.toggle("ring-orange-200", input.checked);
+    });
+  }
+  const radios = document.querySelectorAll('input[type="radio"]');
+  radios.forEach((r) => {
+    r.addEventListener("change", () => refreshCardsByName(r.name));
+  });
+  const names = [...new Set(Array.from(radios).map((r) => r.name))];
+  names.forEach((name) => refreshCardsByName(name));
+};
+var setupVisibilityAlert = () => {
+  const publicRadios = document.querySelectorAll('input[name="post[is_public]"]');
+  const commentRadios = document.querySelectorAll('input[name="post[comment_allowed]"]');
+  if (!publicRadios.length || !commentRadios.length) return;
+  const checkInvalidCombo = () => {
+    const isPublic = document.querySelector('input[name="post[is_public]"]:checked')?.value === "true";
+    const commentAllowed = document.querySelector('input[name="post[comment_allowed]"]:checked')?.value === "true";
+    console.log(`\u516C\u958B=${isPublic} / \u30B3\u30E1\u30F3\u30C8=${commentAllowed}`);
+    if (!isPublic && commentAllowed) {
+      alert("\u26A0\uFE0F \u975E\u516C\u958B\u6295\u7A3F\u3067\u306F\u30B3\u30E1\u30F3\u30C8\u3092\u52DF\u96C6\u3067\u304D\u307E\u305B\u3093\u3002");
+      const commentOff = document.querySelector(
+        'input[name="post[comment_allowed]"][value="false"]'
+      );
+      if (commentOff) {
+        commentOff.checked = true;
+        commentOff.dispatchEvent(new Event("change"));
+      }
+    }
+  };
+  [...publicRadios, ...commentRadios].forEach((r) => {
+    r.removeEventListener("change", checkInvalidCombo);
+    r.addEventListener("change", checkInvalidCombo);
+  });
+  checkInvalidCombo();
+};
+document.addEventListener("turbo:load", () => {
+  initPostForm();
+  initCardRadios();
+  setupVisibilityAlert();
+  console.log("\u26A1 post_form\u95A2\u9023JS reloaded (turbo:load)");
+});
 
 // app/javascript/posts/post_edit.js
 document.addEventListener("turbo:load", () => {

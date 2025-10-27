@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # app/models/post.rb
 class Post < ApplicationRecord
   # === アソシエーション ===
@@ -23,14 +25,14 @@ class Post < ApplicationRecord
 
   # 投稿者名（匿名対応）
   def display_name
-    is_anonymous ? "匿名さん" : user.name
+    is_anonymous ? '匿名さん' : user.name
   end
 
   # 投稿タイプごとの設定をまとめて定義
   POST_TYPE_INFO = {
-    future:  { icon: "🌱", name: "未来宣言箱", color: "green" },
-    organize:{ icon: "🌈", name: "心の整理箱", color: "purple" },
-    thanks:  { icon: "💌", name: "感謝箱", color: "pink" }
+    future: { icon: '🌱', name: '未来宣言箱', color: 'green' },
+    organize: { icon: '🌈', name: '心の整理箱', color: 'purple' },
+    thanks: { icon: '💌', name: '感謝箱', color: 'pink' }
   }.freeze
 
   def post_type_icon

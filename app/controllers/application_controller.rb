@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 class ApplicationController < ActionController::Base
   before_action :configure_permitted_parameters, if: :devise_controller?
-  before_action :set_season 
+  before_action :set_season
 
   protected
 
@@ -17,13 +19,13 @@ class ApplicationController < ActionController::Base
     @season =
       case month
       when 3..5
-        "spring"
+        'spring'
       when 6..8
-        "summer"
+        'summer'
       when 9..11
-        "autumn"
+        'autumn'
       else
-        "winter"
+        'winter'
       end
   end
 end

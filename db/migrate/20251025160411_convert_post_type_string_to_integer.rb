@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ConvertPostTypeStringToInteger < ActiveRecord::Migration[7.1]
   def up
     # 1. 一時カラムを追加

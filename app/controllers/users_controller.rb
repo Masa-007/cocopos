@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 # app/controllers/users_controller.rb
 class UsersController < ApplicationController
   before_action :authenticate_user!
 
   def mypage
     @user = current_user
-    today = Date.today
+    today = Time.zone.today
 
     # ==== 表示年月 ====
     @year  = (params[:year]  || today.year).to_i
@@ -27,10 +29,10 @@ class UsersController < ApplicationController
   # ==== 月から季節を判定 ====
   def season_from_month(month)
     case month
-    when 3..5  then "spring"
-    when 6..8  then "summer"
-    when 9..11 then "autumn"
-    else             "winter"
+    when 3..5  then 'spring'
+    when 6..8  then 'summer'
+    when 9..11 then 'autumn'
+    else 'winter'
     end
   end
 
