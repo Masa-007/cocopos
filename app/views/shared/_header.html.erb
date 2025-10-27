@@ -11,7 +11,7 @@
     <!-- 右：ナビゲーション -->
     <nav class="header-nav">
       <a href="#" id="howToLink" class="nav-button">使い方</a>
-      <%= link_to "みんなの投稿一覧", posts_path, class: "nav-button" %>
+      <%= link_to "みんなの投稿一覧", posts_path, class: "nav-button", data: { turbo: false } %>
 
       <% if user_signed_in? %>
 
