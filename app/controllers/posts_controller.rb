@@ -1,4 +1,3 @@
-# app/controllers/posts_controller.rb
 class PostsController < ApplicationController
   before_action :authenticate_user!, only: %i[new create edit update destroy]
   before_action :set_post, only: %i[show edit update destroy]
@@ -35,13 +34,11 @@ class PostsController < ApplicationController
 
     if @post.save
       respond_to do |format|
-        format.json { render json: { success: true, post_id: @post.id }, status: :created }
-        format.html { redirect_to @post, notice: "投稿が完了しました" }
+        format.json { render json: { success: true }, status: :created }
       end
     else
       respond_to do |format|
         format.json { render json: { success: false, errors: @post.errors.full_messages }, status: :unprocessable_entity }
-        format.html { render :new, status: :unprocessable_entity }
       end
     end
   end
@@ -68,9 +65,7 @@ class PostsController < ApplicationController
   end
 
   def authorize_user!
-    unless @post.user == current_user
-      redirect_to posts_path, alert: "権限がありません"
-    end
+    redirect_to posts_path, alert: "権限がありません" unless @post.user == current_user
   end
 
   def post_params

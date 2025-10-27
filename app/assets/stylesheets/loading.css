@@ -20,27 +20,20 @@
   pointer-events: all;
 }
 
-/* ===============================
-   投函アニメーション全体
-================================ */
 .postbox-animation {
   position: relative;
   width: 420px;
-  height: 540px;
+  height: 380px; 
   display: flex;
-  justify-content: center;
-  align-items: flex-end;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; 
   transform: scale(1.1);
+  overflow: visible;
 }
 
-/* ===============================
-   ポスト本体（新デザイン）
-================================ */
 .postbox {
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
+  position: relative; 
   width: 240px;
   height: 330px;
   background: linear-gradient(180deg, #ff6250 0%, #c02929 95%);
@@ -86,7 +79,7 @@
 ================================ */
 .letter {
   position: absolute;
-  top: -240px;
+  top: -360px;
   left: 50%;
   transform: translateX(-50%);
   width: 160px;
@@ -94,7 +87,7 @@
   background: linear-gradient(135deg, #fff8f6 0%, #ffe4dc 100%);
   border-radius: 8px;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
-  animation: letterInsert 4.5s ease-in-out forwards;
+  animation: letterInsert 2.3s ease-in-out forwards;
   z-index: 10;
 }
 
@@ -112,44 +105,43 @@
 ================================ */
 @keyframes letterInsert {
   0% {
-    top: -240px;
+    top: -360px;
     opacity: 1;
-    transform: translateX(-50%) scale(1);
+    transform: translateX(-50%) scale(1.05);
   }
   30% {
-    top: -100px;
-    transform: translateX(-50%) scale(1.02);
+    top: -180px;
+    transform: translateX(-50%) scale(1.1);
   }
   60% {
-    top: -30px;
+    top: -40px;
     transform: translateX(-50%) scale(1);
   }
   80% {
-    top: 80px;
-    opacity: 0.9;
+    top: 100px;
+    opacity: 0.6; /* ← 早めにフェード開始 */
   }
   100% {
-    top: 260px; /* ポストの中へ消える */
+    top: 260px;
     opacity: 0;
     transform: translateX(-50%) scale(0.9);
   }
 }
 
-/* ===============================
-   ローディングテキスト（投函中...）
-================================ */
+
+/* === 投函中テキスト === */
+
 .loading-text {
   position: absolute;
-  bottom: 40px;
+  bottom: -40px;
   left: 50%;
   transform: translateX(-50%);
   font-size: 22px;
   font-weight: 700;
   color: #3b3b3b;
   letter-spacing: 0.05em;
-  white-space: nowrap;
   animation: pulse 1.5s ease-in-out infinite;
-  z-index: 10000;
+  z-index: 10;
 }
 
 @keyframes pulse {
@@ -348,4 +340,3 @@
   font-size: 26px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
-
