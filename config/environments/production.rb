@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'active_support/core_ext/integer/time'
 
 Rails.application.configure do
@@ -50,6 +51,6 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
 
   # === セキュリティ（Renderのドメインを許可） ===
-  config.hosts << "cocopos.onrender.com"
-  config.hosts << "cocopos-staging.onrender.com"
+  config.hosts << 'cocopos.onrender.com'
+  config.hosts << 'cocopos-staging.onrender.com'
 end

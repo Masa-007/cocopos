@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   root 'static_pages#top'
 
   # 投稿関連（全アクション）
-  resources :posts, only: [:index, :show, :new, :create, :edit, :update, :destroy]
+  resources :posts, only: %i[index show new create edit update destroy]
 
   # マイページ
   get 'mypage', to: 'users#mypage', as: :mypage

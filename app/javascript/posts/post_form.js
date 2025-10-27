@@ -24,11 +24,11 @@ const initPostForm = () => {
       return;
     }
 
+    // ローディング開始
     loading.classList.add("active");
 
     const letter = loading.querySelector(".letter");
     if (letter) {
-      // アニメをリセットして再起動
       letter.style.animation = "none";
       void letter.offsetWidth;
       letter.style.animation = "letterInsert 4.5s ease-in-out forwards";
@@ -45,11 +45,12 @@ const initPostForm = () => {
         body: data,
       });
 
+      if (!response.ok) throw new Error(`HTTPエラー: ${response.status}`);
+
       const result = await response.json();
 
       if (result.success) {
         if (letter) {
-          // 手紙アニメが終わったら完了画面へ
           letter.addEventListener(
             "animationend",
             () => {
@@ -59,7 +60,6 @@ const initPostForm = () => {
             { once: true }
           );
         } else {
-          // 念のため fallback
           loading.classList.remove("active");
           complete.classList.add("active");
         }
@@ -74,4 +74,74 @@ const initPostForm = () => {
   });
 };
 
-document.addEventListener("turbo:load", initPostForm);
+// ===============================
+// カード選択UI制御
+// ===============================
+const initCardRadios = () => {
+  function refreshCardsByName(name) {
+    const group = document.querySelectorAll(
+      `input[type="radio"][name="${name}"]`
+    );
+    group.forEach((input) => {
+      const card = input.closest("label")?.querySelector(".card-ui");
+      if (!card) return;
+      card.classList.toggle("border-orange-400", input.checked);
+      card.classList.toggle("ring-2", input.checked);
+      card.classList.toggle("ring-orange-200", input.checked);
+    });
+  }
+
+  const radios = document.querySelectorAll('input[type="radio"]');
+  radios.forEach((r) => {
+    r.addEventListener("change", () => refreshCardsByName(r.name));
+  });
+
+  const names = [...new Set(Array.from(radios).map((r) => r.name))];
+  names.forEach((name) => refreshCardsByName(name));
+};
+
+// ===============================
+// 非公開 × コメント許可 の組み合わせ防止
+// ===============================
+const setupVisibilityAlert = () => {
+  const publicRadios = document.querySelectorAll('input[name="post[is_public]"]');
+  const commentRadios = document.querySelectorAll('input[name="post[comment_allowed]"]');
+  if (!publicRadios.length || !commentRadios.length) return;
+
+  const checkInvalidCombo = () => {
+    const isPublic =
+      document.querySelector('input[name="post[is_public]"]:checked')?.value === "true";
+    const commentAllowed =
+      document.querySelector('input[name="post[comment_allowed]"]:checked')?.value === "true";
+
+    console.log(`公開=${isPublic} / コメント=${commentAllowed}`);
+    if (!isPublic && commentAllowed) {
+      alert("⚠️ 非公開投稿ではコメントを募集できません。");
+      const commentOff = document.querySelector(
+        'input[name="post[comment_allowed]"][value="false"]'
+      );
+      if (commentOff) {
+        commentOff.checked = true;
+        commentOff.dispatchEvent(new Event("change"));
+      }
+    }
+  };
+
+  [...publicRadios, ...commentRadios].forEach((r) => {
+    r.removeEventListener("change", checkInvalidCombo); // ← 前回分をリセット
+    r.addEventListener("change", checkInvalidCombo);
+  });
+
+  checkInvalidCombo();
+};
+
+// ===============================
+// Turbo対応：毎回呼び出されるように
+// ===============================
+document.addEventListener("turbo:load", () => {
+  initPostForm();
+  initCardRadios();
+  setupVisibilityAlert();
+
+  console.log("⚡ post_form関連JS reloaded (turbo:load)");
+});

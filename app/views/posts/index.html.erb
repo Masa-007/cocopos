@@ -9,8 +9,6 @@
 
     <!-- === 絞り込み・並び替えバー === -->
     <div class="filter-bar">
-
-      <!-- 絞り込みボタン群 -->
       <div class="filter-buttons">
         <span class="filter-label">絞り込み：</span>
 
@@ -49,7 +47,7 @@
           data: { turbo: false, id: post.id, category: post.post_type } do %>
 
           <!-- 投稿ヘッダー -->
-          <div class="post-card-header <%= post.post_type %>">
+          <div class="post-card-header <%= post.post_type %> flex justify-between items-center">
             <span class="font-semibold"><%= post.post_type_icon %> <%= post.post_type_name %></span>
             <span class="text-sm text-gray-500"><%= l post.created_at, format: :short %></span>
           </div>
@@ -57,19 +55,29 @@
           <!-- 投稿本文 -->
           <div class="post-card-body">
             <% if post.title.present? %>
-              <h3 class="post-title"><%= h(post.title) %></h3>
+              <h3 class="post-title font-bold mb-2"><%= h(post.title) %></h3>
             <% end %>
-            <p class="post-content"><%= truncate(strip_tags(post.body), length: 100) %></p>
+            <p class="post-content text-gray-700"><%= truncate(strip_tags(post.body), length: 100) %></p>
           </div>
 
           <!-- 投稿フッター -->
-          <div class="post-card-footer">
-            <span class="post-author"><%= post.display_name %></span>
-            <% if post.opinion_needed? %>
-              <span class="comment-status">💬 意見募集中</span>
+          <div class="post-card-footer flex justify-between items-center text-sm text-gray-600 mt-2">
+            <div>
+              <span class="post-author"><%= post.display_name %></span>
+
+              <%# 🔒 自分の非公開投稿ならバッジ表示 %>
+              <% if user_signed_in? && post.user == current_user && !post.is_public %>
+                <span class="ml-2 inline-block px-2 py-1 bg-gray-200 text-gray-700 rounded-full text-xs">非公開</span>
+              <% end %>
+            </div>
+
+            <%# 💬 コメント設定バッジ %>
+            <% if post.comment_allowed? %>
+              <span class="comment-status text-blue-600 font-semibold">💬 コメント募集</span>
+            <% else %>
+              <span class="comment-status text-gray-500 font-semibold">💭 コメント不要</span>
             <% end %>
           </div>
-
         <% end %>
       <% end %>
 
@@ -89,3 +97,4 @@
 
   </div>
 </main>
+

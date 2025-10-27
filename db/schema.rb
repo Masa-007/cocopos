@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_10_25_162436) do
+ActiveRecord::Schema[7.1].define(version: 2025_10_27_133103) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -34,6 +34,8 @@ ActiveRecord::Schema[7.1].define(version: 2025_10_25_162436) do
     t.datetime "updated_at", null: false
     t.integer "post_type", default: 0
     t.string "title"
+    t.boolean "is_public", default: true, null: false
+    t.boolean "comment_allowed", default: true, null: false
     t.index ["created_at"], name: "index_posts_on_created_at"
     t.index ["user_id"], name: "index_posts_on_user_id"
   end

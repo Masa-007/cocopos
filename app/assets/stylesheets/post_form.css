@@ -1,4 +1,7 @@
-.post-type-card {
+/* ===============================
+   投稿タイプ選択カード (.card-ui)
+=============================== */
+.card-ui {
   position: relative;
   border: 3px solid #e5e7eb;
   border-radius: 16px;
@@ -6,82 +9,64 @@
   text-align: center;
   cursor: pointer;
   transition: all 0.3s ease;
-  background: white;
+  background: #fff;
 }
 
-.post-type-radio {
-  position: absolute;
-  opacity: 0;
-  pointer-events: none;
-}
-
-.post-type-content {
-  position: relative;
-}
-
-.post-type-card:hover {
+/* hover時：浮き上がる効果 */
+label .card-ui:hover {
   transform: translateY(-5px);
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
 }
 
-.post-type-card.future:hover {
+/* 種類別ホバー枠色 */
+label:has(input[value="future"]):hover .card-ui {
   border-color: #10b981;
 }
-
-.post-type-card.organize:hover {
+label:has(input[value="organize"]):hover .card-ui {
   border-color: #8b5cf6;
 }
-
-.post-type-card.thanks:hover {
+label:has(input[value="thanks"]):hover .card-ui {
   border-color: #ec4899;
 }
 
-/* 選択状態のチェックマーク */
-.post-type-radio:checked ~ .post-type-content::after {
-  content: '✓';
-  position: absolute;
-  top: -35px;
-  right: -10px;
-  width: 32px;
-  height: 32px;
-  background: #10b981;
-  color: white;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  font-size: 18px;
-  line-height: 32px;
-  text-align: center;
-  box-shadow: 0 4px 10px rgba(16, 185, 129, 0.4);
-}
-
-/* ✅ 選択されたカード全体を塗る */
-.post-type-card.future:has(.post-type-radio:checked) {
+/* ===============================
+   選択時のグラデーション背景
+=============================== */
+label:has(input[value="future"]:checked) .card-ui {
   border-color: #10b981;
   background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
   box-shadow: 0 6px 20px rgba(16, 185, 129, 0.25);
   transform: translateY(-5px);
 }
 
-.post-type-card.organize:has(.post-type-radio:checked) {
-  border-color: #8b5cf6;
+label:has(input[value="organize"]:checked) .card-ui {
+  border-color: #ccb6fe;
   background: linear-gradient(135deg, #e9d5ff 0%, #d8b4fe 100%);
   box-shadow: 0 6px 20px rgba(139, 92, 246, 0.25);
   transform: translateY(-5px);
 }
 
-.post-type-card.thanks:has(.post-type-radio:checked) {
+label:has(input[value="thanks"]:checked) .card-ui {
   border-color: #ec4899;
   background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%);
   box-shadow: 0 6px 20px rgba(236, 72, 153, 0.25);
   transform: translateY(-5px);
 }
 
-.opinion-radio:checked ~ .opinion-content {
-  border-color: #ff9a8e !important;
-  background: linear-gradient(135deg, #fff0eb 0%, #ffe4db 100%);
-  box-shadow: 0 4px 15px rgba(255, 154, 142, 0.3);
+/* ===============================
+   コメント設定／公開設定カード共通
+=============================== */
+.card-ui:has(input:checked) {
+  border-color: #fb923c;
+  box-shadow: 0 0 0 4px rgba(251, 146, 60, 0.2);
+  transform: translateY(-3px);
 }
 
+/* ===============================
+   意見カード（既存のまま）
+=============================== */
+.opinion-radio:checked ~ .opinion-content {
+  border-color: #ff9a8e !important;
+  background: linear-gradient(135deg, #fff0eb 0%, #ffe4db 100%) !important;
+  box-shadow: 0 4px 15px rgba(255, 154, 142, 0.3);
+}

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class User < ApplicationRecord
   # Deviseモジュール
   # :confirmable, :lockable, :timeoutable, :trackable, :omniauthable なども必要に応じて追加可能
