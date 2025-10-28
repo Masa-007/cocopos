@@ -8,9 +8,9 @@
     </div>
 
     <!-- === 絞り込み・並び替えバー === -->
-    <div class="filter-bar">
-      <div class="filter-buttons">
-        <span class="filter-label">絞り込み：</span>
+    <div class="filter-bar flex flex-col md:flex-row md:items-center md:justify-between mb-8 gap-4">
+      <div class="filter-buttons flex flex-wrap items-center gap-2">
+        <span class="filter-label font-semibold text-gray-700">絞り込み：</span>
 
         <%= link_to "すべて", posts_path(sort: params[:sort]),
               data: { turbo: false },
@@ -32,7 +32,7 @@
       <!-- 並び替えセレクト -->
       <%= form_with url: posts_path, method: :get, local: true, class: "filter-right" do |f| %>
         <%= f.hidden_field :filter, value: params[:filter] %>
-        <select name="sort" onchange="this.form.submit()" class="sort-select">
+        <select name="sort" onchange="this.form.submit()" class="sort-select border-gray-300 rounded-lg px-3 py-1">
           <option value="new" <%= 'selected' if params[:sort] != 'old' %>>新着順</option>
           <option value="old" <%= 'selected' if params[:sort] == 'old' %>>古い順</option>
         </select>
@@ -42,43 +42,37 @@
     <!-- === 投稿グリッド === -->
     <div id="posts-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
       <% @posts.each do |post| %>
-        <%= link_to post_path(post),
-          class: "post-card block no-underline text-gray-800",
-          data: { turbo: false, id: post.id, category: post.post_type } do %>
+        <div class="post-card bg-white rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition">
+          <%= link_to post_path(post), data: { turbo: false, id: post.id, category: post.post_type }, class: "block no-underline text-gray-800" do %>
 
-          <!-- 投稿ヘッダー -->
-          <div class="post-card-header <%= post.post_type %> flex justify-between items-center">
-            <span class="font-semibold"><%= post.post_type_icon %> <%= post.post_type_name %></span>
-            <span class="text-sm text-gray-500"><%= l post.created_at, format: :short %></span>
-          </div>
+            <!-- 投稿ヘッダー -->
+            <div class="post-card-header <%= post.post_type %> flex justify-between items-center px-6 py-4 border-b">
+              <span class="font-semibold"><%= post.post_type_icon %> <%= post.post_type_name %></span>
+              <span class="text-sm text-gray-500"><%= l post.created_at, format: :short %></span>
+            </div>
 
-          <!-- 投稿本文 -->
-          <div class="post-card-body">
-            <% if post.title.present? %>
-              <h3 class="post-title font-bold mb-2"><%= h(post.title) %></h3>
-            <% end %>
-            <p class="post-content text-gray-700"><%= truncate(strip_tags(post.body), length: 100) %></p>
-          </div>
+            <!-- 投稿本文 -->
+            <div class="post-card-body px-6 py-4">
+              <% if post.title.present? %>
+                <h3 class="post-title font-bold mb-2 text-lg"><%= h(post.title) %></h3>
+              <% end %>
+              <p class="post-content text-gray-700 leading-relaxed"><%= truncate(strip_tags(post.body), length: 100) %></p>
+            </div>
+
+          <% end %>
 
           <!-- 投稿フッター -->
-          <div class="post-card-footer flex justify-between items-center text-sm text-gray-600 mt-2">
+          <div class="post-card-footer flex justify-between items-center text-sm text-gray-600 px-6 py-4 bg-gray-50 border-t">
             <div>
               <span class="post-author"><%= post.display_name %></span>
-
-              <%# 🔒 自分の非公開投稿ならバッジ表示 %>
               <% if user_signed_in? && post.user == current_user && !post.is_public %>
                 <span class="ml-2 inline-block px-2 py-1 bg-gray-200 text-gray-700 rounded-full text-xs">非公開</span>
               <% end %>
             </div>
 
-            <%# 💬 コメント設定バッジ %>
-            <% if post.comment_allowed? %>
-              <span class="comment-status text-blue-600 font-semibold">💬 コメント募集</span>
-            <% else %>
-              <span class="comment-status text-gray-500 font-semibold">💭 コメント不要</span>
-            <% end %>
+            <%= render "flowers/button", post: post %>
           </div>
-        <% end %>
+        </div>
       <% end %>
 
       <% if @posts.empty? %>
@@ -97,4 +91,5 @@
 
   </div>
 </main>
+
 

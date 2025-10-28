@@ -1,0 +1,6 @@
+<!-- app/views/flowers/create.turbo_stream.erb -->
+<turbo-stream action="replace" target="flower-btn-<%= @post.id %>">
+  <template>
+    <%= render partial: "flowers/button", formats: [:html], locals: { post: @post } %>
+  </template>
+</turbo-stream>

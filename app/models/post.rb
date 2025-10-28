@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-# app/models/post.rb
 class Post < ApplicationRecord
   # === アソシエーション ===
   belongs_to :user
   has_many :comments, dependent: :destroy
+  has_many :flowers, dependent: :destroy   # 🌸 花リアクション
 
   # === Enum定義 ===
   enum post_type: {
@@ -28,11 +28,11 @@ class Post < ApplicationRecord
     is_anonymous ? '匿名さん' : user.name
   end
 
-  # 投稿タイプごとの設定をまとめて定義
+  # 投稿タイプごとの設定
   POST_TYPE_INFO = {
-    future: { icon: '🌱', name: '未来宣言箱', color: 'green' },
+    future:   { icon: '🌱', name: '未来宣言箱', color: 'green' },
     organize: { icon: '🌈', name: '心の整理箱', color: 'purple' },
-    thanks: { icon: '💌', name: '感謝箱', color: 'pink' }
+    thanks:   { icon: '💌', name: '感謝箱', color: 'pink' }
   }.freeze
 
   def post_type_icon
@@ -46,4 +46,15 @@ class Post < ApplicationRecord
   def post_type_color
     POST_TYPE_INFO[post_type.to_sym][:color]
   end
+
+  # 🌸 花のカウント（counter_cache対応）
+  def flower_count
+    self[:flowers_count] || 0
+  end
+
+  # 🌸 特定ユーザーが花をつけているかどうか
+  def flowered_by?(user)
+    flowers.exists?(user_id: user.id)
+  end
 end
+

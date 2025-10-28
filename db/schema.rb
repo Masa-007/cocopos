@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_10_28_031107) do
+ActiveRecord::Schema[7.1].define(version: 2025_10_28_044221) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -46,6 +46,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_10_28_031107) do
     t.string "title"
     t.boolean "is_public", default: true, null: false
     t.boolean "comment_allowed", default: true, null: false
+    t.integer "flowers_count", default: 0, null: false
     t.index ["created_at"], name: "index_posts_on_created_at"
     t.index ["user_id"], name: "index_posts_on_user_id"
   end

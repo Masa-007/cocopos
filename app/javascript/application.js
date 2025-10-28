@@ -6,7 +6,7 @@ import "./controllers/season_controller";
 import "./posts/post_form";
 import "./posts/post_edit";
 import "./posts/placeholder_switch";
-import "./posts/posts";
+import "./posts/flowers";
 
 // === Turbo ログ確認 ===
 ["turbo:load", "turbo:render"].forEach((event) => {
