@@ -1,0 +1,17 @@
+<div id="flower-btn-<%= post.id %>" class="post-actions flex items-center space-x-2">
+  <% flowered = user_signed_in? && current_user.flowers.exists?(post: post) %>
+
+  <%= form_with url: post_flower_path(post),
+                method: flowered ? :delete : :post,
+                data: { turbo_stream: true },
+                class: "flex items-center space-x-1" do %>
+
+    <button type="submit"
+            class="action-icon flower-btn text-2xl leading-none
+                   <%= flowered ? 'text-pink-500 hover:text-pink-700' : 'text-gray-400 hover:text-pink-500' %>">
+      🌱
+    </button>
+
+    <span class="flower-count text-gray-600 text-base align-middle"><%= post.flower_count %></span>
+  <% end %>
+</div>
