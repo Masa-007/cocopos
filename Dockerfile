@@ -86,11 +86,12 @@ EXPOSE 10000
 ARG RAILS_MASTER_KEY
 ENV RAILS_MASTER_KEY=$RAILS_MASTER_KEY
 
-
 # ✅ Tailwind ビルドと Rails アセットプリコンパイル
-RUN npm install \
-  && npx tailwindcss -i ./app/assets/stylesheets/application.tailwind.css -o ./app/assets/builds/application.css \
-  && bundle exec rails assets:precompile
+# Render は .gitignore 内のフォルダを送信しないため、明示的にbuildsフォルダを作成
+RUN npm install
+RUN mkdir -p app/assets/builds
+RUN npx tailwindcss -i ./app/assets/stylesheets/application.tailwind.css -o ./app/assets/builds/application.css
+RUN bundle exec rails assets:precompile
 
 # ✅ Rails 起動前にDBマイグレーションを実行してからPumaを起動
 CMD bundle exec rails db:migrate && bundle exec puma -C config/puma.rb -b tcp://0.0.0.0:${PORT:-10000}
