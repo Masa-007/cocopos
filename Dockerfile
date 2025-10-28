@@ -51,19 +51,17 @@ RUN echo '#!/bin/bash\n\
 set -e\n\
 echo "🧹 Cleaning old Rails state and assets..."\n\
 rm -f tmp/pids/server.pid\n\
-rm -rf public/assets/*\n\
-rm -f public/assets/.manifest.json\n\
+rm -rf public/assets/* app/assets/builds/*\n\
 if [ -f "./app/assets/stylesheets/application.tailwind.css" ]; then\n\
   echo "🎨 Rebuilding Tailwind..."\n\
   npx tailwindcss -i ./app/assets/stylesheets/application.tailwind.css -o ./app/assets/builds/application.css\n\
 fi\n\
 echo "📦 Precompiling Rails assets..."\n\
 bundle exec rails assets:precompile || echo "⚠️ skipped (dev mode)"\n\
-exec "$@"' > /usr/bin/dev-entrypoint.sh \
+exec \"$@\"' > /usr/bin/dev-entrypoint.sh \
   && chmod +x /usr/bin/dev-entrypoint.sh
-ENTRYPOINT ["/usr/bin/dev-entrypoint.sh"]
 
-# Foreman で Procfile.dev 内の Rails / Tailwind / JS を一括起動
+ENTRYPOINT ["/usr/bin/dev-entrypoint.sh"]
 CMD ["foreman", "start", "-f", "Procfile.dev"]
 
 # -----------------------------------------------------------
@@ -73,9 +71,6 @@ FROM base AS test
 ENV RAILS_ENV=test
 CMD ["bash", "-lc", "bundle exec rspec"]
 
-# -----------------------------------------------------------
-# 本番環境ステージ（Render 用）
-# -----------------------------------------------------------
 # -----------------------------------------------------------
 # 本番環境ステージ（Render 用）
 # -----------------------------------------------------------
@@ -89,13 +84,13 @@ EXPOSE 10000
 ARG RAILS_MASTER_KEY
 ENV RAILS_MASTER_KEY=$RAILS_MASTER_KEY
 
-# ✅ Tailwind ビルドと Rails アセットプリコンパイル
+# ✅ Tailwind & JS ビルド → ダミーDB設定 → アセットプリコンパイル
 RUN npm install \
-  && mkdir -p app/assets/builds \
+  && mkdir -p app/assets/builds tmp/pids \
   && npx tailwindcss -i ./app/assets/stylesheets/application.tailwind.css -o ./app/assets/builds/application.css \
-  # ✅ ダミーの database.yml を作成（assets:precompile用）
+  && npm run build \
   && echo "production:\n  adapter: postgresql\n  encoding: unicode\n  pool: 5\n  url: <%= ENV['DATABASE_URL'] %>" > config/database.yml \
   && bundle exec rails assets:precompile
 
-# ✅ Rails 起動前に tmp/pids を保証してから Puma 起動
+# ✅ 起動時に tmp/pids を保証してから Rails 起動
 CMD mkdir -p tmp/pids && bundle exec rails db:migrate && bundle exec puma -C config/puma.rb -b tcp://0.0.0.0:${PORT:-10000}
