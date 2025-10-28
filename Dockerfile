@@ -76,6 +76,9 @@ CMD ["bash", "-lc", "bundle exec rspec"]
 # -----------------------------------------------------------
 # 本番環境ステージ（Render 用）
 # -----------------------------------------------------------
+# -----------------------------------------------------------
+# 本番環境ステージ（Render 用）
+# -----------------------------------------------------------
 FROM base AS production
 ENV RAILS_ENV=production
 ENV RAILS_LOG_TO_STDOUT=true
@@ -87,7 +90,6 @@ ARG RAILS_MASTER_KEY
 ENV RAILS_MASTER_KEY=$RAILS_MASTER_KEY
 
 # ✅ Tailwind ビルドと Rails アセットプリコンパイル
-# Render は .gitignore 内のフォルダを送信しないため、明示的に builds フォルダを作成
 RUN npm install \
   && mkdir -p app/assets/builds \
   && npx tailwindcss -i ./app/assets/stylesheets/application.tailwind.css -o ./app/assets/builds/application.css \
@@ -95,5 +97,5 @@ RUN npm install \
   && echo "production:\n  adapter: postgresql\n  encoding: unicode\n  pool: 5\n  url: <%= ENV['DATABASE_URL'] %>" > config/database.yml \
   && bundle exec rails assets:precompile
 
-# ✅ Rails 起動前にDBマイグレーションを実行してからPumaを起動
-CMD bundle exec rails db:migrate && bundle exec puma -C config/puma.rb -b tcp://0.0.0.0:${PORT:-10000}
+# ✅ Rails 起動前に tmp/pids を保証してから Puma 起動
+CMD mkdir -p tmp/pids && bundle exec rails db:migrate && bundle exec puma -C config/puma.rb -b tcp://0.0.0.0:${PORT:-10000}
