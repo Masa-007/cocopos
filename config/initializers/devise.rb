@@ -4,8 +4,6 @@ require 'active_support/core_ext/integer/time'
 
 Devise.setup do |config|
   # ===🔑 本番での暗号化キー（必須）===
-  # Renderなど本番環境では、明示的にsecret_keyを指定する方が安全。
-  # credentials または ENV["DEVISE_SECRET_KEY"] を利用。
   config.secret_key = ENV['DEVISE_SECRET_KEY'] if Rails.env.production?
 
   # ===📮 メール送信設定（最低限）===
