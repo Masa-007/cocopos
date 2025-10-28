@@ -3,41 +3,42 @@
 
 # Rails credentials / secrets
 /config/master.key
-/config/credentials.yml.enc    # 万一を考えて除外
+/config/credentials.yml.enc
 /config/environments/*.local.yml
 
 # Environment variables
 .env
 .env.*
-/config/application.yml        # dotenv-rails / figaro 対策
+/config/application.yml  # dotenv-rails / figaro 対策
 
 # Database config
 /config/database.yml
 
 # Cache, logs, tmp
-/tmp/cache/
 /tmp/*
 !/tmp/.keep
 /log/*
 !/log/.keep
 /storage/*
 !/storage/.keep
+
+# Compiled assets
 /public/assets
 /public/packs
 /public/packs-test
 /public/uploads
+/app/assets/builds/*
+!/app/assets/builds/.keep
 
 # Node modules
 /node_modules
 
+# Vendor (if used by bundler)
+vendor/
+
 # Yarn / npm
 yarn-error.log
 npm-debug.log
-
-# Build assets
-/app/assets/builds
-/app/assets/builds/*
-!/app/assets/builds/.keep
 
 # Coverage & test artifacts
 /coverage/
@@ -64,8 +65,7 @@ npm-debug.log
 *.orig
 Thumbs.db
 
-# Optional: security sanity
-# (ローカルでの不要な秘密鍵や証明書)
+# Security sanity
 /*.pem
 /*.key
 /*.crt
