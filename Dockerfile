@@ -62,6 +62,8 @@ CMD ["bash", "-lc", "bundle exec rspec"]
 
 # 本番環境ステージ（Render 用）
 FROM base AS production
+ARG RAILS_MASTER_KEY
+ENV RAILS_MASTER_KEY=${RAILS_MASTER_KEY}
 ENV RAILS_ENV=production
 ENV RAILS_LOG_TO_STDOUT=true
 ENV RAILS_SERVE_STATIC_FILES=true
