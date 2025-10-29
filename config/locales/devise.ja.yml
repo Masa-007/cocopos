@@ -91,7 +91,7 @@ ja:
       invalid: "は不正な値です"
       taken: "はすでに存在します"
 
-  # === 日時フォーマット ===
+  # 日時フォーマット
   time:
     formats:
       default: "%Y/%m/%d %H:%M"

@@ -1,4 +1,4 @@
-/* === 認証ページ共通レイアウト === */
+/* 認証ページ共通レイアウト */
 .auth-container {
   display: flex;
   align-items: center;
@@ -103,7 +103,7 @@
   color: #ff4f3b;
 }
 
-/* === エラーメッセージの調整 === */
+/* エラーメッセージの調整 */
 #error_explanation {
   margin-bottom: 1rem;
   text-align: left;

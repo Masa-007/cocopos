@@ -2,13 +2,13 @@ import "@hotwired/turbo-rails";
 import "./modal";
 import "./controllers/season_controller";
 
-// === posts 関連 ===
+// posts 関連
 import "./posts/post_form";
 import "./posts/post_edit";
 import "./posts/placeholder_switch";
 import "./posts/flowers";
 
-// === Turbo ログ確認 ===
+// Turbo ログ確認
 ["turbo:load", "turbo:render"].forEach((event) => {
   document.addEventListener(event, () => {
     const cssLoaded = Array.from(document.styleSheets).some((s) =>

@@ -1,4 +1,4 @@
-// === 🌸 Flower stage updater ===
+// 🌸 Flower stage updater
 function updateFlowerStages() {
   const flowerButtons = document.querySelectorAll(".post-actions .action-icon");
   const flowerStages = ["🌱", "🌿", "🌷", "🌹", "🌸", "🌺", "💐"];
@@ -18,7 +18,7 @@ function updateFlowerStages() {
   });
 }
 
-// === Turbo lifecycle bindings ===
+// Turbo lifecycle bindings
 ["turbo:load", "turbo:render", "turbo:after-stream-render"].forEach((event) => {
   document.addEventListener(event, () => {
     console.log(`💐 flower stage script triggered: ${event}`);
@@ -28,7 +28,7 @@ function updateFlowerStages() {
   });
 });
 
-// ✅ Turboがstreamを処理したあとに明示的に呼び直す
+// Turboがstreamを処理したあとに明示的に呼び直す
 document.addEventListener("turbo:submit-end", (e) => {
   if (e.target.action.includes("/flower")) {
     console.log("🌺 Turbo submit for flower detected → re-run updater");

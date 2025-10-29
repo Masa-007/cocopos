@@ -1,5 +1,5 @@
 document.addEventListener("turbo:load", () => {
-  // === 文字数カウント ===
+  // 文字数カウント
   const textarea = document.querySelector('textarea[name="post[body]"]');
   const charCount = document.getElementById("charCount");
 
@@ -12,7 +12,7 @@ document.addEventListener("turbo:load", () => {
     });
   }
 
-  // === 意見カード（編集ページ用） ===
+  // 意見カード（編集ページ用）
   const opinionRadios = document.querySelectorAll(".opinion-radio");
   opinionRadios.forEach((radio) => {
     radio.addEventListener("change", () => {

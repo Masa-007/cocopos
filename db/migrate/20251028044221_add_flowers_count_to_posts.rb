@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddFlowersCountToPosts < ActiveRecord::Migration[7.0]
   def change
     add_column :posts, :flowers_count, :integer, default: 0, null: false
