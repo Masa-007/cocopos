@@ -1,6 +1,11 @@
-<!-- app/views/flowers/create.turbo_stream.erb -->
-<turbo-stream action="replace" target="flower-btn-<%= @post.id %>">
+<% target_id = "flower_btn_#{@flowerable.model_name.singular}_#{@flowerable.id}" %>
+
+<turbo-stream action="replace" target="<%= target_id %>">
   <template>
-    <%= render partial: "flowers/button", formats: [:html], locals: { post: @post } %>
+    <% if @flowerable.is_a?(Comment) %>
+      <%= render partial: "comments/flower_button", formats: [:html], locals: { comment: @flowerable } %>
+    <% else %>
+      <%= render partial: "posts/flower_button", formats: [:html], locals: { post: @flowerable } %>
+    <% end %>
   </template>
 </turbo-stream>

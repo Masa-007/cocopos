@@ -10,6 +10,7 @@
 
     <!-- 投稿カード -->
     <div class="post-detail-card bg-white rounded-3xl shadow-lg overflow-hidden">
+
       <!-- ヘッダー -->
       <div class="post-header p-6 border-b <%= @post.post_type_color %>">
         <div class="flex items-center justify-between">
@@ -66,10 +67,15 @@
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-4">
             <span class="text-gray-700">
-              <span class="font-bold">投稿者:</span> <%= @post.display_name %>
+              <span class="font-bold">投稿者:</span>
+              <%= @post.display_name %>
             </span>
           </div>
-          <%= render "flowers/button", post: @post %>
+
+          <!-- 🌱 投稿用 花ボタン -->
+          <div id="flower_btn_post_<%= @post.id %>">
+            <%= render "flowers/button", flowerable: @post %>
+          </div>
         </div>
       </div>
     </div>
@@ -79,7 +85,7 @@
 
       <!-- コメントフォーム -->
       <section id="comment-form" class="comment-form">
-        <h3 class="form-title">📝 コメントを書く</h3>
+        <h3 class="form-title text-lg font-bold mb-4">📝 コメントを書く</h3>
 
         <% if user_signed_in? %>
           <%= form_with(model: [@post, Comment.new], local: true) do |f| %>
@@ -100,7 +106,9 @@
             </div>
           <% end %>
         <% else %>
-          <p class="login-required text-center text-gray-500 py-4">コメントするにはログインが必要です。</p>
+          <p class="login-required text-center text-gray-500 py-4">
+            コメントするにはログインが必要です。
+          </p>
         <% end %>
       </section>
 
@@ -111,11 +119,13 @@
         </h3>
 
         <% if @post.comments.any? %>
-          <div class="comments-list">
+          <div class="comments-list space-y-6">
             <%= render @post.comments, post: @post %>
           </div>
         <% else %>
-          <p class="comment-empty">まだコメントはありません。</p>
+          <p class="comment-empty text-gray-500 text-center">
+            まだコメントはありません。
+          </p>
         <% end %>
       </section>
 

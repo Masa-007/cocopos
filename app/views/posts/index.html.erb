@@ -78,8 +78,10 @@
             <% if post.is_public? %>
               <div class="post-actions flex items-center gap-3">
 
-                <!-- 🌸 花ボタン -->
-                <%= render "flowers/button", post: post %>
+                <!-- 🌸 花ボタン（Turbo対象） -->
+                <div id="flower_btn_post_<%= post.id %>">
+                  <%= render "flowers/button", flowerable: post %>
+                </div>
 
                 <!-- 💬 コメントボタン -->
                 <% if post.opinion_needed? %>

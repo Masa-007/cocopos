@@ -1,0 +1,27 @@
+<%# app/views/flowers/_button.html.erb %>
+
+<%# 🌸 Flower状態をDBから直接確認（キャッシュを使わない） %>
+<% flowered = user_signed_in? && Flower.exists?(user: current_user, flowerable: flowerable) %>
+
+<%# 🌸 URLを対象によって分岐 %>
+<% url = if flowerable.is_a?(Comment)
+            post_comment_flower_path(flowerable.post, flowerable)
+          else
+            post_flower_path(flowerable)
+          end %>
+
+<%= form_with url: url,
+              method: flowered ? :delete : :post,
+              data: { turbo_stream: true },
+              class: "flex items-center space-x-1" do %>
+
+  <button type="submit"
+          class="action-icon flower-btn text-2xl leading-none
+                 <%= flowered ? 'text-pink-500 hover:text-pink-700' : 'text-gray-400 hover:text-pink-500' %>">
+    <span class="flower-icon"><%= flowered ? "🌿" : "🌱" %></span>
+    <span class="flower-count text-gray-600 text-sm font-semibold ml-1">
+      <%= flowerable.flowers.count %>
+    </span>
+  </button>
+
+<% end %>

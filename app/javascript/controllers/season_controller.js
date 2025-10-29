@@ -1,4 +1,4 @@
-// app/javascript/controllers/season_controller.js
+
 
 document.addEventListener("turbo:load", updateSeason);
 document.addEventListener("DOMContentLoaded", updateSeason);
@@ -9,12 +9,7 @@ function updateSeason() {
     document.body.classList.contains(s)
   );
 
-  if (!season) {
-    console.log("❌ No season class found on body");
-    return;
-  }
-
-  console.log(`🌸 Season active: ${season}`);
+  if (!season) return;
 
   // 既存の花びらを削除
   document.querySelectorAll(".petal").forEach((p) => p.remove());
@@ -27,6 +22,5 @@ function updateSeason() {
     petal.style.animationDelay = `${i}s`;
     document.body.appendChild(petal);
   });
-
-  console.log(`🌸 Petals regenerated for: ${season}`);
 }
+
