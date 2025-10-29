@@ -3,10 +3,10 @@
 require 'active_support/core_ext/integer/time'
 
 Devise.setup do |config|
-  # ===🔑 本番での暗号化キー（必須）===
+  # 🔑 本番での暗号化キー（必須）
   config.secret_key = ENV['DEVISE_SECRET_KEY'] if Rails.env.production?
 
-  # ===📮 メール送信設定（最低限）===
+  # 📮 メール送信設定（最低限）
   config.mailer_sender = 'no-reply@cocopos.onrender.com'
 
   # ORM設定（標準）

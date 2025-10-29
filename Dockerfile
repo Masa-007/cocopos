@@ -53,14 +53,14 @@ fi\n\
 exec $@\n' > /usr/bin/dev-entrypoint.sh \
   && chmod +x /usr/bin/dev-entrypoint.sh
 
-# 🧪 テスト環境ステージ
+# テスト環境ステージ
 FROM base AS test
 ENV RAILS_ENV=test
 WORKDIR /myapp
 COPY . .
 CMD ["bash", "-lc", "bundle exec rspec"]
 
-# 🚀 本番環境ステージ（Render 用）
+# 本番環境ステージ（Render 用）
 FROM base AS production
 ENV RAILS_ENV=production
 ENV RAILS_LOG_TO_STDOUT=true

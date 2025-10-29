@@ -16,16 +16,11 @@ class ApplicationController < ActionController::Base
   # 季節クラスをセット
   def set_season
     month = Time.zone.now.month
-    @season =
-      case month
-      when 3..5
-        'spring'
-      when 6..8
-        'summer'
-      when 9..11
-        'autumn'
-      else
-        'winter'
-      end
+    @season = case month
+              when 3..5 then 'spring'
+              when 6..8 then 'summer'
+              when 9..11 then 'autumn'
+              else 'winter'
+              end
   end
 end

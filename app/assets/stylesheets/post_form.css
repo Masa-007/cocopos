@@ -1,6 +1,4 @@
-/* ===============================
-   投稿タイプ選択カード (.card-ui)
-=============================== */
+/* 投稿タイプ選択カード (.card-ui) */
 .card-ui {
   position: relative;
   border: 3px solid #e5e7eb;
@@ -29,9 +27,8 @@ label:has(input[value="thanks"]):hover .card-ui {
   border-color: #ec4899;
 }
 
-/* ===============================
-   選択時のグラデーション背景
-=============================== */
+/* 選択時のグラデーション背景 */
+
 label:has(input[value="future"]:checked) .card-ui {
   border-color: #10b981;
   background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
@@ -53,18 +50,14 @@ label:has(input[value="thanks"]:checked) .card-ui {
   transform: translateY(-5px);
 }
 
-/* ===============================
    コメント設定／公開設定カード共通
-=============================== */
 .card-ui:has(input:checked) {
   border-color: #fb923c;
   box-shadow: 0 0 0 4px rgba(251, 146, 60, 0.2);
   transform: translateY(-3px);
 }
 
-/* ===============================
-   意見カード（既存のまま）
-=============================== */
+/* 意見カード（既存のまま） */
 .opinion-radio:checked ~ .opinion-content {
   border-color: #ff9a8e !important;
   background: linear-gradient(135deg, #fff0eb 0%, #ffe4db 100%) !important;

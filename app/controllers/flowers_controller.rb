@@ -1,11 +1,12 @@
-# app/controllers/flowers_controller.rb
+# frozen_string_literal: true
+
 class FlowersController < ApplicationController
   before_action :authenticate_user!
   before_action :set_post
 
   def create
     current_user.flowers.create(post: @post)
-    @post.reload  # ← 追加
+    @post.reload # ← 追加
     respond_to do |format|
       format.turbo_stream
       format.html { redirect_to posts_path }
@@ -14,7 +15,7 @@ class FlowersController < ApplicationController
 
   def destroy
     current_user.flowers.find_by(post: @post)&.destroy
-    @post.reload 
+    @post.reload
     respond_to do |format|
       format.turbo_stream
       format.html { redirect_to posts_path }

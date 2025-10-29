@@ -8,13 +8,13 @@
   <%= csrf_meta_tags %>
   <%= csp_meta_tag %>
 
-  <!-- ✅ Tailwind & Custom CSS -->
+  <!--  Tailwind & Custom CSS -->
   <%= stylesheet_link_tag "application", "data-turbo-track": "reload", rel: "stylesheet" %>
 
-  <!-- ✅ esbuild の出力を直接読む -->
+  <!--  esbuild の出力を直接読む -->
   <script type="module" src="/assets/application.js" defer></script>
 
-  <!-- ✅ フラッシュ自動非表示スクリプト -->
+  <!--  フラッシュ自動非表示スクリプト -->
   <script>
     document.addEventListener("turbo:load", () => {
       const flashes = document.querySelectorAll(".flash");

@@ -1,6 +1,6 @@
-// ===============================
+// 
 // 投稿フォームの送信制御
-// ===============================
+// 
 const initPostForm = () => {
   const form = document.querySelector("#postForm");
   if (!form) return;
@@ -74,9 +74,9 @@ const initPostForm = () => {
   });
 };
 
-// ===============================
+// 
 // カード選択UI制御
-// ===============================
+// 
 const initCardRadios = () => {
   function refreshCardsByName(name) {
     const group = document.querySelectorAll(
@@ -100,9 +100,9 @@ const initCardRadios = () => {
   names.forEach((name) => refreshCardsByName(name));
 };
 
-// ===============================
+// 
 // 非公開 × コメント許可 の組み合わせ防止
-// ===============================
+// 
 const setupVisibilityAlert = () => {
   const publicRadios = document.querySelectorAll('input[name="post[is_public]"]');
   const commentRadios = document.querySelectorAll('input[name="post[comment_allowed]"]');
@@ -135,9 +135,9 @@ const setupVisibilityAlert = () => {
   checkInvalidCombo();
 };
 
-// ===============================
+// 
 // Turbo対応：毎回呼び出されるように
-// ===============================
+// 
 document.addEventListener("turbo:load", () => {
   initPostForm();
   initCardRadios();

@@ -1,4 +1,4 @@
-/* === カレンダー全体 === */
+/* カレンダー全体 */
 .calendar-container {
   max-width: 800px;
   margin: auto;
@@ -12,13 +12,13 @@
   transform: translateY(-5px);
 }
 
-/* === 花びらアニメーション === */
+/* 花びらアニメーション */
 @keyframes petalFall {
   0% { transform: translateY(-10px) rotate(0deg); opacity: 1; }
   100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
 }
 
-/* === 花びら（JS生成用） === */
+/* 花びら（JS生成用） */
 .petal {
   position: fixed;
   width: 16px; /* 少し大きく */
@@ -32,7 +32,7 @@
   mix-blend-mode: normal;
 }
 
-/* === 季節ごとの花びらカラー === */
+/* 季節ごとの花びらカラー */
 body.spring .petal {
   background: radial-gradient(circle, #ffe0eb 0%, #ffb3c6 100%);
   box-shadow: 0 0 8px rgba(255, 182, 193, 0.25);
@@ -50,7 +50,7 @@ body.winter .petal {
   box-shadow: 0 0 8px rgba(144, 202, 249, 0.25);
 }
 
-/* === 季節テーマ別フレーム === */
+/* 季節テーマ別フレーム*/
 .flower-frame {
   position: relative;
   padding: 3.5rem;
@@ -86,7 +86,7 @@ body.winter .flower-frame {
     0 0 30px rgba(100, 180, 255, 0.6);
 }
 
-/* === 季節アイコン装飾 === */
+/* 季節アイコン装飾 */
 .flower-frame::before,
 .flower-frame::after {
   position: absolute;
@@ -112,7 +112,7 @@ body.winter .flower-frame::after { content: "❄️"; }
   50% { transform: translateY(-12px) rotate(15deg); }
 }
 
-/* === 日付セル === */
+/* 日付セル */
 .calendar-day {
   aspect-ratio: 1;
   border-radius: 10px;
@@ -133,7 +133,7 @@ body.winter .flower-frame::after { content: "❄️"; }
   box-shadow: 0 0 10px rgba(255, 160, 140, 0.5);
 }
 
-/* === 投稿あり・今日 === */
+/* 投稿あり・今日 */
 .has-post {
   background: linear-gradient(135deg, #ffb3a4 0%, #ff9a8e 100%);
   color: white;
@@ -150,7 +150,7 @@ body.winter .flower-frame::after { content: "❄️"; }
   50% { box-shadow: 0 0 40px rgba(255, 100, 100, 0.9); }
 }
 
-/* === 凡例 === */
+/* 凡例 */
 .legend-box {
   display: flex;
   justify-content: center;
@@ -182,7 +182,7 @@ body.winter .flower-frame::after { content: "❄️"; }
   border: 2px solid #ff5c8d;
 }
 
-/* === ツールチップ === */
+/* ツールチップ */
 .calendar-day .tooltip {
   position: absolute;
   bottom: 115%;
@@ -217,7 +217,7 @@ body.winter .flower-frame::after { content: "❄️"; }
   border-color: rgba(0, 0, 0, 0.85) transparent transparent transparent;
 }
 
-/* === フェードイン === */
+/* フェードイン */
 @keyframes fadeIn {
   from { opacity: 0; transform: scale(0.95); }
   to { opacity: 1; transform: scale(1); }

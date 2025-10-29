@@ -1,6 +1,4 @@
-/* ===============================
-   ローディング画面
-================================ */
+/* ローディング画面スタイル */
 .loading-screen {
   position: fixed;
   inset: 0;
@@ -74,9 +72,7 @@
   text-shadow: 0 2px 3px rgba(0, 0, 0, 0.4);
 }
 
-/* ===============================
-   手紙（ポストより前面）
-================================ */
+/* 手紙（ポストより前面） */
 .letter {
   position: absolute;
   top: -360px;
@@ -100,9 +96,7 @@
   font-size: 44px;
 }
 
-/* ===============================
-   手紙：まっすぐ自然に落下
-================================ */
+/* 手紙：まっすぐ自然に落下 */
 @keyframes letterInsert {
   0% {
     top: -360px;
@@ -129,7 +123,7 @@
 }
 
 
-/* === 投函中テキスト === */
+/* 投函中テキスト */
 
 .loading-text {
   position: absolute;
@@ -149,9 +143,7 @@
   50% { opacity: 0.5; }
 }
 
-/* ===============================
-   完了画面（パネル風デザイン）
-================================ */
+/* 完了画面（パネル風デザイン） */
 .completion-screen {
   position: fixed;
   inset: 0;
@@ -176,7 +168,7 @@
   to { opacity: 1; transform: scale(1); }
 }
 
-/* === パネル全体 === */
+/* パネル全体 */
 .completion-content {
   text-align: center;
   background: rgba(255, 255, 255, 0.95);
@@ -197,7 +189,7 @@
   100% { transform: translateY(0); opacity: 1; }
 }
 
-/* === チェックマーク === */
+/* チェックマーク */
 .checkmark {
   width: 140px;
   height: 140px;
@@ -224,7 +216,7 @@
   font-weight: 900;
 }
 
-/* === タイトルとメッセージ === */
+/* タイトルとメッセージ */
 .completion-content h1 {
   font-size: 2.4rem;
   font-weight: 800;
@@ -240,9 +232,7 @@
   margin-bottom: 50px;
 }
 
-/* ===============================
-   完了画面（縦3列レイアウト）
-================================ */
+/* 完了画面（縦3列レイアウト） */
 .completion-screen {
   position: fixed;
   inset: 0;
@@ -299,7 +289,7 @@
   100% { transform: scale(1); }
 }
 
-/* === ボタンエリア（縦配置） === */
+/* ボタンエリア（縦配置） */
 .completion-actions {
   display: flex;
   flex-direction: column;

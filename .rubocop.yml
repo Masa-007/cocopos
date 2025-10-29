@@ -7,3 +7,11 @@ Style/Documentation:
 Metrics/BlockLength:
   Exclude:
     - 'config/environments/*.rb'
+
+AllCops:
+  Exclude:
+    - 'db/schema.rb'
+    - 'db/migrate/**/*'
+
+Metrics/ClassLength:
+  Max: 120
