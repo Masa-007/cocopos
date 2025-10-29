@@ -11,8 +11,8 @@
   <!-- ✅ Tailwind & Custom CSS -->
   <%= stylesheet_link_tag "application", "data-turbo-track": "reload", rel: "stylesheet" %>
 
-  <!-- ✅ JavaScript（esbuild / jsbundling 用） -->
-  <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
+  <!-- ✅ esbuild の出力を直接読む -->
+  <script type="module" src="/assets/application.js" defer></script>
 
   <!-- ✅ フラッシュ自動非表示スクリプト -->
   <script>

@@ -41,6 +41,9 @@ Rails.application.configure do
   # === Tailwind / Propshaft対応 ===
   config.assets.paths << Rails.root.join('app/assets/builds')
 
+  # ✅ Propshaft が public/assets も参照できるように追加
+  config.assets.paths << Rails.root.join('public/assets')
+
   # 開発ではビルド済みアセットを直接配信
   config.public_file_server.enabled = true
   config.public_file_server.headers = {
