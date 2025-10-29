@@ -1,0 +1,250 @@
+:root {
+  --c-bg: #e9f7ef;              
+  --c-surface: #f5fbf7;          
+  --c-border: #c8e6c9;           
+  --c-muted: #52796f;         
+  --c-accent: #81c784;          
+  --c-accent-hover: #66bb6a;     
+  --c-edit: #4caf50;            
+  --c-edit-hover: #388e3c;
+  --c-danger: #ef5350;           
+  --c-danger-hover: #e53935;
+  --radius-lg: 16px;
+  --radius-md: 12px;
+  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.06);
+  --fade-in: fadeIn 0.6s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* コメントエリア */
+.comments-section {
+  background-color: var(--c-bg);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  padding: 24px;
+  animation: var(--fade-in);
+}
+
+.comments-section .section-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--c-text);
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* コメントリスト */
+.comments-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.comment-card {
+  background: #fff;
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-md);
+  padding: 1rem 1.25rem;
+  box-shadow: var(--shadow-sm);
+  animation: var(--fade-in);
+}
+
+.comment-content {
+  color: var(--c-text);
+  white-space: pre-wrap;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.comment-meta {
+  font-size: 0.75rem;
+  color: var(--c-muted);
+  margin-top: 0.5rem;
+}
+
+.comment-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+.comment-actions a,
+.comment-actions button {
+  font-size: 0.8rem;
+  border-radius: 6px;
+  padding: 4px 8px;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.comment-actions .edit-btn {
+  color: var(--c-edit);
+  background: rgba(76, 175, 80, 0.1);
+}
+
+.comment-actions .edit-btn:hover {
+  background: var(--c-edit-hover);
+  color: #fff;
+}
+
+.comment-actions .delete-btn {
+  color: var(--c-danger);
+  background: rgba(239, 83, 80, 0.1);
+}
+
+.comment-actions .delete-btn:hover {
+  background: var(--c-danger-hover);
+  color: #fff;
+}
+
+/* コメント投稿フォーム */
+.comment-form {
+  background: var(--c-bg);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  padding: 24px;
+  animation: var(--fade-in);
+}
+
+.comment-form .form-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--c-text);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.comment-form textarea {
+  width: 100%;
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-md);
+  padding: 12px;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  background: #fff;
+  color: var(--c-text);
+  resize: vertical;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.comment-form textarea:focus {
+  outline: none;
+  border-color: var(--c-accent);
+  box-shadow: 0 0 0 3px rgba(129, 199, 132, 0.3);
+}
+
+.comment-form .submit-btn {
+  display: inline-block;
+  background: var(--c-accent);
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 500;
+  border-radius: var(--radius-md);
+  padding: 8px 20px;
+  margin-top: 12px;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.comment-form .submit-btn:hover {
+  background: var(--c-accent-hover);
+  transform: translateY(-1px);
+}
+
+.comment-form .login-required {
+  text-align: center;
+  color: var(--c-muted);
+  padding: 16px 0;
+  font-size: 0.9rem;
+}
+
+.comment-edit-form {
+  background-color: #e9f7ef; 
+  border: 1px solid #c8e6c9;
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  animation: fadeIn 0.6s ease-in-out both;
+}
+
+.edit-title {
+  text-align: center;
+  color: #1b5e20;
+  font-weight: 700;
+  font-size: 1.4rem;
+  margin-bottom: 1.5rem;
+}
+
+.edit-field {
+  margin-bottom: 1.5rem;
+}
+
+.edit-textarea {
+  width: 100%;
+  border: 1px solid #c8e6c9;
+  border-radius: 12px;
+  padding: 12px;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: #1b5e20;
+  background: #ffffff;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.edit-textarea:focus {
+  outline: none;
+  border-color: #81c784;
+  box-shadow: 0 0 0 3px rgba(129, 199, 132, 0.3);
+}
+
+.edit-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cancel-link {
+  color: #2e7d32;
+  font-size: 0.9rem;
+  transition: color 0.2s ease;
+}
+
+.cancel-link:hover {
+  color: #1b5e20;
+  text-decoration: underline;
+}
+
+.submit-btn {
+  background: #66bb6a;
+  color: #ffffff;
+  font-size: 0.9rem;
+  font-weight: 500;
+  border-radius: 10px;
+  padding: 8px 20px;
+  transition: background 0.2s ease, transform 0.1s ease;
+  box-shadow: 0 3px 8px rgba(102, 187, 106, 0.25);
+}
+
+.submit-btn:hover {
+  background: #43a047;
+  transform: translateY(-1px);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

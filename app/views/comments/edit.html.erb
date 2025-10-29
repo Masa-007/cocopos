@@ -1,0 +1,33 @@
+<main class="flex-grow pt-24 pb-12">
+  <div class="container mx-auto max-w-2xl px-6">
+
+    <!-- 戻るリンク -->
+    <div class="mb-4">
+      <%= link_to "← 投稿詳細に戻る", post_path(@post),
+                  class: "text-green-700 hover:text-green-900 transition text-sm" %>
+    </div>
+
+    <!-- 編集フォームカード -->
+    <div class="comment-edit-form animate-fadeIn">
+      <h3 class="edit-title">
+        ✏️ コメントを編集
+      </h3>
+
+      <%= form_with(model: [@post, @comment], local: true) do |f| %>
+        <div class="edit-field">
+          <%= f.text_area :content, rows: 5,
+              class: "edit-textarea",
+              placeholder: "コメントを修正してください…" %>
+        </div>
+
+        <div class="edit-actions">
+          <%= link_to "キャンセル", post_path(@post),
+                      class: "cancel-link" %>
+
+          <%= f.submit "更新する",
+              class: "submit-btn" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</main>

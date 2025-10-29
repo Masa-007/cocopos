@@ -9,7 +9,8 @@ Rails.application.routes.draw do
 
   # 投稿関連（全アクション）
   resources :posts do
-    resource :flower, only: %i[create destroy] # 🌸 花リアクション
+    resources :comments, only: %i[create destroy edit update]
+    resource :flower, only: %i[create destroy]
   end
 
   # マイページ

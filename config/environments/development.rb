@@ -4,7 +4,7 @@ require 'active_support/core_ext/integer/time'
 
 Rails.application.configure do
   # 基本設定
-  # コードを都度リロード（開発に便利だが遅い）
+  # コードを都度リロード
   config.cache_classes = false
   config.eager_load = false
   config.consider_all_requests_local = true
@@ -38,19 +38,14 @@ Rails.application.configure do
   config.active_record.migration_error = :page_load
   config.active_record.verbose_query_logs = true
 
-  # Tailwind / Propshaft対応
-  config.assets.paths << Rails.root.join('app/assets/builds')
-
-  #  Propshaft が public/assets も参照できるように追加
-  config.assets.paths << Rails.root.join('public/assets')
+  config.assets.paths += [
+    Rails.root.join('app/assets/builds'),
+    Rails.root.join('public/assets')
+  ]
 
   # 開発ではビルド済みアセットを直接配信
   config.public_file_server.enabled = true
   config.public_file_server.headers = {
     'Cache-Control' => 'public, max-age=31536000'
   }
-
-  # Optional
-  # WebSocketを使う場合などでCSRF無効化したい場合
-  # config.action_cable.disable_request_forgery_protection = true
 end

@@ -9,7 +9,7 @@
 # Environment variables
 .env
 .env.*
-/config/application.yml        # dotenv-rails / figaro 対策
+/config/application.yml        
 
 # Database config
 /config/database.yml
