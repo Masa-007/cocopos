@@ -68,9 +68,6 @@ ENV RAILS_SERVE_STATIC_FILES=true
 WORKDIR /myapp
 EXPOSE 10000
 
-ARG RAILS_MASTER_KEY
-ENV RAILS_MASTER_KEY=$RAILS_MASTER_KEY
-
 COPY package*.json ./
 RUN if [ -f package.json ]; then npm install; fi
 COPY . .
