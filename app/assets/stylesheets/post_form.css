@@ -49,8 +49,7 @@ label:has(input[value="thanks"]:checked) .card-ui {
   box-shadow: 0 6px 20px rgba(236, 72, 153, 0.25);
   transform: translateY(-5px);
 }
-
-   コメント設定／公開設定カード共通
+/* 選択時の枠強調 */
 .card-ui:has(input:checked) {
   border-color: #fb923c;
   box-shadow: 0 0 0 4px rgba(251, 146, 60, 0.2);
