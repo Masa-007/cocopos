@@ -1,14 +1,15 @@
 <main class="flex-grow pt-24 pb-12">
   <div class="container mx-auto max-w-4xl px-6">
-    
+
     <!-- 戻るボタン -->
     <div class="mb-6">
-      <%= link_to "← 投稿一覧に戻る", posts_path, class: "text-gray-600 hover:text-gray-800 transition" %>
+      <%= link_to "← 投稿一覧に戻る",
+                  posts_path,
+                  class: "text-gray-600 hover:text-gray-800 transition" %>
     </div>
 
     <!-- 投稿カード -->
     <div class="post-detail-card bg-white rounded-3xl shadow-lg overflow-hidden">
-      
       <!-- ヘッダー -->
       <div class="post-header p-6 border-b <%= @post.post_type_color %>">
         <div class="flex items-center justify-between">
@@ -16,18 +17,22 @@
             <span class="text-4xl"><%= @post.post_type_icon %></span>
             <div>
               <h2 class="text-2xl font-bold text-gray-800"><%= @post.post_type_name %></h2>
-              <p class="text-sm text-gray-600"><%= @post.created_at.strftime("%Y年%m月%d日 %H:%M") %></p>
+              <p class="text-sm text-gray-600">
+                <%= @post.created_at.strftime("%Y年%m月%d日 %H:%M") %>
+              </p>
             </div>
           </div>
 
           <% if user_signed_in? && @post.user == current_user %>
             <div class="flex gap-2">
-              <%= link_to edit_post_path(@post), class: "px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition" do %>
+              <%= link_to edit_post_path(@post),
+                          class: "px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition" do %>
                 ✏️ 編集
               <% end %>
-              <%= button_to @post, method: :delete, 
-                  data: { turbo_confirm: "本当に削除しますか？この操作は取り消せません。" },
-                  class: "px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition" do %>
+              <%= button_to @post,
+                            method: :delete,
+                            data: { turbo_confirm: "本当に削除しますか？この操作は取り消せません。" },
+                            class: "px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition" do %>
                 🗑️ 削除
               <% end %>
             </div>
@@ -57,23 +62,63 @@
       </div>
 
       <!-- フッター -->
-      <div class="post-footer p-6 bg-gray-50 border-t">
+      <div class="post-footer p-6 bg-gray-50 border-t rounded-b-3xl">
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-4">
             <span class="text-gray-700">
               <span class="font-bold">投稿者:</span> <%= @post.display_name %>
             </span>
           </div>
-
           <%= render "flowers/button", post: @post %>
         </div>
       </div>
     </div>
 
-    <!-- コメント欄（MVP後） -->
-    <div class="mt-8 bg-white rounded-3xl shadow-lg p-8">
-      <h3 class="text-2xl font-bold text-gray-800 mb-6">💬 コメント</h3>
-      <p class="text-gray-500 text-center py-8">コメント機能はMVP後に実装予定です</p>
+    <!-- 💬 コメントエリア -->
+    <div class="mt-12 space-y-10">
+
+      <!-- コメントフォーム -->
+      <section id="comment-form" class="comment-form">
+        <h3 class="form-title">📝 コメントを書く</h3>
+
+        <% if user_signed_in? %>
+          <%= form_with(model: [@post, Comment.new], local: true) do |f| %>
+            <%= f.text_area :content,
+                            rows: 3,
+                            placeholder: "心に浮かんだ言葉をどうぞ…",
+                            class: "w-full border border-gray-300 rounded-xl p-3 mb-4 focus:outline-none focus:ring-2 focus:ring-green-300 text-sm bg-white" %>
+
+            <div class="flex items-center justify-between mt-3">
+              <label class="flex items-center gap-2 text-sm text-gray-700">
+                <%= f.check_box :is_anonymous,
+                                class: "h-4 w-4 text-green-500 rounded border-gray-300 focus:ring-green-400" %>
+                匿名で投稿する
+              </label>
+
+              <%= f.submit "投稿する",
+                          class: "bg-green-500 text-white px-6 py-2 text-sm rounded-xl hover:bg-green-600 transition shadow-sm" %>
+            </div>
+          <% end %>
+        <% else %>
+          <p class="login-required text-center text-gray-500 py-4">コメントするにはログインが必要です。</p>
+        <% end %>
+      </section>
+
+      <!-- コメント一覧 -->
+      <section class="comments-section rounded-3xl shadow-md border border-gray-100 p-6">
+        <h3 class="section-title text-lg font-semibold text-gray-800 mb-6">
+          💬 <span>みんなのコメント</span>
+        </h3>
+
+        <% if @post.comments.any? %>
+          <div class="comments-list">
+            <%= render @post.comments, post: @post %>
+          </div>
+        <% else %>
+          <p class="comment-empty">まだコメントはありません。</p>
+        <% end %>
+      </section>
+
     </div>
   </div>
 </main>

@@ -9,9 +9,9 @@
     <button type="submit"
             class="action-icon flower-btn text-2xl leading-none
                    <%= flowered ? 'text-pink-500 hover:text-pink-700' : 'text-gray-400 hover:text-pink-500' %>">
-      🌱
+      <span class="flower-icon">🌱</span>
+      <span class="flower-count text-gray-600 text-sm font-semibold ml-1"><%= post.flower_count %></span>
     </button>
 
-    <span class="flower-count text-gray-600 text-base align-middle"><%= post.flower_count %></span>
   <% end %>
 </div>

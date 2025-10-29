@@ -1,0 +1,19 @@
+<div class="comment-card">
+  <p class="comment-content"><%= comment.content %></p>
+
+  <p class="comment-meta">
+    by
+    <%= comment.is_anonymous ? "匿名さん" : (comment.user.display_name || "匿名ユーザー") %>
+    ・ <%= comment.created_at.strftime("%Y/%m/%d %H:%M") %>
+  </p>
+
+  <% if comment.user == current_user %>
+    <div class="comment-actions">
+      <%= link_to "編集", edit_post_comment_path(@post, comment), class: "edit-btn" %>
+      <%= button_to "削除", post_comment_path(@post, comment),
+                    method: :delete,
+                    data: { turbo_confirm: "削除しますか？" },
+                    class: "delete-btn" %>
+    </div>
+  <% end %>
+</div>

@@ -2,7 +2,6 @@
 
 class User < ApplicationRecord
   # Deviseモジュール
-  # :confirmable, :lockable, :timeoutable, :trackable, :omniauthable なども必要に応じて追加可能
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
@@ -13,4 +12,9 @@ class User < ApplicationRecord
 
   # バリデーション
   validates :name, presence: true, length: { maximum: 50 }
+
+  # 表示名（匿名対応）
+  def display_name
+    name.presence || '匿名ユーザー'
+  end
 end

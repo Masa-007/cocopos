@@ -16,9 +16,9 @@ class PostsController < ApplicationController
 
   # 投稿詳細
   def show
-    return unless private_post_blocked?
+    redirect_to posts_path, alert: 'この投稿は非公開です' and return if private_post_blocked?
 
-    redirect_to posts_path, alert: 'この投稿は非公開です'
+    @comments = @post.comments.includes(:user)
   end
 
   def new
