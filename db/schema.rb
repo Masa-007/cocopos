@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_10_29_065907) do
+ActiveRecord::Schema[7.1].define(version: 2025_10_29_135917) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -21,17 +21,18 @@ ActiveRecord::Schema[7.1].define(version: 2025_10_29_065907) do
     t.boolean "is_anonymous"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "flowers_count", default: 0, null: false
     t.index ["post_id"], name: "index_comments_on_post_id"
     t.index ["user_id"], name: "index_comments_on_user_id"
   end
 
   create_table "flowers", force: :cascade do |t|
     t.bigint "user_id", null: false
-    t.bigint "post_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["post_id"], name: "index_flowers_on_post_id"
-    t.index ["user_id", "post_id"], name: "index_flowers_on_user_id_and_post_id", unique: true
+    t.string "flowerable_type"
+    t.bigint "flowerable_id"
+    t.index ["flowerable_type", "flowerable_id"], name: "index_flowers_on_flowerable"
     t.index ["user_id"], name: "index_flowers_on_user_id"
   end
 
@@ -66,7 +67,6 @@ ActiveRecord::Schema[7.1].define(version: 2025_10_29_065907) do
 
   add_foreign_key "comments", "posts"
   add_foreign_key "comments", "users"
-  add_foreign_key "flowers", "posts"
   add_foreign_key "flowers", "users"
   add_foreign_key "posts", "users"
 end

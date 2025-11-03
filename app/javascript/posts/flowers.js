@@ -1,4 +1,4 @@
-// 🌸 Flower stage updater
+// 🌸 Flower stage updater (メインロジック)
 function updateFlowerStages() {
   const flowerButtons = document.querySelectorAll(".flower-btn");
   const flowerStages = ["🌱", "🌿", "🌷", "🌹", "🌸", "🌺", "💐"];
@@ -14,26 +14,40 @@ function updateFlowerStages() {
 
     if (iconSpan.textContent.trim() !== newIcon) {
       iconSpan.textContent = newIcon;
-      console.log(`🌼 updated flower icon to "${newIcon}" (count: ${count})`);
     }
   });
 }
 
-// Turbo lifecycle bindings
-["turbo:load", "turbo:render", "turbo:after-stream-render"].forEach((event) => {
+// 🌷 Turbo lifecycle bindings（差し替え後にも発火）
+["turbo:load", "turbo:after-stream-render"].forEach((event) => {
   document.addEventListener(event, () => {
-    console.log(`💐 flower stage script triggered: ${event}`);
-    setTimeout(updateFlowerStages, 80);
+    setTimeout(updateFlowerStages, 150);
   });
 });
 
+// 🌺 フォーム送信完了時（花ボタン）
 document.addEventListener("turbo:submit-end", (e) => {
-  if (e.target.action.includes("/flower")) {
-    console.log("🌺 Turbo submit for flower detected → re-run updater");
-    setTimeout(updateFlowerStages, 120);
+  const form = e.target;
+  if (form?.action?.includes("/flower")) {
+    setTimeout(updateFlowerStages, 200);
   }
 });
 
-console.log("🌸 flower stage script loaded");
+// 🌼 Turbo置換後のアニメーション再適用
+document.addEventListener("turbo:after-stream-render", (e) => {
+  const target = e.target.getAttribute("target");
+  if (
+    e.target.getAttribute("action") === "replace" &&
+    target?.startsWith("flower_btn_")
+  ) {
+    const replaced = document.querySelector(`#${target}`);
+    if (replaced) {
+      replaced.classList.remove("animate-bloom");
+      void replaced.offsetWidth; // reflowでアニメーション再トリガー
+      replaced.classList.add("animate-bloom");
+    }
+  }
+});
 
+// グローバルに登録
 window.updateFlowerStages = updateFlowerStages;

@@ -1,12 +1,23 @@
-/* 投稿カード（一覧） */
+/* 投稿カードを並べるグリッド */
+.posts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 24px;
+  align-items: stretch;
+}
+
+/* 投稿カード本体 */
 .post-card {
-  background: white;
+  background: #fff;
   border-radius: 16px;
   overflow: hidden;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
   animation: fadeIn 0.5s ease-out;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .post-card:hover {
@@ -51,19 +62,18 @@
   color: #db2777;
 }
 
-.post-type {
-  font-size: 14px;
-}
-
-.post-date {
-  font-size: 12px;
-  opacity: 0.8;
-}
-
 /* 投稿本文 */
 .post-card-body {
   padding: 20px;
-  min-height: 120px;
+  flex-grow: 1; 
+  display: block;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 160px; 
+}
+
+.post-card-body > *:last-child {
+  margin-bottom: 0;
 }
 
 .post-title {
@@ -79,7 +89,14 @@
   line-height: 1.6;
   font-size: 15px;
   word-wrap: break-word;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
+
+
 
 /* 投稿フッター */
 .post-card-footer {
@@ -88,8 +105,13 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  background: #f9fafb;
+  min-height: 70px; 
+  height : 70px;
+  margin-top: auto; 
 }
 
+/* 投稿メタ情報 */
 .post-meta {
   display: flex;
   flex-direction: column;
@@ -111,14 +133,74 @@
   display: inline-block;
 }
 
-
-/* 不要カウント非表示設定 */
-.like-count,
-.comment-count {
-  display: none;
+/* ボタン領域 */
+.post-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  min-width: 80px;
+  min-height: 36px; /* ボタンがなくても高さを維持 */
 }
 
-/* ページネーション（Kaminari用） */
+/* コメントボタン */
+.comment-btn {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  padding: 2px 4px;
+  background: #f9fafb;
+  border: none;
+  border-radius: 6%;
+  font-size: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  color: #16a34a;
+}
+
+.comment-btn:hover {
+  background: #bbf7d0;
+  color: #065f46;
+  transform: scale(1.1);
+}
+
+.comment-btn span {
+  font-weight: bold;
+  font-size: 13px;
+}
+
+/* 花ボタン */
+.flower-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 50%;
+  background: #f9fafb;
+  color: #16a34a;
+  cursor: pointer;
+  font-size: 18px;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.flower-btn:hover {
+  background: #bbf7d0;
+  color: #065f46;
+  transform: scale(1.1);
+}
+
+.flower-btn .flower-count {
+  font-weight: 600;
+  font-size: 13px;
+  margin-left: 4px;
+  color: #16a34a;
+}
+
+/* ページネーション */
 .pagination {
   display: flex;
   justify-content: center;
@@ -134,7 +216,7 @@
   font-weight: 500;
   font-size: 14px;
   color: #555;
-  background: white;
+  background: #fff;
   transition: all 0.3s;
 }
 
@@ -146,7 +228,7 @@
 
 .pagination .current {
   background: linear-gradient(135deg, #ffb3a4 0%, #ff9a8e 100%);
-  color: white;
+  color: #fff;
   border-color: #ff9a8e;
   box-shadow: 0 4px 10px rgba(255, 154, 142, 0.3);
 }
@@ -156,7 +238,7 @@
   cursor: not-allowed;
 }
 
-/* 絞り込み・ソート（投稿一覧上部） */
+/* 絞り込みバー */
 .filter-bar {
   display: flex;
   flex-wrap: wrap;
@@ -170,7 +252,7 @@
   margin-bottom: 32px;
 }
 
-/* 絞り込みボタン群 */
+/* 絞り込みボタン */
 .filter-buttons {
   display: flex;
   flex-wrap: wrap;
@@ -181,7 +263,7 @@
   padding: 8px 18px;
   border: 2px solid #e5e7eb;
   border-radius: 20px;
-  background: white;
+  background: #fff;
   color: #555;
   font-weight: 500;
   transition: all 0.3s ease;
@@ -220,68 +302,9 @@
   box-shadow: 0 0 4px rgba(255, 154, 142, 0.4);
 }
 
-/* ラベル類 */
+/* ラベル */
 .filter-label {
   font-weight: 600;
   color: #444;
   margin-right: 8px;
-}
-
-/* コメントボタン */
-.comment-btn {
-  display: flex;
-  align-items: center;
-  gap: 3px;
-  padding: 2px 4px;
-  background: #f9fafb;
-  border: none;
-  border-radius: 6%;
-  font-size: 10px;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-  color: #16a34a; /* グリーン系 */
-}
-
-.comment-btn:hover {
-  background: #bbf7d0;
-  color: #065f46;
-  transform: scale(1.1);
-}
-
-.comment-btn span {
-  font-weight: bold;
-  font-size: 13px;
-}
-
-/* 花ボタン（いいね） */
-.flower-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 3px;
-  width: 36px;
-  height: 36px;
-  border: none;
-  border-radius: 50%; /* ←コメントボタンと形を完全一致 */
-  background: #f9fafb; /* ←baseトーンを合わせる */
-  color: #16a34a;
-  cursor: pointer;
-  font-size: 18px;
-  transition: all 0.2s ease-in-out;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-}
-
-.flower-btn:hover {
-  background: #bbf7d0;
-  color: #065f46;
-  transform: scale(1.1);
-}
-
-
-/* ボタン内のカウント数字 */
-.flower-btn .flower-count {
-  font-weight: 600;
-  font-size: 13px;
-  margin-left: 4px;
-  color: #16a34a; 
 }

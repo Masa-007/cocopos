@@ -3,7 +3,6 @@
 require 'active_support/core_ext/integer/time'
 
 Rails.application.configure do
-  # 基本設定
   # コードを都度リロード
   config.cache_classes = false
   config.eager_load = false
@@ -38,14 +37,18 @@ Rails.application.configure do
   config.active_record.migration_error = :page_load
   config.active_record.verbose_query_logs = true
 
+  # アセット関連
   config.assets.paths += [
     Rails.root.join('app/assets/builds'),
     Rails.root.join('public/assets')
   ]
 
-  # 開発ではビルド済みアセットを直接配信
+  # 開発時：ビルド済みCSSを即反映
   config.public_file_server.enabled = true
   config.public_file_server.headers = {
-    'Cache-Control' => 'public, max-age=31536000'
+    'Cache-Control' => 'public, max-age=0'
   }
+
+  config.assets.debug = true
+  config.assets.compile = true
 end

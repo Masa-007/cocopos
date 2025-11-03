@@ -1,6 +1,5 @@
-# frozen_string_literal: true
-
+# app/models/flower.rb
 class Flower < ApplicationRecord
   belongs_to :user
-  belongs_to :post, counter_cache: true
+  belongs_to :flowerable, polymorphic: true, counter_cache: true
 end
