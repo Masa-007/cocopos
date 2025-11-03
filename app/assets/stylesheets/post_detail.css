@@ -1,4 +1,4 @@
-/* 投稿詳細カード */
+
 .post-detail-card {
   animation: fadeIn 0.5s ease-out;
 }
@@ -14,7 +14,7 @@
   }
 }
 
-/* ヘッダー色 */
+
 .post-header.future {
   background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
 }
@@ -27,7 +27,7 @@
   background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%);
 }
 
-/* 本文 */
+
 .post-body {
   min-height: 200px;
 }
@@ -36,12 +36,12 @@
   line-height: 1.8;
 }
 
-/* アクションボタン */
+
 .action-btn:hover {
   transform: scale(1.1);
 }
 
-/* 投稿一覧のリンク化 */
+
 .post-card {
   transition: all 0.3s;
   text-decoration: none;
@@ -53,7 +53,7 @@
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
 }
 
-/* 意見カード選択状態 */
+
 .opinion-radio:checked ~ .opinion-content {
   border-color: #ff9a8e !important;
   background: linear-gradient(135deg, #fff0eb 0%, #ffe4db 100%) !important;

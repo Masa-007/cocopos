@@ -15,6 +15,7 @@ class PostsController < ApplicationController
 
   def show
     redirect_to posts_path, alert: 'この投稿は非公開です' and return if private_post_blocked?
+
     @comments = @post.comments.includes(:user)
   end
 
@@ -67,6 +68,7 @@ class PostsController < ApplicationController
 
   def filter_by_type(posts)
     return posts if params[:filter].blank? || params[:filter] == 'all'
+
     posts.where(post_type: params[:filter])
   end
 
@@ -116,6 +118,7 @@ class PostsController < ApplicationController
 
   def fetch_bool(hash, key, fallback)
     return fallback unless hash.key?(key)
+
     ActiveModel::Type::Boolean.new.cast(hash[key])
   end
 

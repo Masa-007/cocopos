@@ -1,5 +1,4 @@
 document.addEventListener("turbo:load", () => {
-  console.log("✏️ placeholder_switch loaded");
 
   const postBody = document.getElementById("post_body");
   const postTitle = document.getElementById("post_title");

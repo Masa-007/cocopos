@@ -30,9 +30,9 @@ class Post < ApplicationRecord
 
   # 投稿タイプごとの設定
   POST_TYPE_INFO = {
-    future:  { icon: '🌱', name: '未来宣言箱', color: 'green' },
+    future: { icon: '🌱', name: '未来宣言箱', color: 'green' },
     organize: { icon: '🌈', name: '心の整理箱', color: 'purple' },
-    thanks:   { icon: '💌', name: '感謝箱', color: 'pink' }
+    thanks: { icon: '💌', name: '感謝箱', color: 'pink' }
   }.freeze
 
   def post_type_icon

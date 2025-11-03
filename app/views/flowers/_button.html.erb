@@ -1,9 +1,6 @@
-<%# app/views/flowers/_button.html.erb %>
 
-<%# 🌸 Flower状態をDBから直接確認（キャッシュを使わない） %>
 <% flowered = user_signed_in? && Flower.exists?(user: current_user, flowerable: flowerable) %>
 
-<%# 🌸 URLを対象によって分岐 %>
 <% url = if flowerable.is_a?(Comment)
             post_comment_flower_path(flowerable.post, flowerable)
           else

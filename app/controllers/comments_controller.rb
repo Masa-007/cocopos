@@ -6,7 +6,6 @@ class CommentsController < ApplicationController
   before_action :set_comment, only: %i[edit update destroy]
   before_action :authorize_user!, only: %i[edit update destroy]
 
-  # コメント作成
   def create
     @comment = @post.comments.build(comment_params)
     @comment.user = current_user
@@ -18,10 +17,10 @@ class CommentsController < ApplicationController
     end
   end
 
-  # コメント編集ページ
+
   def edit; end
 
-  # コメント更新
+
   def update
     if @comment.update(comment_params)
       redirect_to post_path(@post), notice: 'コメントを更新しました。'
@@ -30,7 +29,7 @@ class CommentsController < ApplicationController
     end
   end
 
-  # コメント削除
+
   def destroy
     @comment.destroy
     redirect_to post_path(@post), notice: 'コメントを削除しました。'

@@ -22,5 +22,4 @@ Rails.application.routes.draw do
   # マイページ
   get 'mypage', to: 'users#mypage', as: :mypage
   get 'mypage/posts', to: 'users#mypage_posts', as: :mypage_posts
-
 end

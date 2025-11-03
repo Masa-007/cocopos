@@ -1,24 +1,17 @@
 document.addEventListener("turbo:load", () => {
-  console.log("turbo:load fired");
-
   requestAnimationFrame(() => {
     const helpButton = document.querySelector("#helpButton");
     const helpModal = document.querySelector("#helpModal");
     const closeBtn = document.querySelector(".modal-close");
     const howToLink = document.querySelector("#howToLink");
 
-    if (!helpModal || !closeBtn) {
-      console.log("必要な要素が見つかりません");
-      return;
-    }
+    if (!helpModal || !closeBtn) return;
 
     const openModal = () => {
-      console.log("modal opened");
       helpModal.classList.add("active");
     };
 
     const closeModal = () => {
-      console.log("modal closed");
       helpModal.classList.remove("active");
     };
 

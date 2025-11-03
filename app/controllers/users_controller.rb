@@ -13,32 +13,37 @@ class UsersController < ApplicationController
   end
 
   def mypage_posts
-    @user = current_user
-    @posts = current_user.posts
-
-    case params[:filter]
-    when 'future'
-      @posts = @posts.where(post_type: 'future')
-    when 'organize'
-      @posts = @posts.where(post_type: 'organize')
-    when 'thanks'
-      @posts = @posts.where(post_type: 'thanks')
-    when 'private'
-      @posts = @posts.where(is_public: false)
-    end
-
-    if params[:sort] == 'old'
-      @posts = @posts.order(created_at: :asc)
-    else
-      @posts = @posts.order(created_at: :desc)
-    end
-
-    @posts = @posts.page(params[:page])
+    @user  = current_user
+    @posts = filtered_posts.page(params[:page])
     prepare_season_info
     render :mypage_posts
   end
 
   private
+
+  def filtered_posts
+    posts = current_user.posts
+    posts = filter_posts(posts)
+    sort_posts(posts)
+  end
+
+  def filter_posts(posts)
+    case params[:filter]
+    when 'future'   then posts.where(post_type: 'future')
+    when 'organize' then posts.where(post_type: 'organize')
+    when 'thanks'   then posts.where(post_type: 'thanks')
+    when 'private'  then posts.where(is_public: false)
+    else posts
+    end
+  end
+
+  def sort_posts(posts)
+    if params[:sort] == 'old'
+      posts.order(created_at: :asc)
+    else
+      posts.order(created_at: :desc)
+    end
+  end
 
   def prepare_calendar_date(today)
     @year  = (params[:year]  || today.year).to_i

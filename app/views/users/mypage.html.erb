@@ -1,23 +1,19 @@
 <main class="flex-grow pt-20 pb-16 relative z-10 font-['Zen_Maru_Gothic']">
   <div id="season-wrapper" class="<%= @season %> relative">
 
-    <!-- 🌼 花びらレイヤー -->
     <div class="petal-layer pointer-events-none absolute inset-0 overflow-hidden">
       <% [10, 25, 40, 60, 80].each_with_index do |left, i| %>
         <div class="petal" style="left:<%= left %>%; animation-delay:<%= i %>s;"></div>
       <% end %>
     </div>
 
-    <!-- ===== メインコンテンツ ===== -->
     <div class="container mx-auto max-w-6xl px-6 text-center relative z-10">
 
-      <!-- 🌸 タイトル -->
       <h1 class="mypage-title mb-2">
         <%= { "spring" => "🌸", "summer" => "🌻", "autumn" => "🍁", "winter" => "❄️" }[@season] %> マイページ
       </h1>
       <p class="mypage-subtitle mb-8">あなたの心の記録を花のように咲かせよう</p>
 
-      <!-- 🌈 季節切り替えボタン -->
       <div class="text-center mb-10">
         <%= link_to "次の季節のデザインを見てみる 🌈",
           mypage_path(season: next_season(@season)),
@@ -26,10 +22,8 @@
                   shadow-md hover:scale-105 hover:brightness-110 transition-all duration-300" %>
       </div>
 
-      <!-- 💌 アクションボタン群 -->
       <div class="mypage-actions grid md:grid-cols-3 gap-6 mb-12">
 
-        <!-- 投稿を作成 -->
         <%= link_to new_post_path, class: "action-btn green block" do %>
           <div class="action-content flex flex-col items-center text-center">
             <div class="action-icon">✏️</div>
@@ -39,7 +33,6 @@
           </div>
         <% end %>
 
-        <!-- 投稿を振り返る -->
         <%= link_to mypage_posts_path, class: "action-btn blue block" do %>
           <div class="action-content flex flex-col items-center text-center">
             <div class="action-icon">📖</div>
@@ -49,7 +42,6 @@
           </div>
         <% end %>
 
-        <!-- 設定を変更 -->
         <%= link_to "#", class: "action-btn gray block" do %>
           <div class="action-content flex flex-col items-center text-center">
             <div class="action-icon">⚙️</div>
@@ -61,7 +53,6 @@
 
       </div>
 
-      <!-- 🍁 カレンダー -->
       <div class="flower-frame mx-auto my-10">
         <turbo-frame id="calendar_frame" data-season="<%= @season %>">
           <%= render "calendar",

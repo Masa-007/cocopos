@@ -3,7 +3,7 @@
 
 # Rails credentials / secrets
 /config/master.key
-/config/credentials.yml.enc    # 万一を考えて除外
+/config/credentials.yml.enc  
 /config/environments/*.local.yml
 
 # Environment variables
