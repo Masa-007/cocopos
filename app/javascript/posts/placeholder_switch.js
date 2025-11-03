@@ -1,4 +1,3 @@
-// app/javascript/posts/placeholder_switch.js
 document.addEventListener("turbo:load", () => {
   console.log("✏️ placeholder_switch loaded");
 
@@ -30,4 +29,11 @@ document.addEventListener("turbo:load", () => {
       postBody.placeholder = placeholders[type]?.body || "";
     });
   });
+
+  const checkedRadio = document.querySelector(".post-type-radio:checked");
+  if (checkedRadio) {
+    const type = checkedRadio.value;
+    postTitle.placeholder = placeholders[type]?.title || "";
+    postBody.placeholder = placeholders[type]?.body || "";
+  }
 });
