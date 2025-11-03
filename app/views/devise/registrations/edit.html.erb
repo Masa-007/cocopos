@@ -1,11 +1,11 @@
-<h2 class="text-center mb-6"><%= t('devise.registrations.edit.title', default: "アカウント情報の編集") %></h2>
+<h2 class="text-center mb-6"><%= t('devise.registrations.edit.title') %></h2>
 
 <div class="auth-card">
   <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
     <%= render "devise/shared/error_messages", resource: resource %>
 
     <div class="field">
-      <%= f.label :name, t('activerecord.attributes.user.name', default: "名前") %><br />
+      <%= f.label :name, t('activerecord.attributes.user.name') %><br />
       <%= f.text_field :name, autofocus: true, autocomplete: "name" %>
     </div>
 
@@ -16,16 +16,16 @@
 
     <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
       <p class="text-sm text-gray-500 mb-3">
-        <%= t('devise.registrations.edit.waiting_confirmation', email: resource.unconfirmed_email, default: "確認中のメール: %{email}") %>
+        <%= t('devise.registrations.edit.waiting_confirmation', email: resource.unconfirmed_email) %>
       </p>
     <% end %>
 
     <div class="field">
       <%= f.label :password, t('activerecord.attributes.user.password') %><br />
-      <em class="text-sm text-gray-500"><%= t('devise.registrations.edit.password_hint', default: "変更しない場合は空欄で構いません") %></em><br />
+      <em class="text-sm text-gray-500"><%= t('devise.registrations.edit.password_hint') %></em><br />
       <%= f.password_field :password, autocomplete: "new-password" %>
       <% if @minimum_password_length %>
-        <em class="text-sm text-gray-500">（<%= @minimum_password_length %>文字以上）</em>
+        <em class="text-sm text-gray-500">（<%= @minimum_password_length %><%= t('devise.registrations.edit.characters_or_more') %>）</em>
       <% end %>
     </div>
 
@@ -35,28 +35,27 @@
     </div>
 
     <div class="field">
-      <%= f.label :current_password, t('devise.registrations.edit.current_password', default: "現在のパスワード") %><br />
+      <%= f.label :current_password, t('devise.registrations.edit.current_password') %><br />
       <%= f.password_field :current_password, autocomplete: "current-password" %>
-      <em class="text-sm text-gray-500"><%= t('devise.registrations.edit.current_password_hint', default: "変更を反映するために入力してください") %></em>
+      <em class="text-sm text-gray-500"><%= t('devise.registrations.edit.current_password_hint') %></em>
     </div>
 
-    <!-- 更新ボタン -->
     <div class="actions mt-6">
-      <%= f.submit t('devise.registrations.edit.update', default: "更新する"), class: "btn-primary w-full" %>
+      <%= f.submit t('devise.registrations.edit.update'), class: "btn-primary w-full" %>
     </div>
   <% end %>
 </div>
 
 <div class="auth-card mt-8 text-center">
-  <h3 class="font-bold mb-3"><%= t('devise.registrations.edit.cancel_title', default: "アカウント削除") %></h3>
-  <p class="mb-3 text-gray-600"><%= t('devise.registrations.edit.cancel_notice', default: "削除すると全てのデータが失われます。") %></p>
-  <%= button_to t('devise.registrations.edit.cancel_account', default: "アカウントを削除する"),
+  <h3 class="font-bold mb-3"><%= t('devise.registrations.edit.cancel_title') %></h3>
+  <p class="mb-3 text-gray-600"><%= t('devise.registrations.edit.cancel_notice') %></p>
+  <%= button_to t('devise.registrations.edit.cancel_account'),
         registration_path(resource_name),
-        data: { confirm: t('devise.registrations.edit.cancel_confirm', default: "本当に削除しますか？") },
+        data: { confirm: t('devise.registrations.edit.cancel_confirm') },
         method: :delete,
         class: "btn-danger" %>
 </div>
 
 <div class="text-center mt-6">
-  <%= link_to t('devise.shared.links.back', default: "戻る"), root_path, class: "text-rose-500 hover:underline" %>
+  <%= link_to t('devise.shared.links.back'), root_path, class: "text-rose-500 hover:underline" %>
 </div>

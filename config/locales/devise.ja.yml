@@ -1,5 +1,30 @@
 ja:
   devise:
+    registrations:
+      edit:
+        title: "アカウント情報の編集"
+        waiting_confirmation: "確認中のメール: %{email}"
+        password_hint: "変更しない場合は空欄で構いません"
+        characters_or_more: "文字以上"
+        current_password: "現在のパスワード"
+        current_password_hint: "変更を反映するために入力してください"
+        update: "更新する"
+        cancel_title: "アカウント削除"
+        cancel_notice: "削除すると全てのデータが失われます。"
+        cancel_account: "アカウントを削除する"
+        cancel_confirm: "本当に削除しますか？"
+
+      signed_up: "アカウント登録が完了しました。"
+      updated: "アカウント情報を更新しました。"
+      destroyed: "アカウントを削除しました。"
+      new:
+        sign_up: "新規登録"
+        email: "メールアドレス"
+        password: "パスワード"
+        password_confirmation: "パスワード（確認用）"
+        minimum_password_length: "（6文字以上）"
+        log_in: "ログイン"
+
     confirmations:
       confirmed: "アカウントを確認しました。"
       send_instructions: "アカウント確認のメールを送信しました。"
@@ -32,18 +57,6 @@ ja:
         send_instructions_button: "パスワード再設定メールを送信"
         send_instructions: "パスワード再設定メールを送信"
 
-    registrations:
-      signed_up: "アカウント登録が完了しました。"
-      updated: "アカウント情報を更新しました。"
-      destroyed: "アカウントを削除しました。"
-      new:
-        sign_up: "新規登録"
-        email: "メールアドレス"
-        password: "パスワード"
-        password_confirmation: "パスワード（確認用）"
-        minimum_password_length: "（6文字以上）"
-        log_in: "ログイン"
-
     sessions:
       signed_in: "ログインしました。"
       signed_out: "ログアウトしました。"
@@ -61,6 +74,7 @@ ja:
         didnt_receive_confirmation: "確認メールを受け取っていませんか？"
         didnt_receive_unlock: "ロック解除メールを受け取っていませんか？"
         sign_in_with: "%{provider}でログイン"
+        back: "戻る"
 
   activerecord:
     attributes:
@@ -91,7 +105,6 @@ ja:
       invalid: "は不正な値です"
       taken: "はすでに存在します"
 
-  # 日時フォーマット
   time:
     formats:
       default: "%Y/%m/%d %H:%M"
