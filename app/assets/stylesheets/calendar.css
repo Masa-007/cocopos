@@ -1,4 +1,3 @@
-/* カレンダー全体 */
 .calendar-container {
   max-width: 800px;
   margin: auto;
@@ -12,45 +11,26 @@
   transform: translateY(-5px);
 }
 
-/* 花びらアニメーション */
 @keyframes petalFall {
   0% { transform: translateY(-10px) rotate(0deg); opacity: 1; }
   100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
 }
-
-/* 花びら（JS生成用） */
 .petal {
   position: fixed;
-  width: 16px; /* 少し大きく */
+  width: 16px;
   height: 16px;
   border-radius: 50%;
   animation: petalFall 8s linear infinite;
   pointer-events: none;
   z-index: 2;
-  filter: brightness(1);
-  opacity: 0.1; /* 柔らかく透かす */
-  mix-blend-mode: normal;
+  opacity: 0.1;
 }
 
-/* 季節ごとの花びらカラー */
-body.spring .petal {
-  background: radial-gradient(circle, #ffe0eb 0%, #ffb3c6 100%);
-  box-shadow: 0 0 8px rgba(255, 182, 193, 0.25);
-}
-body.summer .petal {
-  background: radial-gradient(circle, #fff9c4 0%, #ffecb3 100%);
-  box-shadow: 0 0 8px rgba(255, 235, 59, 0.25);
-}
-body.autumn .petal {
-  background: radial-gradient(circle, #ffe0b2 0%, #ffcc80 100%);
-  box-shadow: 0 0 8px rgba(255, 171, 64, 0.25);
-}
-body.winter .petal {
-  background: radial-gradient(circle, #e3f2fd 0%, #bbdefb 100%);
-  box-shadow: 0 0 8px rgba(144, 202, 249, 0.25);
-}
+body.spring .petal { background: radial-gradient(circle, #ffe0eb 0%, #ffb3c6 100%); }
+body.summer .petal { background: radial-gradient(circle, #fff9c4 0%, #ffecb3 100%); }
+body.autumn .petal { background: radial-gradient(circle, #ffe0b2 0%, #ffcc80 100%); }
+body.winter .petal { background: radial-gradient(circle, #e3f2fd 0%, #bbdefb 100%); }
 
-/* 季節テーマ別フレーム*/
 .flower-frame {
   position: relative;
   padding: 3.5rem;
@@ -61,58 +41,11 @@ body.winter .petal {
   transition: background 0.6s ease, box-shadow 0.6s ease;
 }
 
-body.spring .flower-frame {
-  background: radial-gradient(circle at 50% 50%, #fff0f6 0%, #ffe0eb 100%);
-  box-shadow:
-    inset 0 0 25px rgba(255, 182, 193, 0.3),
-    0 0 30px rgba(255, 128, 171, 0.6);
-}
-body.summer .flower-frame {
-  background: radial-gradient(circle at 50% 50%, #e0faff 0%, #b2f1ff 100%);
-  box-shadow:
-    inset 0 0 25px rgba(0, 188, 212, 0.25),
-    0 0 30px rgba(0, 150, 200, 0.5);
-}
-body.autumn .flower-frame {
-  background: radial-gradient(circle at 50% 50%, #fff5e0 0%, #ffd699 100%);
-  box-shadow:
-    inset 0 0 25px rgba(255, 152, 0, 0.3),
-    0 0 30px rgba(255, 102, 0, 0.6);
-}
-body.winter .flower-frame {
-  background: radial-gradient(circle at 50% 50%, #f0faff 0%, #cfe9ff 100%);
-  box-shadow:
-    inset 0 0 25px rgba(135, 206, 250, 0.3),
-    0 0 30px rgba(100, 180, 255, 0.6);
-}
+body.spring .flower-frame { background: radial-gradient(circle at 50% 50%, #fff0f6 0%, #ffe0eb 100%); }
+body.summer .flower-frame { background: radial-gradient(circle at 50% 50%, #e0faff 0%, #b2f1ff 100%); }
+body.autumn .flower-frame { background: radial-gradient(circle at 50% 50%, #fff5e0 0%, #ffd699 100%); }
+body.winter .flower-frame { background: radial-gradient(circle at 50% 50%, #f0faff 0%, #cfe9ff 100%); }
 
-/* 季節アイコン装飾 */
-.flower-frame::before,
-.flower-frame::after {
-  position: absolute;
-  font-size: 2.8rem;
-  opacity: 0.7;
-  animation: floatFlower 6s ease-in-out infinite;
-  z-index: 1;
-}
-body.spring .flower-frame::before,
-body.spring .flower-frame::after { content: "🌸"; }
-body.summer .flower-frame::before,
-body.summer .flower-frame::after { content: "🌻"; }
-body.autumn .flower-frame::before,
-body.autumn .flower-frame::after { content: "🍁"; }
-body.winter .flower-frame::before,
-body.winter .flower-frame::after { content: "❄️"; }
-
-.flower-frame::before { top: -35px; left: -20px; animation-delay: 0s; }
-.flower-frame::after { bottom: -35px; right: -20px; animation-delay: 3s; }
-
-@keyframes floatFlower {
-  0%, 100% { transform: translateY(0) rotate(0deg); }
-  50% { transform: translateY(-12px) rotate(15deg); }
-}
-
-/* 日付セル */
 .calendar-day {
   aspect-ratio: 1;
   border-radius: 10px;
@@ -124,33 +57,130 @@ body.winter .flower-frame::after { content: "❄️"; }
   justify-content: center;
   position: relative;
   border: 1px solid rgba(0, 0, 0, 0.1);
-  background-color: #fff;
-  z-index: 5; /* 花びらより上 */
-}
-.calendar-day:hover {
-  transform: scale(1.08) rotate(2deg);
-  background: radial-gradient(circle, #fff9f5 0%, #ffe4dc 100%);
-  box-shadow: 0 0 10px rgba(255, 160, 140, 0.5);
+  background: linear-gradient(135deg, #fffdfb 0%, #fff3ef 100%);
+  z-index: 5;
 }
 
-/* 投稿あり・今日 */
+.no-post:hover {
+  transform: scale(1.05);
+  background: linear-gradient(135deg, #fffaf8 0%, #ffece7 100%);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
 .has-post {
-  background: linear-gradient(135deg, #ffb3a4 0%, #ff9a8e 100%);
-  color: white;
-  font-weight: bold;
-  box-shadow: 0 4px 18px rgba(255, 120, 100, 0.5);
+  background: linear-gradient(135deg, #ffb3a4 0%, #ff9580 100%) !important;
+  color: #fff;
+  font-weight: 700;
+  border: none;
+  box-shadow:
+    0 0 20px rgba(255, 150, 130, 0.4),
+    inset 0 0 10px rgba(255, 255, 255, 0.25);
+  z-index: 6;
+  transition: transform 0.25s ease, box-shadow 0.3s ease;
+  padding: 6px;
 }
-.today {
-  border: 3px solid #ff9a8e;
-  box-shadow: 0 0 25px rgba(255, 154, 142, 0.6);
-  animation: glow 1.5s ease-in-out infinite;
-}
-@keyframes glow {
-  0%,100% { box-shadow: 0 0 25px rgba(255, 154, 142, 0.6); }
-  50% { box-shadow: 0 0 40px rgba(255, 100, 100, 0.9); }
+.has-post:hover {
+  transform: scale(1.07);
 }
 
-/* 凡例 */
+.calendar-day.today {
+  border: 2px solid #ffb3a4;
+  background: linear-gradient(135deg, #fff9f7 0%, #ffe7e0 100%);
+  color: #ff6b6b;
+  font-weight: 800;
+  z-index: 9;
+  animation: glow-today-none 2s ease-in-out infinite alternate;
+}
+
+.has-post.today {
+  background: linear-gradient(135deg, #ffb3a4 0%, #ff7050 100%) !important;
+  color: #fff;
+  font-weight: 900;
+  border: none;
+  box-shadow:
+    0 0 40px rgba(255, 70, 40, 0.6),
+    0 0 80px rgba(255, 90, 60, 0.7);
+  animation: glow-today-post 2s ease-in-out infinite alternate;
+  z-index: 12;
+}
+
+@keyframes glow-today-none {
+  0%, 100% {
+    box-shadow:
+      0 0 14px rgba(255, 200, 180, 0.2),
+      0 0 22px rgba(255, 180, 150, 0.15);
+  }
+  50% {
+    box-shadow:
+      0 0 20px rgba(255, 180, 160, 0.3),
+      0 0 28px rgba(255, 160, 140, 0.25);
+  }
+}
+
+@keyframes glow-today-post {
+  0%, 100% {
+    box-shadow:
+      0 0 60px rgba(255, 100, 70, 0.6),
+      0 0 100px rgba(255, 60, 30, 0.7);
+  }
+  50% {
+    box-shadow:
+      0 0 80px rgba(255, 70, 40, 0.8),
+      0 0 120px rgba(255, 40, 10, 0.9);
+  }
+}
+
+.calendar-tooltip {
+  position: absolute;
+  bottom: calc(100% + 12px);
+  left: 50%;
+  transform: translateX(-50%) translateY(8px);
+  background: linear-gradient(135deg, #fff8f5 0%, #ffe4dc 100%);
+  color: #333;
+  border-radius: 14px;
+  padding: 12px 14px;
+  width: 250px;
+  font-size: 13px;
+  line-height: 1.5;
+  box-shadow:
+    0 8px 20px rgba(0, 0, 0, 0.18),
+    inset 0 0 8px rgba(255, 200, 180, 0.3);
+  border: 1px solid rgba(255, 160, 140, 0.3);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
+  z-index: 20;
+}
+.has-post:hover .calendar-tooltip,
+.calendar-tooltip.active,
+.calendar-tooltip:hover {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+  pointer-events: auto;
+}
+.calendar-tooltip::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 7px;
+  border-style: solid;
+  border-color: #ffe4dc transparent transparent transparent;
+}
+
+.calendar-day button {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: transparent;
+  color: inherit;
+  font-weight: inherit;
+  cursor: pointer;
+}
+
 .legend-box {
   display: flex;
   justify-content: center;
@@ -170,54 +200,19 @@ body.winter .flower-frame::after { content: "❄️"; }
   border-radius: 0.5rem;
 }
 .legend-item:nth-child(1) .legend-color {
-  background: #f3f4f6;
-  border: 1px solid #d1d5db;
+  background: linear-gradient(135deg, #fffdfb 0%, #fff3ef 100%);
+  border: 1px solid #e5e5e5;
 }
 .legend-item:nth-child(2) .legend-color {
-  background: linear-gradient(135deg, #ffb3a4 0%, #ff9a8e 100%);
+  background: linear-gradient(135deg, #ffb3a4 0%, #ff9580 100%);
   border: 1px solid #ff9a8e;
 }
 .legend-item:nth-child(3) .legend-color {
-  background: #fff0f5;
-  border: 2px solid #ff5c8d;
+  background: linear-gradient(135deg, #fff9f7 0%, #ffe7e0 100%);
+  border: 2px solid #ffb3a4;
+  animation: glow-today-none 2s ease-in-out infinite alternate;
 }
 
-/* ツールチップ */
-.calendar-day .tooltip {
-  position: absolute;
-  bottom: 115%;
-  left: 50%;
-  transform: translateX(-50%) translateY(5px);
-  background: rgba(0, 0, 0, 0.85);
-  color: #fff;
-  padding: 8px 10px;
-  border-radius: 8px;
-  font-size: 12px;
-  white-space: pre-wrap;
-  line-height: 1.4;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s ease, transform 0.3s ease;
-  width: max-content;
-  max-width: 220px;
-  z-index: 100; /* ← 花びらや枠の上に表示 */
-}
-.calendar-day:hover .tooltip {
-  opacity: 1;
-  transform: translateX(-50%) translateY(0);
-}
-.calendar-day .tooltip::after {
-  content: "";
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  margin-left: -5px;
-  border-width: 5px;
-  border-style: solid;
-  border-color: rgba(0, 0, 0, 0.85) transparent transparent transparent;
-}
-
-/* フェードイン */
 @keyframes fadeIn {
   from { opacity: 0; transform: scale(0.95); }
   to { opacity: 1; transform: scale(1); }

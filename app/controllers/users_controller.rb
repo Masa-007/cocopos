@@ -8,6 +8,7 @@ class UsersController < ApplicationController
     today = Time.zone.today
     prepare_calendar_date(today)
     prepare_season_info
+    load_month_posts_for_calendar
     render :mypage
   end
 
@@ -60,10 +61,17 @@ class UsersController < ApplicationController
     end
   end
 
+  def load_month_posts_for_calendar
+    range = @first_day.beginning_of_day..@last_day.end_of_day
+    posts = current_user.posts
+                        .where(created_at: range)
+                        .select(:id, :title, :body, :post_type, :created_at, :is_public)
+    @posts_by_date = posts.group_by { |p| p.created_at.to_date }
+  end
+
   def next_season(current)
     order = %w[spring summer autumn winter]
     order[(order.index(current) + 1) % order.size]
   end
-
   helper_method :next_season
 end
