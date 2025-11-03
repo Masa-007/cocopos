@@ -61,7 +61,6 @@
 
           <div class="post-card-footer flex justify-between items-center text-sm text-gray-600 px-6 py-4 bg-gray-50 border-t">
 
-            <!-- 左側：投稿者・非公開・コメント不要 -->
             <div class="flex items-center gap-2 flex-wrap">
               <span class="post-author"><%= post.display_name %></span>
 
@@ -69,25 +68,23 @@
                 <span class="inline-block px-2 py-1 bg-gray-200 text-gray-700 rounded-full text-xs">非公開</span>
               <% end %>
 
-              <% unless post.opinion_needed? %>
+              <% if post.opinion_needed? %>
+                <span class="inline-block px-2 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-bold">💬 意見募集中</span>
+              <% else %>
                 <span class="inline-block px-2 py-1 bg-gray-200 text-gray-700 rounded-full text-xs">💭 コメント不要</span>
               <% end %>
             </div>
 
-            <!-- 右側：花ボタン + コメントボタン -->
             <% if post.is_public? %>
               <div class="post-actions flex items-center gap-3">
-
-                <!-- 🌸 花ボタン（Turbo対象） -->
                 <div id="flower_btn_post_<%= post.id %>">
                   <%= render "flowers/button", flowerable: post %>
                 </div>
 
-                <!-- 💬 コメントボタン -->
                 <% if post.opinion_needed? %>
                   <%= link_to post_path(post, anchor: "comment-form"),
                               data: { turbo: false },
-                              class: "action-icon comment-btn" do %>
+                              class: "action-icon comment-btn flex items-center gap-1" do %>
                     💬 <span><%= post.comments.count %></span>
                   <% end %>
                 <% end %>
