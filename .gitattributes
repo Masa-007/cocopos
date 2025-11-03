@@ -1,4 +1,3 @@
-# GitHub Linguist に解析させないフォルダ
 node_modules/* linguist-vendored
 vendor/* linguist-vendored
 app/assets/builds/* linguist-vendored

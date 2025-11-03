@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # app/models/flower.rb
 class Flower < ApplicationRecord
   belongs_to :user

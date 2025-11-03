@@ -1,4 +1,4 @@
-/* ローディング画面スタイル */
+
 .loading-screen {
   position: fixed;
   inset: 0;
@@ -12,7 +12,7 @@
   transition: opacity 0.6s ease;
 }
 
-/* 🎬 表示トリガー：JSで .active を付与 */
+
 .loading-screen.active {
   opacity: 1;
   pointer-events: all;
@@ -44,7 +44,7 @@
   z-index: 1;
 }
 
-/* 投入口（金属質感） */
+
 .postbox-slot {
   position: absolute;
   top: 22px;
@@ -59,7 +59,7 @@
     inset 0 -3px 5px rgba(0, 0, 0, 0.8);
 }
 
-/* 郵便マーク */
+
 .postbox::after {
   content: '〒';
   position: absolute;
@@ -72,7 +72,7 @@
   text-shadow: 0 2px 3px rgba(0, 0, 0, 0.4);
 }
 
-/* 手紙（ポストより前面） */
+
 .letter {
   position: absolute;
   top: -360px;
@@ -96,7 +96,7 @@
   font-size: 44px;
 }
 
-/* 手紙：まっすぐ自然に落下 */
+
 @keyframes letterInsert {
   0% {
     top: -360px;
@@ -113,7 +113,7 @@
   }
   80% {
     top: 100px;
-    opacity: 0.6; /* ← 早めにフェード開始 */
+    opacity: 0.6; 
   }
   100% {
     top: 260px;
@@ -123,7 +123,7 @@
 }
 
 
-/* 投函中テキスト */
+
 
 .loading-text {
   position: absolute;
@@ -143,7 +143,7 @@
   50% { opacity: 0.5; }
 }
 
-/* 完了画面（パネル風デザイン） */
+
 .completion-screen {
   position: fixed;
   inset: 0;
@@ -168,7 +168,7 @@
   to { opacity: 1; transform: scale(1); }
 }
 
-/* パネル全体 */
+
 .completion-content {
   text-align: center;
   background: rgba(255, 255, 255, 0.95);
@@ -190,7 +190,7 @@
   100% { transform: translateY(0); opacity: 1; }
 }
 
-/* チェックマーク */
+
 .checkmark {
   width: 140px;
   height: 140px;
@@ -217,7 +217,7 @@
   font-weight: 900;
 }
 
-/* タイトルとメッセージ */
+
 .completion-content h1 {
   font-size: 2.4rem;
   font-weight: 800;
@@ -233,7 +233,7 @@
   margin-bottom: 50px;
 }
 
-/* 完了画面（縦3列レイアウト） */
+
 .completion-screen {
   position: fixed;
   inset: 0;
@@ -252,7 +252,7 @@
   pointer-events: all;
 }
 
-/* パネル本体 */
+
 .completion-content {
   background: linear-gradient(145deg, #fffaf7 0%, #ffeae2 100%);
   border-radius: 30px;
@@ -264,7 +264,7 @@
   width: 90%;
 }
 
-/* チェックマーク */
+
 .checkmark {
   width: 100px;
   height: 100px;
@@ -290,7 +290,7 @@
   100% { transform: scale(1); }
 }
 
-/* ボタンエリア（縦配置） */
+
 .completion-actions {
   display: flex;
   flex-direction: column;
@@ -300,7 +300,7 @@
   margin-top: 40px;
 }
 
-/* ボタンカード（小さめ） */
+
 .action-card {
   width: 70%;
   max-width: 340px;
@@ -318,7 +318,7 @@
   box-shadow: 0 8px 25px rgba(255, 150, 120, 0.35);
 }
 
-/* アイコン */
+
 .action-icon {
   width: 50px;
   height: 50px;

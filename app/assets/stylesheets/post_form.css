@@ -1,4 +1,4 @@
-/* 投稿タイプ選択カード (.card-ui) */
+
 .card-ui {
   position: relative;
   border: 3px solid #e5e7eb;
@@ -10,13 +10,13 @@
   background: #fff;
 }
 
-/* hover時：浮き上がる効果 */
+
 label .card-ui:hover {
   transform: translateY(-5px);
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
 }
 
-/* 種類別ホバー枠色 */
+
 label:has(input[value="future"]):hover .card-ui {
   border-color: #10b981;
 }
@@ -27,7 +27,7 @@ label:has(input[value="thanks"]):hover .card-ui {
   border-color: #ec4899;
 }
 
-/* 選択時のグラデーション背景 */
+
 
 label:has(input[value="future"]:checked) .card-ui {
   border-color: #10b981;
@@ -49,14 +49,14 @@ label:has(input[value="thanks"]:checked) .card-ui {
   box-shadow: 0 6px 20px rgba(236, 72, 153, 0.25);
   transform: translateY(-5px);
 }
-/* 選択時の枠強調 */
+
 .card-ui:has(input:checked) {
   border-color: #fb923c;
   box-shadow: 0 0 0 4px rgba(251, 146, 60, 0.2);
   transform: translateY(-3px);
 }
 
-/* 意見カード（既存のまま） */
+
 .opinion-radio:checked ~ .opinion-content {
   border-color: #ff9a8e !important;
   background: linear-gradient(135deg, #fff0eb 0%, #ffe4db 100%) !important;
