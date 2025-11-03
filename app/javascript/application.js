@@ -1,8 +1,6 @@
 import "@hotwired/turbo-rails";
+import "./controllers"; 
 import "./modal";
-import "./controllers/season_controller";
-
-// posts 関連
 import "./posts/post_form";
 import "./posts/post_edit";
 import "./posts/placeholder_switch";

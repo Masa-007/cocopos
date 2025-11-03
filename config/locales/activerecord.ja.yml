@@ -19,3 +19,9 @@ ja:
             password:
               blank: "を入力してください"
               too_short: "は%{count}文字以上で入力してください"
+            password_confirmation:
+              confirmation: "がパスワードと一致しません"
+
+  errors:
+    messages:
+      confirmation: "が一致しません"

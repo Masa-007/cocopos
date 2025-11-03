@@ -19,11 +19,8 @@ gem 'kaminari'
 # フロントエンド / アセット
 gem 'foreman', '~> 0.90.0'
 gem 'propshaft'           # Rails 7.1 デフォルトのアセット管理
-gem 'stimulus-rails'      # Stimulus(JS)
 gem 'turbo-rails'         # Turbo(Hotwire)
 
-# Tailwind（CLI運用ならGem不要）
-# gem "tailwindcss-rails", "~> 2.0"
 
 # 開発支援
 group :development do
