@@ -14,8 +14,7 @@ class PostsController < ApplicationController
   end
 
   def show
-    redirect_to posts_path, alert: 'この投稿は非公開です' and return if private_post_blocked?
-
+    redirect_to posts_path, alert: t('posts.alerts.private') and return if private_post_blocked?
     @comments = @post.comments.includes(:user)
   end
 
@@ -40,8 +39,10 @@ class PostsController < ApplicationController
 
   def update
     updated_params = prepare_updated_params(@post, post_params)
+
     if @post.update(updated_params)
-      redirect_to @post, notice: '投稿を更新しました'
+      @post.reload
+      redirect_after_action(@post, t('posts.notices.updated'))
     else
       render :edit, status: :unprocessable_entity
     end
@@ -49,17 +50,27 @@ class PostsController < ApplicationController
 
   def destroy
     @post.destroy
-    redirect_to posts_path, notice: '投稿を削除しました'
+    redirect_after_action(nil, t('posts.notices.deleted'))
   end
 
   private
+
+  def redirect_after_action(post, message)
+    if params[:from] == 'mypage'
+      redirect_to mypage_posts_path, notice: message
+    elsif post.present?
+      redirect_to post_path(post, from: params[:from]), notice: message
+    else
+      redirect_to posts_path, notice: message
+    end
+  end
 
   def set_post
     @post = Post.find(params[:id])
   end
 
   def authorize_user!
-    redirect_to posts_path, alert: '権限がありません' unless @post.user == current_user
+    redirect_to posts_path, alert: t('posts.alerts.unauthorized') unless @post.user == current_user
   end
 
   def filter_by_visibility(posts)
@@ -68,7 +79,6 @@ class PostsController < ApplicationController
 
   def filter_by_type(posts)
     return posts if params[:filter].blank? || params[:filter] == 'all'
-
     posts.where(post_type: params[:filter])
   end
 
@@ -94,7 +104,7 @@ class PostsController < ApplicationController
   end
 
   def success_response(format, post)
-    format.html { redirect_to post, notice: '投稿を作成しました' }
+    format.html { redirect_to post_path(post, from: params[:from]), notice: t('posts.notices.created') }
     format.json { render json: { success: true }, status: :created }
   end
 
@@ -109,16 +119,25 @@ class PostsController < ApplicationController
   def prepare_updated_params(post, params)
     updated = params.dup
     updated[:is_public] = fetch_bool(updated, :is_public, post.is_public)
-    updated[:comment_allowed] = fetch_bool(updated, :comment_allowed, post.comment_allowed)
-    updated[:comment_allowed] &&= updated[:is_public]
-    effective_type = (updated[:post_type] || post.post_type).to_s
-    updated[:opinion_needed] = nil unless effective_type == 'organize'
+
+    if updated[:is_public]
+      updated[:comment_allowed] = fetch_bool(updated, :comment_allowed, post.comment_allowed)
+    else
+      updated[:comment_allowed] = false
+    end
+
+    updated[:opinion_needed] =
+      if updated[:comment_allowed] == true
+        true
+      else
+        false
+      end
+
     updated
   end
 
   def fetch_bool(hash, key, fallback)
     return fallback unless hash.key?(key)
-
     ActiveModel::Type::Boolean.new.cast(hash[key])
   end
 

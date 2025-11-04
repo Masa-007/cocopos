@@ -40,12 +40,11 @@
       <% end %>
     </div>
 
-
     <div class="posts-grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
       <% @posts.each do |post| %>
         <div class="post-card bg-white rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition">
 
-          <%= link_to post_path(post),
+          <%= link_to post_path(post, from: 'mypage'),
                       data: { turbo: false, id: post.id, category: post.post_type },
                       class: "block no-underline text-gray-800" do %>
 
@@ -72,6 +71,8 @@
 
               <% unless post.opinion_needed? %>
                 <span class="inline-block px-2 py-1 bg-gray-200 text-gray-700 rounded-full text-xs">💭 コメント不要</span>
+              <% else %>
+                <span class="inline-block px-2 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-bold">💬 意見募集中</span>
               <% end %>
             </div>
 
@@ -81,9 +82,9 @@
               </div>
 
               <% if post.opinion_needed? %>
-                <%= link_to post_path(post, anchor: "comment-form"),
+                <%= link_to post_path(post, anchor: "comment-form", from: 'mypage'),
                             data: { turbo: false },
-                            class: "action-icon comment-btn" do %>
+                            class: "action-icon comment-btn flex items-center gap-1" do %>
                   💬 <span><%= post.comments.count %></span>
                 <% end %>
               <% end %>

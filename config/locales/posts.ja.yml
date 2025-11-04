@@ -1,0 +1,15 @@
+ja:
+  posts:
+    notices:
+      created: "投稿を作成しました。"
+      updated: "投稿を更新しました。"
+      deleted: "投稿を削除しました。" 
+    alerts:
+      not_authorized: "権限がありません。"
+      private_post: "この投稿は非公開です。"
+    buttons:
+      new: "新規投稿"
+      edit: "編集"
+      delete: "削除"
+      back: "戻る"
+      confirm_delete: "本当に削除しますか？この操作は取り消せません。"

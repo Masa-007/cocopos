@@ -41,7 +41,8 @@
             <label class="flex-1 relative cursor-pointer select-none z-10">
               <%= f.radio_button :comment_allowed, "true",
                     checked: true,
-                    class: "absolute inset-0 opacity-0 cursor-pointer peer z-20" %>
+                    class: "absolute inset-0 opacity-0 cursor-pointer peer z-20",
+                    onchange: "document.getElementById('opinion_needed').value = true" %>
               <div class="card-ui p-4 border-2 border-gray-200 rounded-xl text-center transition-all
                           peer-checked:border-orange-400 peer-checked:ring-2 peer-checked:ring-orange-200
                           bg-white hover:bg-orange-50">
@@ -52,7 +53,8 @@
 
             <label class="flex-1 relative cursor-pointer select-none z-10">
               <%= f.radio_button :comment_allowed, "false",
-                    class: "absolute inset-0 opacity-0 cursor-pointer peer z-20" %>
+                    class: "absolute inset-0 opacity-0 cursor-pointer peer z-20",
+                    onchange: "document.getElementById('opinion_needed').value = false" %>
               <div class="card-ui p-4 border-2 border-gray-200 rounded-xl text-center transition-all
                           peer-checked:border-orange-400 peer-checked:ring-2 peer-checked:ring-orange-200
                           bg-white hover:bg-orange-50">
@@ -61,6 +63,8 @@
               </div>
             </label>
           </div>
+
+          <%= f.hidden_field :opinion_needed, id: "opinion_needed", value: true %>
         </div>
 
         <div class="mb-8 relative z-10">
@@ -116,10 +120,13 @@
 
         <div class="mb-8">
           <label class="flex items-center gap-3 cursor-pointer p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition">
-            <%= f.check_box :is_anonymous, class: "w-5 h-5 text-orange-400 rounded focus:ring-orange-400" %>
+            <%= f.check_box :is_anonymous,
+                  { checked: false, class: "w-5 h-5 text-orange-400 rounded focus:ring-orange-400" },
+                  "true",
+                  "false" %>
             <div>
               <span class="text-gray-800 font-medium block">匿名で投稿する</span>
-              <span class="text-sm text-gray-600">チェックを外すとユーザー名が表示されます</span>
+              <span class="text-sm text-gray-600">チェックが外れている場合、ユーザー名が表示されます</span>
             </div>
           </label>
         </div>
