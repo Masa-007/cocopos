@@ -40,7 +40,8 @@
       <% @posts.each do |post| %>
         <div class="post-card bg-white rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition">
 
-          <%= link_to post_path(post),
+
+          <%= link_to post_path(post, from: 'public'),
                       data: { turbo: false, id: post.id, category: post.post_type },
                       class: "block no-underline text-gray-800" do %>
 
@@ -60,7 +61,6 @@
           <% end %>
 
           <div class="post-card-footer flex justify-between items-center text-sm text-gray-600 px-6 py-4 bg-gray-50 border-t">
-
             <div class="flex items-center gap-2 flex-wrap">
               <span class="post-author"><%= post.display_name %></span>
 
@@ -82,7 +82,7 @@
                 </div>
 
                 <% if post.opinion_needed? %>
-                  <%= link_to post_path(post, anchor: "comment-form"),
+                  <%= link_to post_path(post, anchor: "comment-form", from: 'public'),
                               data: { turbo: false },
                               class: "action-icon comment-btn flex items-center gap-1" do %>
                     💬 <span><%= post.comments.count %></span>

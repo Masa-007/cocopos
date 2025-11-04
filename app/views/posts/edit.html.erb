@@ -7,7 +7,7 @@
     </div>
 
     <div class="bg-white rounded-3xl shadow-lg p-8">
-      <%= form_with model: @post, local: true do |f| %>
+      <%= form_with model: @post, local: true, url: post_path(@post, from: params[:from]) do |f| %>
 
         <div class="mb-8 relative z-10">
           <label class="block text-lg font-bold text-gray-800 mb-4">📮 投函する箱を選んでください</label>
@@ -20,7 +20,7 @@
                       class: "absolute inset-0 opacity-0 cursor-pointer peer z-20",
                       checked: @post.post_type == type.to_s,
                       required: true %>
-                <div class="card-ui text-center border-3 border-gray-200 rounded-xl p-4 transition-all bg-white hover:bg-orange-50">
+                <div class="card-ui text-center border-3 border-gray-200 rounded-xl p-4 transition-all bg-white hover:bg-orange-50 peer-checked:border-orange-400 peer-checked:ring-2 peer-checked:ring-orange-200">
                   <div class="text-5xl mb-3"><%= icon %></div>
                   <h3 class="text-xl font-bold mb-2"><%= title %></h3>
                   <p class="text-sm text-gray-600"><%= desc %></p>
@@ -37,7 +37,7 @@
               <%= f.radio_button :comment_allowed, "true",
                     class: "absolute inset-0 opacity-0 cursor-pointer peer z-20",
                     checked: @post.comment_allowed? %>
-              <div class="card-ui p-4 border-2 border-gray-200 rounded-xl text-center transition-all bg-white hover:bg-orange-50">
+              <div class="card-ui p-4 border-2 border-gray-200 rounded-xl text-center transition-all bg-white hover:bg-orange-50 peer-checked:border-orange-400 peer-checked:ring-2 peer-checked:ring-orange-200">
                 💬<br><strong>コメントを許可する</strong>
                 <p class="text-sm text-gray-600 mt-1">他の人が感想や励ましを書けます</p>
               </div>
@@ -47,7 +47,7 @@
               <%= f.radio_button :comment_allowed, "false",
                     class: "absolute inset-0 opacity-0 cursor-pointer peer z-20",
                     checked: !@post.comment_allowed? %>
-              <div class="card-ui p-4 border-2 border-gray-200 rounded-xl text-center transition-all bg-white hover:bg-orange-50">
+              <div class="card-ui p-4 border-2 border-gray-200 rounded-xl text-center transition-all bg-white hover:bg-orange-50 peer-checked:border-orange-400 peer-checked:ring-2 peer-checked:ring-orange-200">
                 🚫<br><strong>コメント不要</strong>
                 <p class="text-sm text-gray-600 mt-1">静かに残したい投稿に</p>
               </div>
@@ -62,7 +62,7 @@
               <%= f.radio_button :is_public, "true",
                     class: "absolute inset-0 opacity-0 cursor-pointer peer",
                     checked: @post.is_public? %>
-              <div class="card-ui p-4 border-2 border-gray-200 rounded-xl text-center transition-all bg-white hover:bg-orange-50">
+              <div class="card-ui p-4 border-2 border-gray-200 rounded-xl text-center transition-all bg-white hover:bg-orange-50 peer-checked:border-orange-400 peer-checked:ring-2 peer-checked:ring-orange-200">
                 🌐<br><strong>みんなに公開</strong>
                 <p class="text-sm text-gray-600 mt-1">投稿一覧に表示されます</p>
               </div>
@@ -72,7 +72,7 @@
               <%= f.radio_button :is_public, "false",
                     class: "absolute inset-0 opacity-0 cursor-pointer peer",
                     checked: !@post.is_public? %>
-              <div class="card-ui p-4 border-2 border-gray-200 rounded-xl text-center transition-all bg-white hover:bg-orange-50">
+              <div class="card-ui p-4 border-2 border-gray-200 rounded-xl text-center transition-all bg-white hover:bg-orange-50 peer-checked:border-orange-400 peer-checked:ring-2 peer-checked:ring-orange-200">
                 🔒<br><strong>非公開にする</strong>
                 <p class="text-sm text-gray-600 mt-1">自分だけが見られます</p>
               </div>
@@ -103,10 +103,14 @@
 
         <div class="mb-8">
           <label class="flex items-center gap-3 cursor-pointer p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition">
-            <%= f.check_box :is_anonymous, class: "w-5 h-5 text-orange-400 rounded focus:ring-orange-400" %>
+            <%= f.check_box :is_anonymous,
+                  { class: "w-5 h-5 text-orange-400 rounded focus:ring-orange-400",
+                    checked: @post.is_anonymous? },
+                  "true",
+                  "false" %>
             <div>
               <span class="text-gray-800 font-medium block">匿名で投稿する</span>
-              <span class="text-sm text-gray-600">チェックを外すとユーザー名が表示されます</span>
+              <span class="text-sm text-gray-600">チェックが外れている場合、ユーザー名が表示されます</span>
             </div>
           </label>
         </div>
@@ -124,14 +128,18 @@
 
         <div class="flex justify-center gap-4">
           <%= f.submit "更新する", class: "px-12 py-3 bg-gradient-to-r from-blue-400 to-blue-500 text-white text-lg font-bold rounded-full hover:shadow-xl transition transform hover:scale-105 cursor-pointer" %>
-          <%= link_to "キャンセル", @post, class: "px-8 py-3 bg-gray-200 text-gray-700 font-bold rounded-full hover:bg-gray-300 transition" %>
+          <% if params[:from] == 'mypage' %>
+            <%= link_to "キャンセル", mypage_posts_path, class: "px-8 py-3 bg-gray-200 text-gray-700 font-bold rounded-full hover:bg-gray-300 transition" %>
+          <% else %>
+            <%= link_to "キャンセル", @post, class: "px-8 py-3 bg-gray-200 text-gray-700 font-bold rounded-full hover:bg-gray-300 transition" %>
+          <% end %>
         </div>
 
       <% end %>
     </div>
 
     <div class="mt-8 text-center">
-      <%= button_to "この投稿を削除する", @post,
+      <%= button_to "この投稿を削除する", post_path(@post, from: params[:from]),
           method: :delete,
           data: { turbo_confirm: "本当に削除しますか？この操作は取り消せません。" },
           class: "px-8 py-3 bg-red-500 text-white font-bold rounded-full hover:bg-red-600 transition" %>
