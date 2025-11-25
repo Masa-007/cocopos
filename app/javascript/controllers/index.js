@@ -4,7 +4,7 @@ import CalendarTooltipController from "./calendar_tooltip_controller";
 import ShareController from "./share_controller"; 
 import SlideshowController from "./slideshow_controller";
 
-const application = Application.start();git 
+const application = Application.start();
 
 application.register("season", SeasonController);
 application.register("calendar-tooltip", CalendarTooltipController);
