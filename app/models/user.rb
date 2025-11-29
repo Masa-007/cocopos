@@ -13,6 +13,12 @@ class User < ApplicationRecord
   # バリデーション
   validates :name, presence: true, length: { maximum: 50 }
 
+  # 管理者フラグ
+  # migrationで追加: add_column :users, :admin, :boolean, default: false, null: false
+  def admin?
+    self.admin
+  end
+
   # 表示名（匿名対応）
   def display_name
     name.presence || '匿名ユーザー'
