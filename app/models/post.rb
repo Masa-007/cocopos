@@ -15,7 +15,7 @@ class Post < ApplicationRecord
   validates :post_type, presence: true
 
   scope :recent, -> { order(created_at: :desc) }
-  scope :with_opinion, -> { where(opinion_needed: true) }
+  scope :with_opinion, -> { where(comment_allowed: true) }
 
   def display_name
     if is_anonymous

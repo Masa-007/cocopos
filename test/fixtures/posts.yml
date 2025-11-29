@@ -4,10 +4,10 @@ one:
   user: one
   body: MyText
   post_type: MyString
-  opinion_needed: false
+  comment_allowed: false
 
 two:
   user: two
   body: MyText
   post_type: MyString
-  opinion_needed: false
+  comment_allowed: false

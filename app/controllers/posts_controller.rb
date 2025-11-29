@@ -126,7 +126,7 @@ class PostsController < ApplicationController
       updated[:comment_allowed] = false
     end
 
-    updated[:opinion_needed] =
+    updated[:comment_allowed] =
       if updated[:comment_allowed] == true
         true
       else
@@ -146,12 +146,11 @@ class PostsController < ApplicationController
       :title,
       :body,
       :post_type,
-      :opinion_needed,
       :is_anonymous,
       :is_public,
       :comment_allowed
     )
-    cast_booleans(permitted, %i[is_public comment_allowed opinion_needed])
+    cast_booleans(permitted, %i[is_public comment_allowed])
   end
 
   def cast_booleans(permitted, keys)
