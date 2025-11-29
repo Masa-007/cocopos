@@ -6,7 +6,7 @@ class CreatePosts < ActiveRecord::Migration[7.0]
       t.references :user, null: false, foreign_key: true
       t.text :body, null: false
       t.integer :post_type, null: false, default: 0
-      t.boolean :opinion_needed, default: true
+      t.boolean :comment_allowed, default: true
       t.boolean :is_anonymous, default: true
 
       t.timestamps

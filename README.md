@@ -200,7 +200,7 @@ posts {
   bigint user_id FK "投稿者ID (外部キー)"
   text body "投稿本文"
   string post_type "投稿タイプ (enum: future / organize / thanks)"
-  boolean opinion_needed "意見の必要可否 (デフォルト 'true')"
+  boolean comment_allowed "意見の必要可否 (デフォルト 'true')"
   boolean is_anonymous "匿名投稿 true=匿名さん / false=ユーザー名表示"
   datetime created_at "作成日時"
   datetime updated_at "更新日時"

@@ -16,7 +16,7 @@ ja:
         title: "タイトル"
         body: "本文"
         post_type: "投稿タイプ"
-        opinion_needed: "意見募集中"
+        comment_allowed:: "意見募集中"
         is_anonymous: "匿名設定"
         is_public: "公開設定"
         comment_allowed: "コメント許可"

@@ -69,7 +69,7 @@
                 <span class="inline-block px-2 py-1 bg-gray-200 text-gray-700 rounded-full text-xs">非公開</span>
               <% end %>
 
-              <% unless post.opinion_needed? %>
+              <% unless post.comment_allowed? %>
                 <span class="inline-block px-2 py-1 bg-gray-200 text-gray-700 rounded-full text-xs">💭 コメント不要</span>
               <% else %>
                 <span class="inline-block px-2 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-bold">💬 意見募集中</span>
@@ -81,7 +81,7 @@
                 <%= render "flowers/button", flowerable: post %>
               </div>
 
-              <% if post.opinion_needed? %>
+              <% if post.comment_allowed? %>
                 <%= link_to post_path(post, anchor: "comment-form", from: 'mypage'),
                             data: { turbo: false },
                             class: "action-icon comment-btn flex items-center gap-1" do %>

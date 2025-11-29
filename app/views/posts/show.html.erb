@@ -39,7 +39,7 @@
           <% end %>
         </div>
 
-        <% if @post.opinion_needed? %>
+        <% if @post.comment_allowed %>
           <div class="mt-4">
             <span class="inline-block px-4 py-2 bg-blue-100 text-blue-700 rounded-full text-sm font-bold">
               💬 意見募集中
@@ -86,7 +86,7 @@
         <h3 class="form-title text-lg font-bold mb-4">📝 コメントを書く</h3>
 
         <% if user_signed_in? %>
-          <% if @post.is_public? && @post.opinion_needed? %>
+          <% if @post.is_public? && @post.comment_allowed? %>
             <%= form_with(model: [@post, Comment.new], local: true) do |f| %>
               <%= f.text_area :content,
                               rows: 3,
@@ -110,7 +110,7 @@
                       placeholder="この投稿は非公開のためコメントを追加できません。既存のコメントのみ閲覧可能です。"
                       class="w-full border border-gray-300 rounded-xl p-3 mb-4 text-gray-400 bg-gray-100 cursor-not-allowed"></textarea>
 
-          <% elsif !@post.opinion_needed? %>
+          <% elsif !@post.comment_allowed? %>
             <textarea rows="3" disabled
                       placeholder="この投稿はコメント受付を停止しています。既存のコメントのみ閲覧可能です。"
                       class="w-full border border-gray-300 rounded-xl p-3 mb-4 text-gray-400 bg-gray-100 cursor-not-allowed"></textarea>

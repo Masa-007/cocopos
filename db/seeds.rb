@@ -10,7 +10,7 @@ user = User.create!(
 post = user.posts.create!(
   body: 'これはテスト投稿です',
   post_type: 'future',
-  opinion_needed: true
+  comment_allowed: true
 )
 
 post.comments.create!(

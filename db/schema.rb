@@ -39,7 +39,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_10_29_135917) do
   create_table "posts", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.text "body", null: false
-    t.boolean "opinion_needed", default: true
+    t.boolean "comment_allowed", default: true
     t.boolean "is_anonymous", default: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
