@@ -6,6 +6,8 @@
       <p class="text-gray-600">心の目安箱に投函された想い</p>
     </div>
 
+    <%= render "search_form" %>
+
     <div class="filter-bar flex flex-col md:flex-row md:items-center md:justify-between mb-8 gap-4">
       <div class="filter-buttons flex flex-wrap items-center gap-2">
         <span class="filter-label font-semibold text-gray-700">絞り込み：</span>
@@ -30,7 +32,7 @@
       <%= form_with url: posts_path, method: :get, local: true, class: "filter-right" do |f| %>
         <%= f.hidden_field :filter, value: params[:filter] %>
         <select name="sort" onchange="this.form.submit()" class="sort-select border-gray-300 rounded-lg px-3 py-1">
-          <option value="new" <%= 'selected' if params[:sort] != 'old' %>>新着順</option>
+          <option value="new" <%= 'selected' if params[:sort] != 'old' %>>新しい順</option>
           <option value="old" <%= 'selected' if params[:sort] == 'old' %>>古い順</option>
         </select>
       <% end %>
@@ -39,7 +41,6 @@
     <div class="posts-grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
       <% @posts.each do |post| %>
         <div class="post-card bg-white rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition">
-
 
           <%= link_to post_path(post, from: 'public'),
                       data: { turbo: false, id: post.id, category: post.post_type },

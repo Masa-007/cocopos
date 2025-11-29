@@ -8,6 +8,13 @@ class PostsController < ApplicationController
     @posts = Post.includes(:user, comments: :user, flowers: :user)
     @posts = filter_by_visibility(@posts)
     @posts = filter_by_type(@posts)
+
+
+    if params[:q].present?
+      query = "%#{params[:q]}%"
+      @posts = @posts.where("title ILIKE :q OR body ILIKE :q", q: query)
+    end
+
     @posts = sort_posts(@posts)
     @posts = paginate_posts(@posts)
   end

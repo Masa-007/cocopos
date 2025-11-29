@@ -24,6 +24,12 @@ class UsersController < ApplicationController
   def filtered_posts
     posts = current_user.posts
     posts = filter_posts(posts)
+
+    if params[:q].present?
+      query = "%#{params[:q]}%"
+      posts = posts.where("title ILIKE :q OR body ILIKE :q", q: query)
+    end
+
     sort_posts(posts)
   end
 
