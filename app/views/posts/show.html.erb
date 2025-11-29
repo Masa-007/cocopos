@@ -22,11 +22,13 @@
             </div>
           </div>
 
-          <% if user_signed_in? && @post.user == current_user %>
+          <% if user_signed_in? && (@post.user == current_user || current_user.admin?) %>
             <div class="flex gap-2">
-              <%= link_to edit_post_path(@post, from: params[:from]),
-                          class: "px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition" do %>
-                ✏️ 編集
+              <% if @post.user == current_user %>
+                <%= link_to edit_post_path(@post, from: params[:from]),
+                            class: "px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition" do %>
+                  ✏️ 編集
+                <% end %>
               <% end %>
 
               <%= button_to post_path(@post, from: params[:from]),
@@ -142,3 +144,4 @@
     </div>
   </div>
 </main>
+

@@ -1,19 +1,24 @@
-<div class="comment-card">
-  <p class="comment-content"><%= comment.content %></p>
+<div class="comment-card bg-white rounded-xl shadow-sm p-4">
+  <p class="comment-content text-gray-800 leading-relaxed"><%= comment.content %></p>
 
-  <p class="comment-meta">
-    by
-    <%= comment.is_anonymous ? "匿名さん" : (comment.user.display_name || "匿名ユーザー") %>
-    ・ <%= comment.created_at.strftime("%Y/%m/%d %H:%M") %>
+  <p class="comment-meta text-gray-500 text-sm mt-2">
+    <span><%= t('comments.labels.by', default: 'by') %></span>
+    <span>
+      <%= comment.is_anonymous ? t('comments.labels.anonymous', default: '匿名さん') : (comment.user.display_name || t('comments.labels.anonymous_user', default: '匿名ユーザー')) %>
+    </span>
+    ・ <span><%= l comment.created_at, format: :short %></span>
   </p>
 
   <div class="flex items-center justify-between mt-3">
-    <% if comment.user == current_user %>
+    <% if comment.user == current_user || current_user.admin? %>
       <div class="comment-actions flex gap-2">
-        <%= link_to "編集", edit_post_comment_path(@post, comment), class: "edit-btn text-sm text-blue-600 hover:underline" %>
-        <%= button_to "削除", post_comment_path(@post, comment),
+        <% if comment.user == current_user %>
+          <%= link_to t('comments.buttons.edit', default: '編集'), edit_post_comment_path(@post, comment), class: "edit-btn text-sm text-blue-600 hover:underline" %>
+        <% end %>
+
+        <%= button_to t('comments.buttons.delete', default: '削除'), post_comment_path(@post, comment),
                       method: :delete,
-                      data: { turbo_confirm: "削除しますか？" },
+                      data: { turbo_confirm: t('comments.buttons.confirm_delete', default: '本当に削除しますか？この操作は取り消せません。') },
                       class: "delete-btn text-sm text-red-500 hover:underline" %>
       </div>
     <% end %>

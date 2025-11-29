@@ -5,11 +5,23 @@ ja:
       updated: "投稿を更新しました。"
       deleted: "投稿を削除しました。" 
     alerts:
-      not_authorized: "権限がありません。"
+      unauthorized: "権限がありません。"
       private_post: "この投稿は非公開です。"
     buttons:
       new: "新規投稿"
       edit: "編集"
       delete: "削除"
       back: "戻る"
+      confirm_delete: "本当に削除しますか？この操作は取り消せません。"
+
+  comments:
+    notices:
+      created: "コメントを投稿しました。"
+      updated: "コメントを更新しました。"
+      deleted: "コメントを削除しました。"
+    alerts:
+      unauthorized: "権限がありません。"
+    buttons:
+      edit: "編集"
+      delete: "削除"
       confirm_delete: "本当に削除しますか？この操作は取り消せません。"
