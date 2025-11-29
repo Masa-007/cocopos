@@ -1,12 +1,11 @@
 # frozen_string_literal: true
-
 class PostsController < ApplicationController
   before_action :authenticate_user!, only: %i[new create edit update destroy]
   before_action :set_post, only: %i[show edit update destroy]
   before_action :authorize_user!, only: %i[edit update destroy]
 
   def index
-    @posts = Post.includes(:user)
+    @posts = Post.includes(:user, comments: :user, flowers: :user)
     @posts = filter_by_visibility(@posts)
     @posts = filter_by_type(@posts)
     @posts = sort_posts(@posts)
@@ -15,7 +14,7 @@ class PostsController < ApplicationController
 
   def show
     redirect_to posts_path, alert: t('posts.alerts.private') and return if private_post_blocked?
-    @comments = @post.comments.includes(:user)
+    @comments = @post.comments.includes(:user, :flowers)
   end
 
   def new
@@ -66,7 +65,7 @@ class PostsController < ApplicationController
   end
 
   def set_post
-    @post = Post.find(params[:id])
+    @post = Post.includes(:user, comments: :user, flowers: :user).find(params[:id])
   end
 
   def authorize_user!
@@ -111,8 +110,7 @@ class PostsController < ApplicationController
   def failure_response(format, post)
     format.html { render :new, status: :unprocessable_entity }
     format.json do
-      render json: { success: false, errors: post.errors.full_messages },
-             status: :unprocessable_entity
+      render json: { success: false, errors: post.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
@@ -126,13 +124,7 @@ class PostsController < ApplicationController
       updated[:comment_allowed] = false
     end
 
-    updated[:comment_allowed] =
-      if updated[:comment_allowed] == true
-        true
-      else
-        false
-      end
-
+    updated[:comment_allowed] = updated[:comment_allowed] == true
     updated
   end
 
