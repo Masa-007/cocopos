@@ -46,11 +46,29 @@
                       data: { turbo: false, id: post.id, category: post.post_type },
                       class: "block no-underline text-gray-800" do %>
 
+            <!-- ヘッダー：投稿タイプ＋(気分) -->
             <div class="post-card-header <%= post.post_type %> flex justify-between items-center px-6 py-4 border-b">
-              <span class="font-semibold"><%= post.post_type_icon %> <%= post.post_type_name %></span>
+              
+              <span class="font-semibold flex items-center gap-2">
+                <%= post.post_type_icon %> <%= post.post_type_name %>
+
+                <% if post.post_type == "organize" && post.mood.present? %>
+                  <% mood_label = Post::MOODS[post.mood.to_sym][:label] %>
+                  <% emoji = mood_label[/^\S+/] %>
+                  <% text  = mood_label.sub(/^\S+\s*/, "") %>
+
+                  <!-- 気分（絵文字＋文字） -->
+                  <span class="inline-flex items-center gap-1 text-sm font-medium px-1.5 py-0.5 bg-purple-50 text-purple-700 rounded-md">
+                    <span><%= emoji %></span>
+                    <span><%= text %></span>
+                  </span>
+                <% end %>
+              </span>
+
               <span class="text-sm text-gray-500"><%= l post.created_at, format: :short %></span>
             </div>
 
+            <!-- 本文エリア -->
             <div class="post-card-body px-6 py-4">
               <% if post.title.present? %>
                 <h3 class="post-title font-bold mb-2 text-lg"><%= h(post.title) %></h3>
@@ -61,7 +79,9 @@
             </div>
           <% end %>
 
+          <!-- フッター -->
           <div class="post-card-footer flex justify-between items-center text-sm text-gray-600 px-6 py-4 bg-gray-50 border-t">
+
             <div class="flex items-center gap-2 flex-wrap">
               <span class="post-author"><%= post.display_name %></span>
 
@@ -91,6 +111,7 @@
                 <% end %>
               </div>
             <% end %>
+
           </div>
         </div>
       <% end %>

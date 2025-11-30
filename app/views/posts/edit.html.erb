@@ -13,7 +13,6 @@
         <div class="mb-8 relative z-10">
           <label class="block text-lg font-bold text-gray-800 mb-4">📮 投函する箱</label>
 
-          <!-- 編集時はpost_typeを変更できないようにする -->
           <%= f.hidden_field :post_type, value: @post.post_type %>
 
           <div class="grid md:grid-cols-3 gap-4 opacity-60 pointer-events-none">
@@ -22,7 +21,6 @@
                  thanks: ["💌", "感謝箱", "感謝の気持ちを記録"] }.each do |type, (icon, title, desc)| %>
 
               <label class="relative select-none">
-                <!-- 触れないラジオ（表示のためだけにcheckedを入れる） -->
                 <%= f.radio_button :post_type, type,
                       class: "absolute inset-0 opacity-0 peer z-20",
                       checked: @post.post_type == type.to_s,
@@ -92,6 +90,11 @@
             </label>
           </div>
         </div>
+
+        <!-- 🌈 気分（心の整理箱のみ表示） -->
+        <% if @post.organize? %>
+          <%= render "posts/mood_selector", f: f, post: @post %>
+        <% end %>
 
         <!-- タイトル -->
         <div class="mb-8">
@@ -167,15 +170,3 @@
 
   </div>
 </main>
-
-<script>
-  document.addEventListener('turbo:load', () => {
-    const textarea = document.querySelector('textarea[name="post[body]"]');
-    const charCount = document.getElementById('charCount');
-    if (textarea && charCount) {
-      const update = () => { charCount.textContent = textarea.value.length; };
-      textarea.addEventListener('input', update);
-      update();
-    }
-  });
-</script>

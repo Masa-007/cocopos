@@ -44,7 +44,7 @@ class PostsController < ApplicationController
     end
   end
 
-  # 投稿編集フォーム
+  # 編集フォーム
   def edit; end
 
   # 投稿更新
@@ -67,7 +67,7 @@ class PostsController < ApplicationController
 
   private
 
-  # 投稿セット
+  # 投稿取得
   def set_post
     @post = Post.includes(:user, comments: :user, flowers: :user).find(params[:id])
   end
@@ -88,11 +88,7 @@ class PostsController < ApplicationController
     end
   end
 
-  #---------------------------------------
-  # 表示用ロジック
-  #---------------------------------------
-
-  # 公開投稿のみ
+  # 公開投稿のみ取得
   def filter_by_visibility(posts)
     posts.where(is_public: true)
   end
@@ -118,8 +114,7 @@ class PostsController < ApplicationController
     posts.page(params[:page]).per(10)
   end
 
-
-  # 非公開投稿はコメント不可
+  # 非公開ならコメント不可
   def disable_comment_if_private(post)
     post.comment_allowed = false unless post.is_public
   end
@@ -129,13 +124,11 @@ class PostsController < ApplicationController
     !@post.is_public && (!user_signed_in? || @post.user != current_user)
   end
 
-  #---------------------------------------
-  # update 用パラメータ整形（post_type を除外）
-  #---------------------------------------
+  # update 用パラメータ整形
   def prepare_updated_params(post, params)
     updated = params.dup
 
-    # 公開状態
+    # 公開設定
     updated[:is_public] = fetch_bool(updated, :is_public, post.is_public)
 
     # コメント設定
@@ -147,7 +140,7 @@ class PostsController < ApplicationController
 
     updated[:comment_allowed] = updated[:comment_allowed] == true
 
-    # post_type は更新禁止 → 強制削除
+    # post_type は変更禁止
     updated.delete(:post_type)
 
     updated
@@ -159,27 +152,29 @@ class PostsController < ApplicationController
     ActiveModel::Type::Boolean.new.cast(hash[key])
   end
 
-  # create 用（post_type を受け取る）
+  # create 用パラメータ
   def post_params_for_create
     permitted = params.require(:post).permit(
       :title,
       :body,
-      :post_type,     # ← create のみ許可
+      :post_type,
       :is_anonymous,
       :is_public,
-      :comment_allowed
+      :comment_allowed,
+      :mood
     )
     cast_booleans(permitted, %i[is_public comment_allowed])
   end
 
-  # update 用（post_type は受け取らない）
+  # update 用パラメータ
   def post_params_for_update
     permitted = params.require(:post).permit(
       :title,
       :body,
       :is_anonymous,
       :is_public,
-      :comment_allowed
+      :comment_allowed,
+      :mood
     )
     cast_booleans(permitted, %i[is_public comment_allowed])
   end
@@ -191,5 +186,39 @@ class PostsController < ApplicationController
       permitted[key] = bool.cast(permitted[key]) if permitted.key?(key)
     end
     permitted
+  end
+
+
+  def success_response(format, post)
+    format.json do
+      render json: {
+        success: true,
+        data: {
+          id: post.id,
+          title: post.title,
+          body: post.body,
+          post_type: post.post_type,
+          mood: post.mood
+        }
+      }, status: :ok
+    end
+
+    format.html do
+      redirect_to post_path(post), notice: t('posts.notices.created')
+    end
+  end
+
+
+  def failure_response(format, post)
+    format.json do
+      render json: {
+        success: false,
+        errors: post.errors.full_messages
+      }, status: :unprocessable_entity
+    end
+
+    format.html do
+      render :new, status: :unprocessable_entity
+    end
   end
 end

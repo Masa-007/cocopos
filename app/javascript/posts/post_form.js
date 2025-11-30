@@ -47,7 +47,6 @@ const initPostForm = () => {
       const result = await response.json();
 
       if (result.success) {
-        // 成功アニメーション
         if (letter) {
           letter.addEventListener(
             "animationend",
@@ -62,7 +61,6 @@ const initPostForm = () => {
           complete.classList.add("active");
         }
       } else {
-        // ❗ サーバーが返したエラー（NGワードなど）
         loading.classList.remove("active");
 
         if (result.errors && result.errors.length > 0) {
@@ -71,16 +69,16 @@ const initPostForm = () => {
           alert("投稿に失敗しました。");
         }
 
-        // エラーを throw して catch に渡す
         throw new Error(result.errors?.join(", ") || "投稿に失敗しました");
       }
     } catch (error) {
       loading.classList.remove("active");
       console.error("投稿エラー:", error);
 
-      // ❗ NGワードや既知のエラーでなければ予期しないエラーとして alert
       if (!error.message.includes("NG") && !error.message.includes("失敗")) {
-        alert("予期しないエラーが発生しました。⚠️NGワードが含まれている可能性があります。");
+        alert(
+          "予期しないエラーが発生しました。⚠️NGワードが含まれている可能性があります。"
+        );
       }
     }
   });
@@ -149,9 +147,34 @@ const setupVisibilityAlert = () => {
   checkInvalidCombo();
 };
 
+// 💡 心の整理を選んだら mood セクションを表示
+const setupMoodToggle = () => {
+  const moodSection = document.querySelector("#moodSection");
+  if (!moodSection) return;
+
+  const postTypeRadios = document.querySelectorAll(
+    'input[name="post[post_type]"]'
+  );
+
+  postTypeRadios.forEach((radio) => {
+    radio.addEventListener("change", () => {
+      if (radio.value === "organize") {
+        moodSection.classList.remove("hidden");
+      } else {
+        moodSection.classList.add("hidden");
+      }
+    });
+  });
+
+  if (document.querySelector("input[name='post[mood]']:checked")) {
+    moodSection.classList.remove("hidden");
+  }
+};
+
 // 初期化
 document.addEventListener("turbo:load", () => {
   initPostForm();
   initCardRadios();
   setupVisibilityAlert();
+  setupMoodToggle(); 
 });
