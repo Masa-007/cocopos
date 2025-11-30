@@ -32,7 +32,7 @@ class PostsController < ApplicationController
 
   # 投稿作成
   def create
-    @post = current_user.posts.build(post_params)
+    @post = current_user.posts.build(post_params_for_create)
     disable_comment_if_private(@post)
 
     respond_to do |format|
@@ -49,7 +49,7 @@ class PostsController < ApplicationController
 
   # 投稿更新
   def update
-    updated_params = prepare_updated_params(@post, post_params)
+    updated_params = prepare_updated_params(@post, post_params_for_update)
 
     if @post.update(updated_params)
       @post.reload
@@ -67,6 +67,16 @@ class PostsController < ApplicationController
 
   private
 
+  # 投稿セット
+  def set_post
+    @post = Post.includes(:user, comments: :user, flowers: :user).find(params[:id])
+  end
+
+  # 権限確認
+  def authorize_user!
+    redirect_to posts_path, alert: t('posts.alerts.unauthorized') unless @post.user == current_user || current_user.admin?
+  end
+
   # リダイレクト処理
   def redirect_after_action(post, message)
     if params[:from] == 'mypage'
@@ -78,23 +88,16 @@ class PostsController < ApplicationController
     end
   end
 
-  # 投稿セット
-  def set_post
-    @post = Post.includes(:user, comments: :user, flowers: :user).find(params[:id])
-  end
+  #---------------------------------------
+  # 表示用ロジック
+  #---------------------------------------
 
-  # 投稿編集・削除権限確認
-  def authorize_user!
-    redirect_to posts_path, alert: t('posts.alerts.unauthorized') unless @post.user == current_user || current_user.admin?
-  end
-
-
-  # 公開状態によるフィルタ
+  # 公開投稿のみ
   def filter_by_visibility(posts)
     posts.where(is_public: true)
   end
 
-  # 投稿タイプによるフィルタ
+  # post_type フィルター
   def filter_by_type(posts)
     return posts if params[:filter].blank? || params[:filter] == 'all'
     posts.where(post_type: params[:filter])
@@ -115,35 +118,27 @@ class PostsController < ApplicationController
     posts.page(params[:page]).per(10)
   end
 
-  # 非公開投稿閲覧制御
-  def private_post_blocked?
-    !@post.is_public && (!user_signed_in? || @post.user != current_user)
-  end
 
   # 非公開投稿はコメント不可
   def disable_comment_if_private(post)
     post.comment_allowed = false unless post.is_public
   end
 
-  # 成功レスポンス
-  def success_response(format, post)
-    format.html { redirect_to post_path(post, from: params[:from]), notice: t('posts.notices.created') }
-    format.json { render json: { success: true }, status: :created }
+  # 非公開閲覧制御
+  def private_post_blocked?
+    !@post.is_public && (!user_signed_in? || @post.user != current_user)
   end
 
-  # 失敗レスポンス
-  def failure_response(format, post)
-    format.html { render :new, status: :unprocessable_entity }
-    format.json do
-      render json: { success: false, errors: post.errors.full_messages }, status: :unprocessable_entity
-    end
-  end
-
-  # 更新用パラメータ整形
+  #---------------------------------------
+  # update 用パラメータ整形（post_type を除外）
+  #---------------------------------------
   def prepare_updated_params(post, params)
     updated = params.dup
+
+    # 公開状態
     updated[:is_public] = fetch_bool(updated, :is_public, post.is_public)
 
+    # コメント設定
     if updated[:is_public]
       updated[:comment_allowed] = fetch_bool(updated, :comment_allowed, post.comment_allowed)
     else
@@ -151,6 +146,10 @@ class PostsController < ApplicationController
     end
 
     updated[:comment_allowed] = updated[:comment_allowed] == true
+
+    # post_type は更新禁止 → 強制削除
+    updated.delete(:post_type)
+
     updated
   end
 
@@ -160,12 +159,12 @@ class PostsController < ApplicationController
     ActiveModel::Type::Boolean.new.cast(hash[key])
   end
 
-  # Strong Parameters
-  def post_params
+  # create 用（post_type を受け取る）
+  def post_params_for_create
     permitted = params.require(:post).permit(
       :title,
       :body,
-      :post_type,
+      :post_type,     # ← create のみ許可
       :is_anonymous,
       :is_public,
       :comment_allowed
@@ -173,7 +172,19 @@ class PostsController < ApplicationController
     cast_booleans(permitted, %i[is_public comment_allowed])
   end
 
-  # パラメータ内の真偽値をキャスト
+  # update 用（post_type は受け取らない）
+  def post_params_for_update
+    permitted = params.require(:post).permit(
+      :title,
+      :body,
+      :is_anonymous,
+      :is_public,
+      :comment_allowed
+    )
+    cast_booleans(permitted, %i[is_public comment_allowed])
+  end
+
+  # 真偽値キャスト
   def cast_booleans(permitted, keys)
     bool = ActiveModel::Type::Boolean.new
     keys.each do |key|

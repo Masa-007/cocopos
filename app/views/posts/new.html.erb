@@ -13,16 +13,20 @@
               data: { turbo: false },
               html: { onsubmit: "return false;" } do |f| %>
 
+        <!-- 📮 投函する箱選択 -->
         <div class="mb-8 relative z-10">
           <label class="block text-lg font-bold text-gray-800 mb-4">📮 投函する箱を選んでください</label>
+
           <div class="grid md:grid-cols-3 gap-4">
             <% { future: ["🌱", "未来宣言箱", "目標や決意を投函"],
                  organize: ["🌈", "心の整理箱", "気持ちを書き出す"],
                  thanks: ["💌", "感謝箱", "感謝の気持ちを記録"] }.each do |type, (icon, title, desc)| %>
+
               <label class="relative cursor-pointer select-none">
                 <%= f.radio_button :post_type, type,
                       class: "absolute inset-0 opacity-0 cursor-pointer peer z-20 post-type-radio",
                       required: true %>
+
                 <div class="card-ui text-center border-2 border-gray-200 rounded-xl p-4 transition-all
                             peer-checked:border-orange-400 peer-checked:ring-2 peer-checked:ring-orange-200
                             bg-white hover:bg-orange-50">
@@ -31,10 +35,16 @@
                   <p class="text-sm text-gray-600"><%= desc %></p>
                 </div>
               </label>
+
             <% end %>
           </div>
-        </div>
 
+          <!-- ✨ 注意書き -->
+          <p class="text-sm text-gray-500 mt-2">※ 投稿箱は投函後に変更できません</p>
+        </div>
+        <!-- /投函する箱 -->
+
+        <!-- 💬 コメント設定 -->
         <div class="mb-8 relative z-10">
           <label class="block text-lg font-bold text-gray-800 mb-4">💬 コメント設定</label>
           <div class="flex gap-4">
@@ -67,6 +77,7 @@
           <%= f.hidden_field :comment_allowed, id: "comment_allowed", value: true %>
         </div>
 
+        <!-- 🔒 公開設定 -->
         <div class="mb-8 relative z-10">
           <label class="block text-lg font-bold text-gray-800 mb-4">🔒 公開設定</label>
           <div class="flex gap-4">
@@ -95,6 +106,7 @@
           </div>
         </div>
 
+        <!-- 🖋 タイトル -->
         <div class="mb-8 relative z-10">
           <label class="block text-lg font-bold text-gray-800 mb-4">🖋 タイトル</label>
           <%= f.text_field :title,
@@ -105,6 +117,7 @@
           <p class="text-right text-sm text-gray-500 mt-2">100文字以内</p>
         </div>
 
+        <!-- 📝 本文 -->
         <div class="mb-8 relative z-10">
           <label class="block text-lg font-bold text-gray-800 mb-4">📝 本文</label>
           <%= f.text_area :body,
@@ -118,6 +131,7 @@
           </p>
         </div>
 
+        <!-- 匿名設定 -->
         <div class="mb-8">
           <label class="flex items-center gap-3 cursor-pointer p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition">
             <%= f.check_box :is_anonymous,
@@ -131,6 +145,7 @@
           </label>
         </div>
 
+        <!-- 送信ボタン -->
         <div class="flex justify-center gap-4 relative z-10">
           <%= f.submit "投函する 📮",
                 class: "px-12 py-3 bg-gradient-to-r from-orange-400 to-pink-400 text-white text-lg font-bold rounded-full hover:shadow-xl transition transform hover:scale-105" %>
@@ -141,6 +156,7 @@
   </div>
 </main>
 
+<!-- 投函アニメーション -->
 <div id="loadingScreen" class="loading-screen">
   <div class="postbox-animation">
     <div class="letter"></div>
@@ -149,6 +165,7 @@
   </div>
 </div>
 
+<!-- 完了画面 -->
 <div id="completionScreen" class="completion-screen">
   <div class="completion-content">
     <div class="checkmark"></div>
