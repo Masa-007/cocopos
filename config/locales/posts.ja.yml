@@ -7,6 +7,8 @@ ja:
     alerts:
       unauthorized: "権限がありません。"
       private_post: "この投稿は非公開です。"
+      ng_word: "投稿に使用できない単語が含まれています。"
+      failed: "投稿に失敗しました。"
     buttons:
       new: "新規投稿"
       edit: "編集"
@@ -21,6 +23,8 @@ ja:
       deleted: "コメントを削除しました。"
     alerts:
       unauthorized: "権限がありません。"
+      ng_word: "コメントに使用できない単語が含まれています。"
+      failed: "コメントの投稿に失敗しました。コメントに使用できない単語が含まれている可能性があります。"
     buttons:
       edit: "編集"
       delete: "削除"

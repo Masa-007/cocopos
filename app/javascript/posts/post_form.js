@@ -1,3 +1,4 @@
+// 投稿フォーム初期化
 const initPostForm = () => {
   const form = document.querySelector("#postForm");
   if (!form) return;
@@ -46,6 +47,7 @@ const initPostForm = () => {
       const result = await response.json();
 
       if (result.success) {
+        // 成功アニメーション
         if (letter) {
           letter.addEventListener(
             "animationend",
@@ -60,17 +62,31 @@ const initPostForm = () => {
           complete.classList.add("active");
         }
       } else {
+        // ❗ サーバーが返したエラー（NGワードなど）
+        loading.classList.remove("active");
+
+        if (result.errors && result.errors.length > 0) {
+          alert(`投稿に失敗しました。\n\n${result.errors.join("\n")}`);
+        } else {
+          alert("投稿に失敗しました。");
+        }
+
+        // エラーを throw して catch に渡す
         throw new Error(result.errors?.join(", ") || "投稿に失敗しました");
       }
     } catch (error) {
       loading.classList.remove("active");
-      alert("投稿に失敗しました。");
       console.error("投稿エラー:", error);
+
+      // ❗ NGワードや既知のエラーでなければ予期しないエラーとして alert
+      if (!error.message.includes("NG") && !error.message.includes("失敗")) {
+        alert("予期しないエラーが発生しました。⚠️NGワードが含まれている可能性があります。");
+      }
     }
   });
 };
 
-
+// カード形式のラジオボタン初期化
 const initCardRadios = () => {
   function refreshCardsByName(name) {
     const group = document.querySelectorAll(
@@ -94,16 +110,23 @@ const initCardRadios = () => {
   names.forEach((name) => refreshCardsByName(name));
 };
 
+// 公開・コメント不可制御アラート
 const setupVisibilityAlert = () => {
-  const publicRadios = document.querySelectorAll('input[name="post[is_public]"]');
-  const commentRadios = document.querySelectorAll('input[name="post[comment_allowed]"]');
+  const publicRadios = document.querySelectorAll(
+    'input[name="post[is_public]"]'
+  );
+  const commentRadios = document.querySelectorAll(
+    'input[name="post[comment_allowed]"]'
+  );
   if (!publicRadios.length || !commentRadios.length) return;
 
   const checkInvalidCombo = () => {
     const isPublic =
-      document.querySelector('input[name="post[is_public]"]:checked')?.value === "true";
+      document.querySelector('input[name="post[is_public]"]:checked')?.value ===
+      "true";
     const commentAllowed =
-      document.querySelector('input[name="post[comment_allowed]"]:checked')?.value === "true";
+      document.querySelector('input[name="post[comment_allowed]"]:checked')
+        ?.value === "true";
 
     console.log(`公開=${isPublic} / コメント=${commentAllowed}`);
     if (!isPublic && commentAllowed) {
@@ -119,16 +142,16 @@ const setupVisibilityAlert = () => {
   };
 
   [...publicRadios, ...commentRadios].forEach((r) => {
-    r.removeEventListener("change", checkInvalidCombo); 
+    r.removeEventListener("change", checkInvalidCombo);
     r.addEventListener("change", checkInvalidCombo);
   });
 
   checkInvalidCombo();
 };
 
+// 初期化
 document.addEventListener("turbo:load", () => {
   initPostForm();
   initCardRadios();
   setupVisibilityAlert();
-
 });
