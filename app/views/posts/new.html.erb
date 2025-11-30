@@ -44,6 +44,9 @@
         </div>
         <!-- /投函する箱 -->
 
+        <!-- 🌈 気分選択（心の整理箱専用） -->
+        <%= render "posts/mood_selector", f: f, post: @post %>
+
         <!-- 💬 コメント設定 -->
         <div class="mb-8 relative z-10">
           <label class="block text-lg font-bold text-gray-800 mb-4">💬 コメント設定</label>

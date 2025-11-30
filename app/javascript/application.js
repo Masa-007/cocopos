@@ -1,5 +1,6 @@
 import "@hotwired/turbo-rails";
-import "./controllers"; 
+import "./controllers";
+
 import "./modal";
 import "./posts/post_form";
 import "./posts/post_edit";

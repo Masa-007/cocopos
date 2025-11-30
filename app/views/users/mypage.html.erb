@@ -1,6 +1,7 @@
 <main class="flex-grow pt-20 pb-16 relative z-10 font-['Zen_Maru_Gothic']">
   <div id="season-wrapper" class="<%= @season %> relative">
 
+    <!-- 花びらアニメーション -->
     <div class="petal-layer pointer-events-none absolute inset-0 overflow-hidden">
       <% [10, 25, 40, 60, 80].each_with_index do |left, i| %>
         <div class="petal" style="left:<%= left %>%; animation-delay:<%= i %>s;"></div>
@@ -9,19 +10,22 @@
 
     <div class="container mx-auto max-w-6xl px-6 text-center relative z-10">
 
+      <!-- タイトル -->
       <h1 class="mypage-title mb-2">
         <%= { "spring" => "🌸", "summer" => "🌻", "autumn" => "🍁", "winter" => "❄️" }[@season] %> マイページ
       </h1>
       <p class="mypage-subtitle mb-8">あなたの心の記録を花のように咲かせよう</p>
 
+      <!-- 季節切替ボタン -->
       <div class="text-center mb-10">
         <%= link_to "次の季節のデザインを見てみる 🌈",
-          mypage_path(season: next_season(@season)),
+          mypage_path(season: next_season(@season), year: @year, month: @month),
           class: "inline-block px-5 py-2 text-sm text-white font-semibold rounded-full 
                   bg-gradient-to-r from-pink-500 via-orange-400 to-yellow-400 
                   shadow-md hover:scale-105 hover:brightness-110 transition-all duration-300" %>
       </div>
 
+      <!-- ✔ アクションボタン -->
       <div class="mypage-actions grid md:grid-cols-3 gap-6 mb-12">
 
         <%= link_to new_post_path, class: "action-btn green block" do %>
@@ -53,17 +57,39 @@
 
       </div>
 
-      <div class="flower-frame mx-auto my-10">
-        <turbo-frame id="calendar_frame" data-season="<%= @season %>">
+      <!-- 🎯 カレンダー＋気分メーター Turbo Frame 全体 -->
+      <turbo-frame id="mypage-frame">
+
+        <!-- 📅 投稿カレンダー（カレンダー内に月送り矢印あり） -->
+        <div class="flower-frame mx-auto my-10">
           <%= render "calendar",
-              year: @year,
-              month: @month,
-              first_day: @first_day,
-              dates: @dates,
-              season: @season %>
-        </turbo-frame>
-      </div>
+                year: @year,
+                month: @month,
+                first_day: @first_day,
+                dates: @dates,
+                season: @season,
+                posts_by_date: @posts_by_date %>
+        </div>
+
+        <!-- 🌈 気分メーター（カレンダーと同期） -->
+        <div class="bg-white rounded-3xl shadow-lg p-8 mb-14">
+          <h2 class="text-2xl font-bold mb-4 text-gray-800">🌈 あなたの気分メーター（心の整理箱）</h2>
+
+          <% if @mood_chart_data.present? %>
+            <canvas
+              id="moodChartCanvas"
+              class="w-full"
+              height="120"
+              data-controller="mood-chart"
+              data-mood-chart-data-value="<%= @mood_chart_data.to_json %>">
+            </canvas>
+          <% else %>
+            <p class="text-gray-500">この月には心の整理箱の投稿がありません。</p>
+          <% end %>
+        </div>
+
+      </turbo-frame>
+
     </div>
   </div>
 </main>
-

@@ -6,9 +6,26 @@ class UsersController < ApplicationController
   def mypage
     @user = current_user
     today = Time.zone.today
+
+    # ---- カレンダー（月切替） ----
     prepare_calendar_date(today)
     prepare_season_info
     load_month_posts_for_calendar
+
+    # 🌈 ---- 気分グラフ（月ごと） ----
+    mood_posts = current_user.posts
+                             .organize
+                             .where.not(mood: nil)
+                             .where(created_at: @first_day.beginning_of_day..@last_day.end_of_day)
+                             .order(:created_at)
+
+    @mood_chart_data = mood_posts.map do |p|
+      {
+        date: p.created_at.strftime("%Y-%m-%d"),
+        score: Post::MOODS[p.mood.to_sym][:score]
+      }
+    end
+
     render :mypage
   end
 
@@ -21,6 +38,7 @@ class UsersController < ApplicationController
 
   private
 
+  # ---- 投稿一覧フィルタ ----
   def filtered_posts
     posts = current_user.posts
     posts = filter_posts(posts)
@@ -51,6 +69,7 @@ class UsersController < ApplicationController
     end
   end
 
+  # ---- カレンダー（日付関連）----
   def prepare_calendar_date(today)
     @year  = (params[:year]  || today.year).to_i
     @month = (params[:month] || today.month).to_i
@@ -77,12 +96,15 @@ class UsersController < ApplicationController
     posts = current_user.posts
                         .where(created_at: range)
                         .select(:id, :title, :body, :post_type, :created_at, :is_public)
+
     @posts_by_date = posts.group_by { |p| p.created_at.to_date }
   end
 
+  # ---- 季節切替 ----
   def next_season(current)
     order = %w[spring summer autumn winter]
     order[(order.index(current) + 1) % order.size]
   end
+
   helper_method :next_season
 end
