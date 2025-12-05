@@ -44,8 +44,6 @@
         </div>
         <!-- /投函する箱 -->
 
-        <!-- 🌈 気分選択（心の整理箱専用） -->
-        <%= render "posts/mood_selector", f: f, post: @post %>
 
         <!-- 💬 コメント設定 -->
         <div class="mb-8 relative z-10">
@@ -96,6 +94,7 @@
               </div>
             </label>
 
+
             <label class="flex-1 relative cursor-pointer select-none">
               <%= f.radio_button :is_public, "false",
                     class: "absolute inset-0 opacity-0 cursor-pointer peer" %>
@@ -108,6 +107,9 @@
             </label>
           </div>
         </div>
+
+        <!-- 🌈 気分選択（心の整理箱専用） -->
+        <%= render "posts/mood_selector", f: f, post: @post %>
 
         <!-- 🖋 タイトル -->
         <div class="mb-8 relative z-10">
