@@ -51,9 +51,7 @@ class CommentsController < ApplicationController
   # 編集・削除権限確認
   def authorize_user!
     # 管理者は update（編集）にはアクセス不可、destroy（削除）はOK
-    if current_user.admin? && action_name == 'destroy'
-      return
-    end
+    return if current_user.admin? && action_name == 'destroy'
 
     # 投稿者は編集・削除ともにアクセス可能
     return if @comment.user == current_user
@@ -67,4 +65,3 @@ class CommentsController < ApplicationController
     params.require(:comment).permit(:content, :is_anonymous)
   end
 end
-

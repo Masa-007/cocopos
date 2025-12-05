@@ -10,15 +10,15 @@ class Comment < ApplicationRecord
 
   # コメントに含まれるNGワードをチェック
   def content_does_not_include_ng_words
-    return unless content.present?
+    return if content.blank?
 
     # config/initializers/ng_words.rb で定義した NG_WORDS 配列を読み込む
     ng_words = defined?(NG_WORDS) ? NG_WORDS : []
     matched_words = ng_words.select { |word| content.include?(word) }
 
-    if matched_words.any?
-      errors.add(:content, "に使用できない単語が含まれています: #{matched_words.join(', ')}")
-    end
+    return unless matched_words.any?
+
+    errors.add(:content, "に使用できない単語が含まれています: #{matched_words.join(', ')}")
   end
 
   # いいね（花）の数を返す
@@ -31,4 +31,3 @@ class Comment < ApplicationRecord
     flowers.exists?(user_id: user.id)
   end
 end
-

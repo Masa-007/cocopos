@@ -16,7 +16,7 @@ class User < ApplicationRecord
   # 管理者フラグ
   # migrationで追加: add_column :users, :admin, :boolean, default: false, null: false
   def admin?
-    self.admin
+    admin
   end
 
   # 表示名（匿名対応）

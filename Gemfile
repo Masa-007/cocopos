@@ -19,7 +19,6 @@ gem 'foreman', '~> 0.90.0'
 gem 'propshaft'
 gem 'turbo-rails'
 
-
 group :development do
   gem 'dotenv-rails'
   gem 'listen', '~> 3.8'

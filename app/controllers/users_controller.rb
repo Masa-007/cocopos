@@ -21,7 +21,7 @@ class UsersController < ApplicationController
 
     @mood_chart_data = mood_posts.map do |p|
       {
-        date: p.created_at.strftime("%Y-%m-%d"),
+        date: p.created_at.strftime('%Y-%m-%d'),
         score: Post::MOODS[p.mood.to_sym][:score]
       }
     end
@@ -45,7 +45,7 @@ class UsersController < ApplicationController
 
     if params[:q].present?
       query = "%#{params[:q]}%"
-      posts = posts.where("title ILIKE :q OR body ILIKE :q", q: query)
+      posts = posts.where('title ILIKE :q OR body ILIKE :q', q: query)
     end
 
     sort_posts(posts)

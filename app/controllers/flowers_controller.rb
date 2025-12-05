@@ -6,7 +6,7 @@ class FlowersController < ApplicationController
 
   def create
     current_user.flowers.find_or_create_by(flowerable: @flowerable)
-    @flowerable.reload 
+    @flowerable.reload
 
     respond_to do |format|
       format.turbo_stream
@@ -17,7 +17,7 @@ class FlowersController < ApplicationController
   def destroy
     flower = current_user.flowers.find_by(flowerable: @flowerable)
     flower&.destroy
-    @flowerable.reload 
+    @flowerable.reload
 
     respond_to do |format|
       format.turbo_stream
