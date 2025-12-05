@@ -445,7 +445,9 @@ body.winter .mypage-title { color: #60a5fa; }
 -------------------------------- */
 @media (max-width: 768px) {
 
-  /* ハンバーガーボタン */
+  /* --------------------------
+      ハンバーガーボタン
+     -------------------------- */
   .hamburger-button {
     display: flex;
     flex-direction: column;
@@ -454,7 +456,11 @@ body.winter .mypage-title { color: #60a5fa; }
     border: none;
     cursor: pointer;
     padding: 6px;
-    z-index: 200;
+
+    /* ▼ スマホで確実にタッチを拾うため常に最前面へ */
+    position: relative;
+    z-index: 9999;
+
     transition: 0.3s ease;
   }
 
@@ -467,7 +473,7 @@ body.winter .mypage-title { color: #60a5fa; }
     transform-origin: center;
   }
 
-  /* ▼ Xに変形（アニメーション） */
+  /* ▼ Xに変形（ぬるっとアニメ） */
   .hamburger-button.active span:nth-child(1) {
     transform: translateY(9px) rotate(45deg);
   }
@@ -484,12 +490,13 @@ body.winter .mypage-title { color: #60a5fa; }
         ハンバーガー内容（nav）
      -------------------------- */
   .header-nav {
-    /* 最初は消えている状態 */
     display: flex;
     flex-direction: column;
     gap: 14px;
 
+    /* ▼ 薄いピンク背景（ヘッダーと馴染む） */
     background: rgba(255, 220, 230, 0.95);
+
     padding: 16px;
     position: absolute;
     right: 16px;
@@ -497,12 +504,12 @@ body.winter .mypage-title { color: #60a5fa; }
     width: 200px;
     border-radius: 10px;
 
-    /* ▼ “奥” に配置 */
+    /* ▼ 内側（使い方より奥側） */
     z-index: 50;
 
     box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 
-    /* ▼ フェードイン / アウトのアニメ */
+    /* ▼ フェードイン / アウト */
     opacity: 0;
     visibility: hidden;
     transform: translateY(-6px);
@@ -519,3 +526,4 @@ body.winter .mypage-title { color: #60a5fa; }
     transform: translateY(0);
   }
 }
+

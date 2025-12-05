@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class PostsController < ApplicationController
   before_action :authenticate_user!, only: %i[new create edit update destroy]
   before_action :set_post, only: %i[show edit update destroy]
@@ -12,7 +13,7 @@ class PostsController < ApplicationController
 
     if params[:q].present?
       query = "%#{params[:q]}%"
-      @posts = @posts.where("title ILIKE :q OR body ILIKE :q", q: query)
+      @posts = @posts.where('title ILIKE :q OR body ILIKE :q', q: query)
     end
 
     @posts = sort_posts(@posts)
@@ -22,6 +23,7 @@ class PostsController < ApplicationController
   # 投稿詳細
   def show
     redirect_to posts_path, alert: t('posts.alerts.private') and return if private_post_blocked?
+
     @comments = @post.comments.includes(:user, :flowers)
   end
 
@@ -74,7 +76,10 @@ class PostsController < ApplicationController
 
   # 権限確認
   def authorize_user!
-    redirect_to posts_path, alert: t('posts.alerts.unauthorized') unless @post.user == current_user || current_user.admin?
+    return if @post.user == current_user || current_user.admin?
+
+    redirect_to posts_path,
+                alert: t('posts.alerts.unauthorized')
   end
 
   # リダイレクト処理
@@ -96,6 +101,7 @@ class PostsController < ApplicationController
   # post_type フィルター
   def filter_by_type(posts)
     return posts if params[:filter].blank? || params[:filter] == 'all'
+
     posts.where(post_type: params[:filter])
   end
 
@@ -132,11 +138,11 @@ class PostsController < ApplicationController
     updated[:is_public] = fetch_bool(updated, :is_public, post.is_public)
 
     # コメント設定
-    if updated[:is_public]
-      updated[:comment_allowed] = fetch_bool(updated, :comment_allowed, post.comment_allowed)
-    else
-      updated[:comment_allowed] = false
-    end
+    updated[:comment_allowed] = if updated[:is_public]
+                                  fetch_bool(updated, :comment_allowed, post.comment_allowed)
+                                else
+                                  false
+                                end
 
     updated[:comment_allowed] = updated[:comment_allowed] == true
 
@@ -149,6 +155,7 @@ class PostsController < ApplicationController
   # 真偽値キャスト
   def fetch_bool(hash, key, fallback)
     return fallback unless hash.key?(key)
+
     ActiveModel::Type::Boolean.new.cast(hash[key])
   end
 
@@ -188,7 +195,6 @@ class PostsController < ApplicationController
     permitted
   end
 
-
   def success_response(format, post)
     format.json do
       render json: {
@@ -207,7 +213,6 @@ class PostsController < ApplicationController
       redirect_to post_path(post), notice: t('posts.notices.created')
     end
   end
-
 
   def failure_response(format, post)
     format.json do
