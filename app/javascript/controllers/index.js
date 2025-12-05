@@ -7,6 +7,7 @@ import ShareController from "./share_controller";
 import SlideshowController from "./slideshow_controller";
 import MoodController from "./mood_controller";
 import MoodChartController from "./mood_chart_controller";
+import MenuController from "./menu_controller";
 
 const application = Application.start();
 
@@ -16,6 +17,7 @@ application.register("share", ShareController);
 application.register("slideshow", SlideshowController);
 application.register("mood", MoodController);
 application.register("mood-chart", MoodChartController);
+application.register("menu", MenuController);
 
 window.application = application;
 

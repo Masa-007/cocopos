@@ -1,6 +1,7 @@
-<header class="wooden-header">
+<header class="wooden-header" data-controller="menu">
   <div class="header-inner">
 
+    <!-- 左側ロゴ -->
     <div class="header-left">
       <%= link_to root_path, class: "header-logo" do %>
         cocopos📮
@@ -8,12 +9,22 @@
       <p class="header-subtitle">- 心の目安箱 -</p>
     </div>
 
-    <nav class="header-nav">
+    <!-- ハンバーガー（スマホのみ表示） -->
+    <button 
+      class="hamburger-button"
+      data-action="click->menu#toggle"
+    >
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+    <!-- ナビ（PC用 + スマホドロワー） -->
+    <nav class="header-nav" data-menu-target="nav">
       <a href="#" id="howToLink" class="nav-button">使い方</a>
       <%= link_to "みんなの投稿一覧", posts_path, class: "nav-button", data: { turbo: false } %>
 
       <% if user_signed_in? %>
-
         <%= link_to "マイページ", mypage_path, class: "nav-button" %>
         <%= button_to "ログアウト", destroy_user_session_path,
               method: :delete,
