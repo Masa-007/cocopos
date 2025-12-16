@@ -13,6 +13,8 @@ gem 'rails', '~> 7.1.3'
 
 gem 'devise'
 
+gem "openai"
+
 gem 'kaminari'
 
 gem 'foreman', '~> 0.90.0'

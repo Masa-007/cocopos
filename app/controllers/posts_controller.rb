@@ -30,6 +30,7 @@ class PostsController < ApplicationController
   # 新規投稿フォーム
   def new
     @post = Post.new
+    @show_loading = true   # ← 到達時に必ず表示したい
   end
 
   # 投稿作成
@@ -37,15 +38,31 @@ class PostsController < ApplicationController
     @post = current_user.posts.build(post_params_for_create)
     disable_comment_if_private(@post)
 
-    respond_to do |format|
+    if request.format.json?
       if @post.save
-        success_response(format, @post)
+        render json: {
+          success: true,
+          data: {
+            id: @post.id,
+            post_type: @post.post_type,
+            mood: @post.mood
+          }
+        }, status: :ok
       else
-        failure_response(format, @post)
+        render json: {
+          success: false,
+          errors: @post.errors.full_messages
+        }, status: :unprocessable_entity
+      end
+    else
+    # フォールバック（直接POSTされた場合）
+      if @post.save
+        redirect_to post_path(@post), notice: t('posts.notices.created')
+      else
+        render :new, status: :unprocessable_entity
       end
     end
   end
-
   # 編集フォーム
   def edit; end
 
@@ -194,36 +211,5 @@ class PostsController < ApplicationController
     end
     permitted
   end
-
-  def success_response(format, post)
-    format.json do
-      render json: {
-        success: true,
-        data: {
-          id: post.id,
-          title: post.title,
-          body: post.body,
-          post_type: post.post_type,
-          mood: post.mood
-        }
-      }, status: :ok
-    end
-
-    format.html do
-      redirect_to post_path(post), notice: t('posts.notices.created')
-    end
-  end
-
-  def failure_response(format, post)
-    format.json do
-      render json: {
-        success: false,
-        errors: post.errors.full_messages
-      }, status: :unprocessable_entity
-    end
-
-    format.html do
-      render :new, status: :unprocessable_entity
-    end
-  end
 end
+

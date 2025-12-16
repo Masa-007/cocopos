@@ -22,4 +22,8 @@ Rails.application.routes.draw do
   # マイページ
   get 'mypage', to: 'users#mypage', as: :mypage
   get 'mypage/posts', to: 'users#mypage_posts', as: :mypage_posts
+
+  # AI文章生成（1日1回制限）
+  post "/ai/generate_text", to: "ai#generate_text"
 end
+

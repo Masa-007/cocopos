@@ -1,0 +1,86 @@
+<div id="ai-writer-block"
+     class="hidden"
+     data-controller="ai-writer">
+
+  <!-- AI起動エリア -->
+  <div class="flex items-center gap-3">
+    <!-- AI起動ボタン -->
+    <button
+      type="button"
+      class="px-4 py-2 bg-gradient-to-r from-orange-300 to-pink-300 text-white font-bold rounded-xl shadow disabled:opacity-40"
+      data-action="click->ai-writer#generate"
+      <%= "disabled" unless current_user.ai_available_today? %>>
+      🤖 AIに本文を整えてもらう
+    </button>
+
+    <!-- 残りトークン数 -->
+    <span class="text-xs text-gray-500">
+      本日の残り <%= current_user.ai_remaining_count %> / 1
+    </span>
+  </div>
+
+  <!-- 利用回数の注意 -->
+  <p class="text-xs text-gray-400 mt-2">
+    ※ AI本文補助は1日1回まで利用できます
+  </p>
+
+  <!-- 🔄 ローディングモーダル -->
+  <div
+    class="fixed inset-0 bg-black/40 hidden flex items-center justify-center z-50"
+    data-ai-writer-target="loading">
+
+    <div class="bg-white rounded-2xl p-6 w-full max-w-sm text-center">
+      <div class="animate-spin rounded-full h-12 w-12 border-4 border-orange-300 border-t-transparent mx-auto mb-4"></div>
+      <p class="text-gray-700 font-medium">
+        AIがあなたの気持ちを<br>
+        そっと言葉に整えています…
+      </p>
+    </div>
+  </div>
+
+  <!-- 🌈 AI本文プレビューモーダル -->
+  <div
+    class="fixed inset-0 bg-black/40 hidden z-50 flex items-center justify-center"
+    data-ai-writer-target="modal"
+    data-action="click->ai-writer#cancel">
+
+    <div
+      class="w-full max-w-xl max-h-[90vh] px-4"
+      onclick="event.stopPropagation();">
+
+      <div class="bg-white rounded-2xl p-6 overflow-y-auto max-h-[90vh]">
+
+        <h2 class="text-xl font-bold mb-4">
+          🌈 AIからの本文提案
+        </h2>
+
+        <div
+          class="space-y-3 mb-2"
+          data-ai-writer-target="options">
+        </div>
+
+        <p class="text-sm text-gray-500 mb-4">
+          ※ この画面を閉じると、この本文は再表示されません。<br>
+          内容を確認のうえ、採用するかどうかを選んでください。
+        </p>
+
+        <div class="flex justify-end gap-3">
+          <button
+            type="button"
+            class="px-4 py-2 rounded-xl border"
+            data-action="click->ai-writer#cancel">
+            あなたの本文のまま
+          </button>
+
+          <button
+            type="button"
+            class="px-4 py-2 rounded-xl bg-orange-400 text-white"
+            data-action="click->ai-writer#apply">
+            AI本文を採用する
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
