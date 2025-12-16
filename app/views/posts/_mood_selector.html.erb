@@ -1,6 +1,12 @@
 <!-- 🌈 気分選択（心の整理箱専用） -->
-<div id="moodSection" class="mb-8 relative z-10 <%= post.organize? ? "" : "hidden" %>">
-  <label class="block text-lg font-bold text-gray-800 mb-4">😊 今の気分を選んでください</label>
+<div
+  id="moodSection"
+  class="mb-8 relative z-10 hidden"
+  data-mood-target="section"
+>
+  <label class="block text-lg font-bold text-gray-800 mb-4">
+    😊 今の気分を選んでください
+  </label>
 
   <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
     <% Post::MOODS.each do |key, info| %>
@@ -13,7 +19,10 @@
               class: "absolute inset-0 opacity-0 cursor-pointer peer z-20" %>
 
         <div class="p-4 text-center border-2 border-gray-200 rounded-xl bg-white
-                    transition-all peer-checked:border-purple-400 peer-checked:ring-2 peer-checked:ring-purple-200">
+                    transition-all
+                    peer-checked:border-purple-400
+                    peer-checked:ring-2
+                    peer-checked:ring-purple-200">
           <span class="text-2xl"><%= emoji %></span>
           <p class="text-sm text-gray-700 mt-1 font-medium"><%= text %></p>
         </div>
@@ -21,30 +30,7 @@
     <% end %>
   </div>
 
-  <p class="text-sm text-gray-500 mt-2">※ 心の整理箱では気分の選択が必須です</p>
+  <p class="text-sm text-gray-500 mt-2">
+    ※ 心の整理箱では気分の選択が必須です
+  </p>
 </div>
-
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const radios = document.querySelectorAll(".post-type-radio");
-    const moodSection = document.getElementById("moodSection");
-
-    if (!radios.length) return;
-
-    // new のときのみ動作
-    function toggleMoodSection() {
-      const selected = document.querySelector(".post-type-radio:checked")?.value;
-      if (selected === "organize") {
-        moodSection.classList.remove("hidden");
-      } else {
-        moodSection.classList.add("hidden");
-      }
-    }
-
-    radios.forEach(radio => {
-      radio.addEventListener("change", toggleMoodSection);
-    });
-
-    toggleMoodSection();
-  });
-</script>

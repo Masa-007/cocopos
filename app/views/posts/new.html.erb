@@ -6,13 +6,14 @@
       <p class="text-gray-600">あなたの心を投函してください</p>
     </div>
 
-    <div class="bg-white rounded-3xl shadow-lg p-8">
-      <%= form_with model: @post,
-              id: "postForm",
-              local: true,
-              data: { turbo: false },
-              html: { onsubmit: "return false;" } do |f| %>
-
+   <%= form_with model: @post,
+    id: "postForm",
+    local: true,
+    data: {
+      turbo: false,
+      controller: "post-submit mood",
+      action: "submit->post-submit#submit"
+    } do |f| %>
         <!-- 📮 投函する箱選択 -->
         <div class="mb-8 relative z-10">
           <label class="block text-lg font-bold text-gray-800 mb-4">📮 投函する箱を選んでください</label>
@@ -25,6 +26,7 @@
               <label class="relative cursor-pointer select-none">
                 <%= f.radio_button :post_type, type,
                       class: "absolute inset-0 opacity-0 cursor-pointer peer z-20 post-type-radio",
+                      data: { action: "change->mood#toggle" },
                       required: true %>
 
                 <div class="card-ui text-center border-2 border-gray-200 rounded-xl p-4 transition-all
@@ -122,6 +124,7 @@
           <p class="text-right text-sm text-gray-500 mt-2">100文字以内</p>
         </div>
 
+
         <!-- 📝 本文 -->
         <div class="mb-8 relative z-10">
           <label class="block text-lg font-bold text-gray-800 mb-4">📝 本文</label>
@@ -135,6 +138,8 @@
             <span id="charCount">0</span> / 1000文字
           </p>
         </div>
+
+        <%= render "shared/ai_writer", post: @post %>
 
         <!-- 匿名設定 -->
         <div class="mb-8">
