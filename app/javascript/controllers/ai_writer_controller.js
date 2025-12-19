@@ -64,7 +64,7 @@ export default class extends Controller {
       }
     } catch (e) {
       console.error(e);
-      alert("通信エラーが発生しました");
+      alert("通信エラーが発生しました、本日のAI利用回数を超過している可能性があります");
     } finally {
       this.loadingTarget.classList.add("hidden");
     }

@@ -10,6 +10,7 @@
 
     <div class="post-detail-card bg-white rounded-3xl shadow-lg overflow-hidden">
 
+      <!-- ヘッダー -->
       <div class="post-header p-6 border-b <%= @post.post_type_color %>">
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-3">
@@ -60,12 +61,20 @@
         </div>
       </div>
 
+      <!-- 本文 -->
       <div class="post-body p-8">
         <div class="prose max-w-none">
           <p class="text-lg text-gray-800 leading-relaxed whitespace-pre-wrap"><%= @post.body %></p>
         </div>
       </div>
 
+       <!-- 🌱 未来宣言：進捗・期限 -->
+      <%= render "posts/future_status", post: @post %>
+
+      <!-- 🌱 小目標 -->
+      <%= render "posts/milestones", post: @post %>
+
+      <!-- フッター -->
       <div class="post-footer p-6 bg-gray-50 border-t rounded-b-3xl">
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-4">
@@ -82,8 +91,8 @@
       </div>
     </div>
 
+    <!-- コメント -->
     <div class="mt-12 space-y-10">
-
       <section id="comment-form" class="comment-form">
         <h3 class="form-title text-lg font-bold mb-4">📝 コメントを書く</h3>
 
@@ -109,15 +118,14 @@
 
           <% elsif !@post.is_public? %>
             <textarea rows="3" disabled
-                      placeholder="この投稿は非公開のためコメントを追加できません。既存のコメントのみ閲覧可能です。"
+                      placeholder="この投稿は非公開のためコメントを追加できません。"
                       class="w-full border border-gray-300 rounded-xl p-3 mb-4 text-gray-400 bg-gray-100 cursor-not-allowed"></textarea>
 
           <% elsif !@post.comment_allowed? %>
             <textarea rows="3" disabled
-                      placeholder="この投稿はコメント受付を停止しています。既存のコメントのみ閲覧可能です。"
+                      placeholder="この投稿はコメント受付を停止しています。"
                       class="w-full border border-gray-300 rounded-xl p-3 mb-4 text-gray-400 bg-gray-100 cursor-not-allowed"></textarea>
           <% end %>
-
         <% else %>
           <p class="login-required text-center text-gray-500 py-4">
             コメントするにはログインが必要です。
@@ -140,8 +148,6 @@
           </p>
         <% end %>
       </section>
-
     </div>
   </div>
 </main>
-

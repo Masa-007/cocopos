@@ -1,4 +1,3 @@
-// app/javascript/controllers/index.js
 import { Application } from "@hotwired/stimulus";
 
 import SeasonController from "./season_controller";
@@ -10,6 +9,8 @@ import MoodChartController from "./mood_chart_controller";
 import MenuController from "./menu_controller";
 import AiWriterController from "./ai_writer_controller";
 import PostSubmitController from "./post_submit_controller";
+import ProgressSliderController from "./progress_slider_controller";
+import MilestonesController from "./milestones_controller";
 
 const application = Application.start();
 
@@ -22,6 +23,7 @@ application.register("mood-chart", MoodChartController);
 application.register("menu", MenuController);
 application.register("ai-writer", AiWriterController);
 application.register("post-submit", PostSubmitController);
+application.register("progress-slider", ProgressSliderController);
+application.register("milestones", MilestonesController);
 
 window.application = application;
-

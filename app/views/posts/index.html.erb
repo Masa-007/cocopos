@@ -8,111 +8,188 @@
 
     <%= render "search_form" %>
 
-    <div class="filter-bar flex flex-col md:flex-row md:items-center md:justify-between mb-8 gap-4">
-      <div class="filter-buttons flex flex-wrap items-center gap-2">
-        <span class="filter-label font-semibold text-gray-700">絞り込み：</span>
+    <div class="mb-8">
 
-        <%= link_to "すべて", posts_path(sort: params[:sort]),
-              data: { turbo: false },
-              class: "filter-btn #{'active' if params[:filter].blank? || params[:filter] == 'all'}" %>
+      <!-- 📱 スマホ：絞り込み + 並び替え（横並び） -->
+      <div class="md:hidden grid grid-cols-2 gap-3">
 
-        <%= link_to "🌱 未来宣言箱", posts_path(filter: 'future', sort: params[:sort]),
-              data: { turbo: false },
-              class: "filter-btn #{'active' if params[:filter] == 'future'}" %>
+        <!-- 絞り込み -->
+        <%= form_with url: posts_path, method: :get, local: true do |f| %>
+          <%= f.hidden_field :sort, value: params[:sort] %>
 
-        <%= link_to "🌈 心の整理箱", posts_path(filter: 'organize', sort: params[:sort]),
-              data: { turbo: false },
-              class: "filter-btn #{'active' if params[:filter] == 'organize'}" %>
+          <div class="relative">
+            <select name="filter"
+                    onchange="this.form.submit()"
+                    class="w-full appearance-none
+                           rounded-xl border border-gray-300
+                           bg-white px-4 py-3
+                           text-gray-800 font-medium
+                           shadow-sm
+                           focus:border-orange-400 focus:ring-2 focus:ring-orange-200">
+              <option value="" <%= 'selected' if params[:filter].blank? %>>すべて</option>
+              <option value="future" <%= 'selected' if params[:filter] == 'future' %>>🌱 未来宣言箱</option>
+              <option value="organize" <%= 'selected' if params[:filter] == 'organize' %>>🌈 心の整理箱</option>
+              <option value="thanks" <%= 'selected' if params[:filter] == 'thanks' %>>💌 感謝箱</option>
+            </select>
 
-        <%= link_to "💌 感謝箱", posts_path(filter: 'thanks', sort: params[:sort]),
-              data: { turbo: false },
-              class: "filter-btn #{'active' if params[:filter] == 'thanks'}" %>
+            <div class="pointer-events-none absolute inset-y-0 right-3 flex items-center text-gray-400">
+              ▼
+            </div>
+          </div>
+        <% end %>
+
+        <!-- 並び替え -->
+        <%= form_with url: posts_path, method: :get, local: true do |f| %>
+          <%= f.hidden_field :filter, value: params[:filter] %>
+
+          <div class="relative">
+            <select name="sort"
+                    onchange="this.form.submit()"
+                    class="w-full appearance-none
+                           rounded-xl border border-gray-300
+                           bg-white px-4 py-3
+                           text-gray-800 font-medium
+                           shadow-sm
+                           focus:border-orange-400 focus:ring-2 focus:ring-orange-200">
+              <option value="new" <%= 'selected' if params[:sort] != 'old' %>>新しい順</option>
+              <option value="old" <%= 'selected' if params[:sort] == 'old' %>>古い順</option>
+            </select>
+
+            <div class="pointer-events-none absolute inset-y-0 right-3 flex items-center text-gray-400">
+              ▼
+            </div>
+          </div>
+        <% end %>
       </div>
 
-      <%= form_with url: posts_path, method: :get, local: true, class: "filter-right" do |f| %>
-        <%= f.hidden_field :filter, value: params[:filter] %>
-        <select name="sort" onchange="this.form.submit()" class="sort-select border-gray-300 rounded-lg px-3 py-1">
-          <option value="new" <%= 'selected' if params[:sort] != 'old' %>>新しい順</option>
-          <option value="old" <%= 'selected' if params[:sort] == 'old' %>>古い順</option>
-        </select>
-      <% end %>
+      <!-- 🖥 PC：従来UI -->
+      <div class="hidden md:flex items-center justify-between gap-4">
+
+        <!-- 絞り込みボタン -->
+        <div class="flex items-center gap-2">
+          <span class="font-semibold text-gray-700">絞り込み：</span>
+
+          <%= link_to "すべて", posts_path(sort: params[:sort]),
+                class: "filter-btn #{'active' if params[:filter].blank?}" %>
+
+          <%= link_to "🌱 未来宣言箱", posts_path(filter: 'future', sort: params[:sort]),
+                class: "filter-btn #{'active' if params[:filter] == 'future'}" %>
+
+          <%= link_to "🌈 心の整理箱", posts_path(filter: 'organize', sort: params[:sort]),
+                class: "filter-btn #{'active' if params[:filter] == 'organize'}" %>
+
+          <%= link_to "💌 感謝箱", posts_path(filter: 'thanks', sort: params[:sort]),
+                class: "filter-btn #{'active' if params[:filter] == 'thanks'}" %>
+        </div>
+
+        <!-- 並び替え -->
+        <%= form_with url: posts_path, method: :get, local: true do |f| %>
+          <%= f.hidden_field :filter, value: params[:filter] %>
+          <select name="sort"
+                  onchange="this.form.submit()"
+                  class="rounded-xl border border-gray-300
+                         bg-white px-4 py-2
+                         text-gray-800
+                         shadow-sm
+                         focus:border-orange-400 focus:ring-2 focus:ring-orange-200">
+            <option value="new" <%= 'selected' if params[:sort] != 'old' %>>新しい順</option>
+            <option value="old" <%= 'selected' if params[:sort] == 'old' %>>古い順</option>
+          </select>
+        <% end %>
+      </div>
+
     </div>
 
+    <!-- 投稿一覧 -->
     <div class="posts-grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
       <% @posts.each do |post| %>
         <div class="post-card bg-white rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition">
 
           <%= link_to post_path(post, from: 'public'),
-                      data: { turbo: false, id: post.id, category: post.post_type },
+                      data: { turbo: false },
                       class: "block no-underline text-gray-800" do %>
 
-            <!-- ヘッダー：投稿タイプ＋(気分) -->
+            <!-- ヘッダー -->
             <div class="post-card-header <%= post.post_type %> flex justify-between items-center px-6 py-4 border-b">
-              
               <span class="font-semibold flex items-center gap-2">
                 <%= post.post_type_icon %> <%= post.post_type_name %>
 
-                <% if post.post_type == "organize" && post.mood.present? %>
+                <!-- 心の整理箱：気分 -->
+                <% if post.organize? && post.mood.present? %>
                   <% mood_label = Post::MOODS[post.mood.to_sym][:label] %>
                   <% emoji = mood_label[/^\S+/] %>
                   <% text  = mood_label.sub(/^\S+\s*/, "") %>
 
-                  <!-- 気分（絵文字＋文字） -->
-                  <span class="inline-flex items-center gap-1 text-sm font-medium px-1.5 py-0.5 bg-purple-50 text-purple-700 rounded-md">
+                  <span class="inline-flex items-center gap-1 text-sm px-1.5 py-0.5 bg-purple-50 text-purple-700 rounded-md">
                     <span><%= emoji %></span>
                     <span><%= text %></span>
                   </span>
                 <% end %>
+
+                <!-- 未来宣言箱：進捗 -->
+                <% if post.future? && post.progress.present? %>
+                  <span class="inline-flex items-center gap-1 text-sm px-1.5 py-0.5 bg-green-50 text-green-700 rounded-md">
+                    <% if post.progress == 100 %>
+                      🎉 達成済み
+                    <% else %>
+                      🎯 <%= post.progress %>%
+                    <% end %>
+                  </span>
+                <% end %>
               </span>
 
-              <span class="text-sm text-gray-500"><%= l post.created_at, format: :short %></span>
+              <span class="text-sm text-gray-500">
+                <%= l post.created_at, format: :short %>
+              </span>
             </div>
 
-            <!-- 本文エリア -->
-            <div class="post-card-body px-6 py-4">
+            <!-- 本文 -->
+            <div class="px-6 py-4">
               <% if post.title.present? %>
-                <h3 class="post-title font-bold mb-2 text-lg"><%= h(post.title) %></h3>
+                <h3 class="font-bold mb-2 text-lg"><%= h(post.title) %></h3>
               <% end %>
-              <p class="post-content text-gray-700 leading-relaxed">
+
+              <p class="text-gray-700 leading-relaxed">
                 <%= truncate(strip_tags(post.body), length: 100) %>
               </p>
             </div>
           <% end %>
 
           <!-- フッター -->
-          <div class="post-card-footer flex justify-between items-center text-sm text-gray-600 px-6 py-4 bg-gray-50 border-t">
-
+          <div class="flex justify-between items-center text-sm text-gray-600 px-6 py-4 bg-gray-50 border-t">
             <div class="flex items-center gap-2 flex-wrap">
-              <span class="post-author"><%= post.display_name %></span>
+              <span><%= post.display_name %></span>
 
               <% if user_signed_in? && post.user == current_user && !post.is_public %>
-                <span class="inline-block px-2 py-1 bg-gray-200 text-gray-700 rounded-full text-xs">非公開</span>
+                <span class="px-2 py-1 bg-gray-200 text-xs rounded-full">非公開</span>
               <% end %>
 
               <% if post.comment_allowed? %>
-                <span class="inline-block px-2 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-bold">💬 意見募集中</span>
+                <span class="px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded-full font-bold">
+                  💬 意見募集中
+                </span>
               <% else %>
-                <span class="inline-block px-2 py-1 bg-gray-200 text-gray-700 rounded-full text-xs">💭 コメント不要</span>
+                <span class="px-2 py-1 bg-gray-200 text-xs rounded-full">
+                  💭 コメント不要
+                </span>
               <% end %>
             </div>
 
             <% if post.is_public? %>
-              <div class="post-actions flex items-center gap-3">
-                <div id="flower_btn_post_<%= post.id %>">
-                  <%= render "flowers/button", flowerable: post %>
-                </div>
+              <div class="flex items-center gap-3">
+                <%= render "flowers/button", flowerable: post %>
 
                 <% if post.comment_allowed? %>
                   <%= link_to post_path(post, anchor: "comment-form", from: 'public'),
                               data: { turbo: false },
-                              class: "action-icon comment-btn flex items-center gap-1" do %>
+                              class: "flex items-center gap-1" do %>
                     💬 <span><%= post.comments.count %></span>
                   <% end %>
                 <% end %>
               </div>
             <% end %>
-
           </div>
+
         </div>
       <% end %>
 

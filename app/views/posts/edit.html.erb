@@ -96,6 +96,12 @@
           <%= render "posts/mood_selector", f: f, post: @post %>
         <% end %>
 
+          <!-- 📦 箱ごとの追加フィールド -->
+          <div id="post-type-fields">
+            <%= render "posts/future_fields",   f: f, post: @post %>
+            <%= render "posts/organize_fields", f: f, post: @post %>
+          </div>
+
         <!-- タイトル -->
         <div class="mb-8">
           <label class="block text-lg font-bold text-gray-800 mb-4">🖋 タイトル</label>

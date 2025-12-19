@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_12_05_075721) do
+ActiveRecord::Schema[7.1].define(version: 2025_12_19_081129) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -36,6 +36,15 @@ ActiveRecord::Schema[7.1].define(version: 2025_12_05_075721) do
     t.index ["user_id"], name: "index_flowers_on_user_id"
   end
 
+  create_table "milestones", force: :cascade do |t|
+    t.bigint "post_id", null: false
+    t.string "title", null: false
+    t.boolean "completed", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["post_id"], name: "index_milestones_on_post_id"
+  end
+
   create_table "posts", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.text "body", null: false
@@ -50,6 +59,8 @@ ActiveRecord::Schema[7.1].define(version: 2025_12_05_075721) do
     t.integer "flowers_count", default: 0, null: false
     t.string "mood"
     t.integer "mood_score"
+    t.integer "progress", default: 0, null: false
+    t.date "deadline"
     t.index ["created_at"], name: "index_posts_on_created_at"
     t.index ["user_id"], name: "index_posts_on_user_id"
   end
@@ -72,5 +83,6 @@ ActiveRecord::Schema[7.1].define(version: 2025_12_05_075721) do
   add_foreign_key "comments", "posts"
   add_foreign_key "comments", "users"
   add_foreign_key "flowers", "users"
+  add_foreign_key "milestones", "posts"
   add_foreign_key "posts", "users"
 end

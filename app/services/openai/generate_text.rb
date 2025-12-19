@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require "ostruct"
+require 'ostruct'
 
 module Openai
   class GenerateText
-    SEPARATOR = "===VERSION_SEPARATOR==="
+    SEPARATOR = '===VERSION_SEPARATOR==='
 
     def self.call(prompt:)
       new(prompt).call
@@ -17,26 +17,24 @@ module Openai
 
     def call
       response = @client.responses.create(
-        model: "gpt-4o-mini",
+        model: 'gpt-4o-mini',
         input: [
-          { role: "system", content: system_prompt },
-          { role: "user", content: @prompt }
+          { role: 'system', content: system_prompt },
+          { role: 'user', content: @prompt }
         ],
         temperature: 0.7
       )
 
       text = response.output_text
-      raise "OpenAI response was empty" if text.blank?
+      raise 'OpenAI response was empty' if text.blank?
 
       options = text
-        .split(SEPARATOR)
-        .map(&:strip)
-        .reject(&:blank?)
+                .split(SEPARATOR)
+                .map(&:strip)
+                .reject(&:blank?)
 
       # 必ず2案にする（AIが失敗した場合の保険）
-      if options.size < 2
-        options << @prompt
-      end
+      options << @prompt if options.size < 2
 
       OpenStruct.new(
         success?: true,
@@ -48,7 +46,7 @@ module Openai
 
       OpenStruct.new(
         success?: false,
-        error: "本文の生成に失敗しました"
+        error: '本文の生成に失敗しました'
       )
     end
 
