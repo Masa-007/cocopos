@@ -1,0 +1,145 @@
+<% return unless post.future? %>
+
+<div class="mt-8 space-y-8">
+
+  <!-- 進捗 -->
+  <div data-controller="progress-slider">
+    <p class="text-sm text-gray-600 mb-4">
+      現在の進捗：
+      <strong data-progress-slider-target="value">
+        <%= post.progress || 0 %>%
+      </strong>
+    </p>
+
+    <%= f.range_field :progress,
+          min: 0,
+          max: 100,
+          step: 10,
+          value: post.progress || 0,
+          data: {
+            progress_slider_target: "input",
+            action: "input->progress-slider#update"
+          },
+          class: "w-full h-3 rounded-full bg-gray-200 accent-green-500 cursor-pointer" %>
+  </div>
+
+  <!-- 期限 -->
+  <div>
+    <label class="block text-sm font-bold text-gray-700 mb-2">
+      📅 目標期限
+    </label>
+
+    <p class="text-xs text-gray-500 mb-2">
+      ※ 期限を設定すると進捗管理がしやすくなります
+    </p>
+
+    <%= f.date_field :deadline,
+          class: "w-full border border-gray-300 rounded-lg px-3 py-2
+                  focus:border-orange-400 focus:ring-2 focus:ring-orange-200" %>
+  </div>
+
+  <!-- マイルストーン -->
+  <div data-controller="milestones" class="space-y-4">
+
+    <div class="flex items-center justify-between">
+      <label class="block text-sm font-bold text-gray-700">
+        ✅ マイルストーン
+      </label>
+
+      <span
+        class="text-xs text-gray-500"
+        data-milestones-target="count"
+      ></span>
+    </div>
+
+    <p class="text-xs text-gray-500">
+      目標を細かいステップに分けて管理できます（最大10個まで）
+    </p>
+
+    <!-- 一覧 -->
+    <div class="space-y-3" data-milestones-target="list">
+      <%= f.fields_for :milestones do |mf| %>
+        <div
+          class="flex items-center gap-3"
+          data-milestones-target="item"
+        >
+          <%= mf.check_box :completed,
+                class: "h-4 w-4 text-green-500 rounded" %>
+
+          <%= mf.text_field :title,
+                placeholder: "例：参考書を1章読む",
+                class: "flex-1 border border-gray-300 rounded-lg px-3 py-2" %>
+
+          <button
+            type="button"
+            data-action="milestones#remove"
+            class="text-xs text-red-500 hover:underline"
+          >
+            削除
+          </button>
+        </div>
+      <% end %>
+
+      <!-- 初回用：必ず1つ -->
+      <% if post.milestones.empty? %>
+        <%= f.fields_for :milestones, post.milestones.build do |mf| %>
+          <div
+            class="flex items-center gap-3"
+            data-milestones-target="item"
+          >
+            <%= mf.check_box :completed,
+                  class: "h-4 w-4 text-green-500 rounded" %>
+
+            <%= mf.text_field :title,
+                  placeholder: "例：最初の一歩を書く",
+                  class: "flex-1 border border-gray-300 rounded-lg px-3 py-2" %>
+
+            <button
+              type="button"
+              data-action="milestones#remove"
+              class="text-xs text-red-500 hover:underline"
+            >
+              削除
+            </button>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+
+    <!-- 追加用テンプレート -->
+    <template data-milestones-target="template">
+      <div
+        class="flex items-center gap-3"
+        data-milestones-target="item"
+      >
+        <input type="checkbox"
+               name="post[milestones_attributes][][completed]"
+               class="h-4 w-4 text-green-500 rounded" />
+
+        <input type="text"
+               name="post[milestones_attributes][][title]"
+               placeholder="例：次のステップを書く"
+               class="flex-1 border border-gray-300 rounded-lg px-3 py-2" />
+
+        <button
+          type="button"
+          data-action="milestones#remove"
+          class="text-xs text-red-500 hover:underline"
+        >
+          削除
+        </button>
+      </div>
+    </template>
+
+    <!-- 追加ボタン -->
+    <button
+      type="button"
+      data-action="milestones#add"
+      class="w-full py-2 rounded-xl border border-dashed border-gray-300
+             text-sm font-medium text-gray-600 hover:bg-gray-50 transition"
+    >
+      ＋ ステップを追加
+    </button>
+  </div>
+
+</div>

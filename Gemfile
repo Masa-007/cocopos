@@ -13,7 +13,7 @@ gem 'rails', '~> 7.1.3'
 
 gem 'devise'
 
-gem "openai"
+gem 'openai'
 
 gem 'kaminari'
 

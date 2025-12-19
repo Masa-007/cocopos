@@ -30,7 +30,7 @@ class PostsController < ApplicationController
   # 新規投稿フォーム
   def new
     @post = Post.new
-    @show_loading = true   # ← 到達時に必ず表示したい
+    @show_loading = true
   end
 
   # 投稿作成
@@ -54,15 +54,13 @@ class PostsController < ApplicationController
           errors: @post.errors.full_messages
         }, status: :unprocessable_entity
       end
+    elsif @post.save
+      redirect_to post_path(@post), notice: t('posts.notices.created')
     else
-    # フォールバック（直接POSTされた場合）
-      if @post.save
-        redirect_to post_path(@post), notice: t('posts.notices.created')
-      else
-        render :new, status: :unprocessable_entity
-      end
+      render :new, status: :unprocessable_entity
     end
   end
+
   # 編集フォーム
   def edit; end
 
@@ -95,8 +93,7 @@ class PostsController < ApplicationController
   def authorize_user!
     return if @post.user == current_user || current_user.admin?
 
-    redirect_to posts_path,
-                alert: t('posts.alerts.unauthorized')
+    redirect_to posts_path, alert: t('posts.alerts.unauthorized')
   end
 
   # リダイレクト処理
@@ -151,10 +148,8 @@ class PostsController < ApplicationController
   def prepare_updated_params(post, params)
     updated = params.dup
 
-    # 公開設定
     updated[:is_public] = fetch_bool(updated, :is_public, post.is_public)
 
-    # コメント設定
     updated[:comment_allowed] = if updated[:is_public]
                                   fetch_bool(updated, :comment_allowed, post.comment_allowed)
                                 else
@@ -163,7 +158,6 @@ class PostsController < ApplicationController
 
     updated[:comment_allowed] = updated[:comment_allowed] == true
 
-    # post_type は変更禁止
     updated.delete(:post_type)
 
     updated
@@ -185,7 +179,14 @@ class PostsController < ApplicationController
       :is_anonymous,
       :is_public,
       :comment_allowed,
-      :mood
+      :mood,
+      :deadline,
+      milestones_attributes: %i[
+        id
+        title
+        completed
+        _destroy
+      ]
     )
     cast_booleans(permitted, %i[is_public comment_allowed])
   end
@@ -198,7 +199,14 @@ class PostsController < ApplicationController
       :is_anonymous,
       :is_public,
       :comment_allowed,
-      :mood
+      :mood,
+      :deadline,
+      milestones_attributes: %i[
+        id
+        title
+        completed
+        _destroy
+      ]
     )
     cast_booleans(permitted, %i[is_public comment_allowed])
   end
@@ -212,4 +220,3 @@ class PostsController < ApplicationController
     permitted
   end
 end
-

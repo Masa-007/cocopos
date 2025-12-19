@@ -1,0 +1,19 @@
+<% return unless post.future? && post.milestones.any? %>
+
+<div class="mt-6 space-y-3">
+  <h3 class="font-bold text-gray-700">🌱 小目標</h3>
+
+  <ul class="space-y-2">
+    <% post.milestones.each do |milestone| %>
+      <li class="flex items-center gap-2">
+        <span>
+          <%= milestone.completed? ? "✅" : "⬜" %>
+        </span>
+
+        <span class="<%= 'line-through text-gray-400' if milestone.completed? %>">
+          <%= milestone.title %>
+        </span>
+      </li>
+    <% end %>
+  </ul>
+</div>

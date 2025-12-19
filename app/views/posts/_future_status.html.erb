@@ -1,0 +1,36 @@
+<% return unless post.future? %>
+
+<div class="px-8 pb-6 border-t bg-gray-50">
+  <!-- 進捗 -->
+  <% if post.progress.present? %>
+    <div class="mb-4">
+      <div class="flex items-center justify-between text-sm mb-1">
+        <span class="font-bold text-gray-700">🌱 進捗</span>
+        <span class="text-gray-600"><%= post.progress %>%</span>
+      </div>
+
+      <div class="w-full bg-gray-200 rounded-full h-3">
+        <div
+          class="bg-green-400 h-3 rounded-full transition-all"
+          style="width: <%= post.progress %>%;">
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <!-- 期限 -->
+  <% if post.deadline.present? %>
+    <% days_left = (post.deadline - Date.current).to_i %>
+
+    <div class="text-sm text-gray-700">
+      <span class="font-bold">📅 期限：</span>
+      <%= post.deadline.strftime("%Y年%m月%d日") %>
+    </div>
+
+    <% if days_left <= 7 %>
+      <div class="mt-3 p-3 bg-yellow-100 text-yellow-800 rounded-xl text-sm">
+        ⏰ 期限まであと <strong><%= days_left %>日</strong>
+      </div>
+    <% end %>
+  <% end %>
+</div>

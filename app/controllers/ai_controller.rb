@@ -28,10 +28,10 @@ class AiController < ApplicationController
 
   # 心の整理箱のみ許可
   def ensure_organize_post!
-    return if params[:post_type] == "organize"
+    return if params[:post_type] == 'organize'
 
     render json: {
-      error: "AI本文補助は心の整理箱のみ利用できます"
+      error: 'AI本文補助は心の整理箱のみ利用できます'
     }, status: :forbidden
   end
 
@@ -40,7 +40,7 @@ class AiController < ApplicationController
     return if current_user.ai_available_today?
 
     render json: {
-      error: "本日のAI利用回数を超えています"
+      error: '本日のAI利用回数を超えています'
     }, status: :forbidden
   end
 
@@ -51,7 +51,7 @@ class AiController < ApplicationController
 
     if count >= 3
       render json: {
-        error: "短時間でのAI利用が制限されています"
+        error: '短時間でのAI利用が制限されています'
       }, status: :too_many_requests
       return
     end
@@ -59,4 +59,3 @@ class AiController < ApplicationController
     Rails.cache.write(key, count + 1, expires_in: 10.minutes)
   end
 end
-
