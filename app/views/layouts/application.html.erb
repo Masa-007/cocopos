@@ -33,8 +33,7 @@
   </script>
 </head>
 
-<body class="flex flex-col min-h-screen bg-gradient-to-br from-rose-50 to-orange-50 text-gray-800 <%= @season %>">
-
+<body class="flex flex-col min-h-screen bg-gradient-to-br from-rose-50 to-orange-50 text-gray-800 <%= @season %> <%= controller_name %>-<%= action_name %>">
   <%= render "shared/header" %>
 
   <div id="flash-container" class="fixed top-4 right-4 space-y-2 z-50">

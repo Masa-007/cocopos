@@ -11,9 +11,10 @@
     local: true,
     data: {
       turbo: false,
-      controller: "post-submit mood",
-      action: "submit->post-submit#submit"
+      controller: "post-submit post-type-fields post-visibility",
+      action: "submit->post-submit#submit change->post-type-fields#toggle change->post-visibility#check"
     } do |f| %>
+
         <!-- 📮 投函する箱選択 -->
         <div class="mb-8 relative z-10">
           <label class="block text-lg font-bold text-gray-800 mb-4">📮 投函する箱を選んでください</label>

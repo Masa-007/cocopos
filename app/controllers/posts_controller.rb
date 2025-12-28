@@ -181,6 +181,7 @@ class PostsController < ApplicationController
       :comment_allowed,
       :mood,
       :deadline,
+      :progress,
       milestones_attributes: %i[
         id
         title
@@ -201,6 +202,7 @@ class PostsController < ApplicationController
       :comment_allowed,
       :mood,
       :deadline,
+      :progress,
       milestones_attributes: %i[
         id
         title

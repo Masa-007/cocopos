@@ -11,6 +11,8 @@ import AiWriterController from "./ai_writer_controller";
 import PostSubmitController from "./post_submit_controller";
 import ProgressSliderController from "./progress_slider_controller";
 import MilestonesController from "./milestones_controller";
+import PostTypeFieldsController from "./post_type_fields_controller";
+import PostVisibilityController from "./post_visibility_controller";
 
 const application = Application.start();
 
@@ -25,5 +27,7 @@ application.register("ai-writer", AiWriterController);
 application.register("post-submit", PostSubmitController);
 application.register("progress-slider", ProgressSliderController);
 application.register("milestones", MilestonesController);
+application.register("post-type-fields", PostTypeFieldsController);
+application.register("post-visibility", PostVisibilityController);
 
 window.application = application;

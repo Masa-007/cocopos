@@ -1,6 +1,4 @@
-<% return unless post.future? %>
-
-<div class="mt-8 space-y-8">
+<div data-post-type-fields-target="future" class="hidden mt-8 space-y-8">
 
   <!-- 進捗 -->
   <div data-controller="progress-slider">
@@ -108,24 +106,18 @@
 
     <!-- 追加用テンプレート -->
     <template data-milestones-target="template">
-      <div
-        class="flex items-center gap-3"
-        data-milestones-target="item"
-      >
+      <div class="flex items-center gap-3" data-milestones-target="item">
         <input type="checkbox"
-               name="post[milestones_attributes][][completed]"
-               class="h-4 w-4 text-green-500 rounded" />
+          name="post[milestones_attributes][NEW_RECORD][completed]"
+          class="h-4 w-4 text-green-500 rounded" />
 
         <input type="text"
-               name="post[milestones_attributes][][title]"
-               placeholder="例：次のステップを書く"
-               class="flex-1 border border-gray-300 rounded-lg px-3 py-2" />
+          name="post[milestones_attributes][NEW_RECORD][title]"
+          placeholder="例：次のステップを書く"
+          class="flex-1 border border-gray-300 rounded-lg px-3 py-2" />
 
-        <button
-          type="button"
-          data-action="milestones#remove"
-          class="text-xs text-red-500 hover:underline"
-        >
+        <button type="button" data-action="milestones#remove"
+          class="text-xs text-red-500 hover:underline">
           削除
         </button>
       </div>
