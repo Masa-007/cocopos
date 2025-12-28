@@ -1,0 +1,15 @@
+<% if post.is_public? %>
+  <div class="flex items-center gap-3">
+    <div id="flower_btn_post_<%= post.id %>">
+      <%= render "flowers/button", flowerable: post %>
+    </div>
+
+    <% if post.comment_allowed? %>
+      <%= link_to post_path(post, anchor: "comment-form", from: from),
+                  data: { turbo: false },
+                  class: "comment-btn" do %>
+        💬 <span><%= post.comments.count %></span>
+      <% end %>
+    <% end %>
+  </div>
+<% end %>

@@ -10,15 +10,12 @@
 <%= form_with url: url,
               method: flowered ? :delete : :post,
               data: { turbo_stream: true },
-              class: "flex items-center space-x-1" do %>
+              class: "flower-form" do %>
 
   <button type="submit"
-          class="action-icon flower-btn text-2xl leading-none
-                 <%= flowered ? 'text-pink-500 hover:text-pink-700' : 'text-gray-400 hover:text-pink-500' %>">
+          class="flower-btn <%= flowered ? 'is-flowered' : 'is-unflowered' %>">
     <span class="flower-icon"><%= flowered ? "🌿" : "🌱" %></span>
-    <span class="flower-count text-gray-600 text-sm font-semibold ml-1">
-      <%= flowerable.flowers.count %>
-    </span>
+    <span class="flower-count"><%= flowerable.flowers.count %></span>
   </button>
 
 <% end %>

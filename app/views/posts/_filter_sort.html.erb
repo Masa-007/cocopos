@@ -1,0 +1,86 @@
+<div class="mb-8">
+
+  <!-- 📱 スマホ：絞り込み + 並び替え（横並び） -->
+  <div class="md:hidden grid grid-cols-2 gap-3">
+
+    <!-- 絞り込み -->
+    <%= form_with url: path.call, method: :get, local: true do |f| %>
+      <%= f.hidden_field :sort, value: params[:sort] %>
+
+      <div class="relative">
+        <select name="filter"
+                onchange="this.form.submit()"
+                class="w-full appearance-none
+                       rounded-xl border border-gray-300
+                       bg-white px-4 py-3
+                       text-gray-800 font-medium
+                       shadow-sm
+                       focus:border-orange-400 focus:ring-2 focus:ring-orange-200">
+          <% filters.each do |item| %>
+            <option value="<%= item[:value] %>" <%= "selected" if selected_filter?(params[:filter], item[:value]) %>>
+              <%= item[:text] %>
+            </option>
+          <% end %>
+        </select>
+
+        <div class="pointer-events-none absolute inset-y-0 right-3 flex items-center text-gray-400">
+          ▼
+        </div>
+      </div>
+    <% end %>
+
+    <!-- 並び替え -->
+    <%= form_with url: path.call, method: :get, local: true do |f| %>
+      <%= f.hidden_field :filter, value: params[:filter] %>
+
+      <div class="relative">
+        <select name="sort"
+                onchange="this.form.submit()"
+                class="w-full appearance-none
+                       rounded-xl border border-gray-300
+                       bg-white px-4 py-3
+                       text-gray-800 font-medium
+                       shadow-sm
+                       focus:border-orange-400 focus:ring-2 focus:ring-orange-200">
+          <option value="new" <%= "selected" if params[:sort] != "old" %>>新しい順</option>
+          <option value="old" <%= "selected" if params[:sort] == "old" %>>古い順</option>
+        </select>
+
+        <div class="pointer-events-none absolute inset-y-0 right-3 flex items-center text-gray-400">
+          ▼
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- 🖥 PC：ボタン + ソート -->
+  <div class="hidden md:flex items-center justify-between gap-4">
+
+    <!-- 絞り込みボタン -->
+    <div class="flex items-center gap-2">
+      <span class="font-semibold text-gray-700"><%= pc_label %></span>
+
+      <% filters.each do |item| %>
+        <%= link_to item[:text],
+                    path.call(filter: item[:value], sort: params[:sort]),
+                    class: "filter-btn #{'active' if selected_filter?(params[:filter], item[:value])}" %>
+      <% end %>
+    </div>
+
+    <!-- 並び替え -->
+    <%= form_with url: path.call, method: :get, local: true do |f| %>
+      <%= f.hidden_field :filter, value: params[:filter] %>
+      <select name="sort"
+              onchange="this.form.submit()"
+              class="rounded-xl border border-gray-300
+                     bg-white px-4 py-2
+                     text-gray-800
+                     shadow-sm
+                     focus:border-orange-400 focus:ring-2 focus:ring-orange-200">
+        <option value="new" <%= "selected" if params[:sort] != "old" %>>新しい順</option>
+        <option value="old" <%= "selected" if params[:sort] == "old" %>>古い順</option>
+      </select>
+    <% end %>
+  </div>
+
+</div>
