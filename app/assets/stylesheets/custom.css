@@ -10,6 +10,9 @@ body {
   background-attachment: fixed;
 }
 
+body.users-mypage_posts {
+  background: linear-gradient(135deg, #f4f7e2 0%, #ffffff 100%);
+}
 
 .wooden-header {
   background: linear-gradient(135deg, #ffd6cc 0%, #ffb3a4 100%);
@@ -526,4 +529,3 @@ body.winter .mypage-title { color: #60a5fa; }
     transform: translateY(0);
   }
 }
-
