@@ -3,6 +3,8 @@
 class CommentsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_post
+  before_action :ensure_commentable_post, only: %i[create]
+  before_action :ensure_comments_allowed, only: %i[create]
   before_action :set_comment, only: %i[edit update destroy]
   before_action :authorize_user!, only: %i[edit update destroy]
 
@@ -19,7 +21,8 @@ class CommentsController < ApplicationController
   end
 
   # コメント編集フォーム
-  def edit; end
+  def edit
+  end
 
   # コメント更新
   def update
@@ -41,6 +44,19 @@ class CommentsController < ApplicationController
   # 投稿セット
   def set_post
     @post = Post.find(params[:post_id])
+  end
+
+  def ensure_commentable_post
+    return if @post.is_public?
+    return if @post.user == current_user || current_user.admin?
+
+    redirect_to posts_path, alert: t('posts.alerts.private')
+  end
+
+  def ensure_comments_allowed
+    return if @post.comment_allowed?
+
+    redirect_to post_path(@post), alert: t('comments.alerts.unauthorized')
   end
 
   # コメントセット

@@ -40,7 +40,7 @@ class UsersController < ApplicationController
 
   # ---- 投稿一覧フィルタ ----
   def filtered_posts
-    posts = current_user.posts
+    posts = current_user.posts.includes(:user)
     posts = filter_posts(posts)
 
     if params[:q].present?
