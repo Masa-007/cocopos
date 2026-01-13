@@ -9,7 +9,7 @@ export default class extends Controller {
     const completion = document.getElementById("completionScreen");
 
     if (!loading || !completion) {
-      alert("画面構成に問題があります");
+      form.submit();
       return;
     }
 
