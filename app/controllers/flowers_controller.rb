@@ -3,6 +3,7 @@
 class FlowersController < ApplicationController
   before_action :authenticate_user!
   before_action :set_flowerable
+  before_action :ensure_flowerable_visible
 
   def create
     current_user.flowers.find_or_create_by(flowerable: @flowerable)
@@ -36,5 +37,13 @@ class FlowersController < ApplicationController
       else
         raise ActiveRecord::RecordNotFound, 'flowerable not found'
       end
+  end
+
+  def ensure_flowerable_visible
+    post = @flowerable.is_a?(Comment) ? @flowerable.post : @flowerable
+    return if post.is_public?
+    return if post.user == current_user || current_user.admin?
+
+    redirect_to posts_path, alert: t('posts.alerts.private')
   end
 end
