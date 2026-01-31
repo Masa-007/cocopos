@@ -26,6 +26,13 @@ class UsersController < ApplicationController
       }
     end
 
+       # 🌱 ---- 未来宣言箱（TODO/進捗/期限） ----
+    @future_posts = current_user.posts
+                                .future
+                                .where(created_at: @first_day.beginning_of_day..@last_day.end_of_day)
+                                .select(:id, :title, :progress, :deadline, :created_at)
+                                .order(:created_at)
+
     render :mypage
   end
 
