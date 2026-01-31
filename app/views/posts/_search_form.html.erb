@@ -4,6 +4,7 @@
         class: "border rounded px-2 py-1 text-sm w-40" %>
     <%= f.hidden_field :filter, value: params[:filter] %>
     <%= f.hidden_field :sort, value: params[:sort] %>
+    <%= f.hidden_field :sub_filter, value: params[:sub_filter] %>
     <%= f.submit "🔍", class: "bg-blue-500 text-white px-2 py-1 rounded text-sm" %>
   <% end %>
 </div>
