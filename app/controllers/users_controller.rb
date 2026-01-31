@@ -3,6 +3,7 @@
 class UsersController < ApplicationController
   before_action :authenticate_user!
   include MypageInsights
+  
   def mypage
     @user = current_user
     today = Time.zone.today
@@ -65,6 +66,7 @@ class UsersController < ApplicationController
       posts = posts.where('title ILIKE :q OR body ILIKE :q', q: query)
     end
 
+    posts = apply_sub_filter(posts)
     sort_posts(posts)
   end
 
@@ -86,6 +88,29 @@ class UsersController < ApplicationController
     end
   end
 
+  def apply_sub_filter(posts)
+    case params[:filter]
+    when 'future'
+      case params[:sub_filter]
+      when 'future_achieved'
+        posts.where(progress: 100)
+      when 'future_unachieved'
+        posts.where(progress: nil).or(posts.where.not(progress: 100))
+      else
+        posts
+      end
+    when 'organize'
+      return posts if params[:sub_filter].blank?
+
+      posts.where(mood: params[:sub_filter])
+    when 'thanks'
+      return posts if params[:sub_filter].blank?
+
+      posts.where(thanks_recipient: params[:sub_filter])
+    else
+      posts
+    end
+  end
   # ---- カレンダー（日付関連）----
   def prepare_calendar_date(today)
     @year  = (params[:year]  || today.year).to_i

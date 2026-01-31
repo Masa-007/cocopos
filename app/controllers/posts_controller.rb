@@ -16,6 +16,7 @@ class PostsController < ApplicationController
       @posts = @posts.where('title ILIKE :q OR body ILIKE :q', q: query)
     end
 
+    @posts = apply_sub_filter(@posts)
     @posts = sort_posts(@posts)
     @posts = paginate_posts(@posts)
   end
@@ -126,6 +127,30 @@ class PostsController < ApplicationController
       posts.order(created_at: :asc)
     else
       posts.order(created_at: :desc)
+    end
+  end
+
+  def apply_sub_filter(posts)
+    case params[:filter]
+    when 'future'
+      case params[:sub_filter]
+      when 'future_achieved'
+        posts.where(progress: 100)
+      when 'future_unachieved'
+        posts.where(progress: nil).or(posts.where.not(progress: 100))
+      else
+        posts
+      end
+    when 'organize'
+      return posts if params[:sub_filter].blank?
+
+      posts.where(mood: params[:sub_filter])
+    when 'thanks'
+      return posts if params[:sub_filter].blank?
+
+      posts.where(thanks_recipient: params[:sub_filter])
+    else
+      posts
     end
   end
 

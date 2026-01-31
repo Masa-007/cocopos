@@ -12,6 +12,30 @@ module PostsHelper
     end
   end
 
+  def sub_filter_options(filter)
+    case filter
+    when "future"
+      [
+        { value: "", text: "詳細フィルターなし" },
+        { value: "future_achieved", text: "達成済のみ" },
+        { value: "future_unachieved", text: "未達のみ" }
+      ]
+    when "organize"
+      options = Post::MOODS.map do |key, data|
+        { value: key.to_s, text: data[:label] }
+      end
+      [{ value: "", text: "詳細フィルターなし" }] + options
+    when "thanks"
+      options = Post::THANKS_RECIPIENTS.map do |key, label|
+        { value: key.to_s, text: label }
+      end
+      [{ value: "", text: "詳細フィルターなし" }] + options
+    else
+      []
+    end
+  end
+
+
   def show_post_actions?(post, from:)
     return true if from == "mypage"
     post.is_public?
