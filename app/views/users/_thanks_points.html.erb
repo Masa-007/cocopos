@@ -7,7 +7,19 @@
         <span class="font-semibold">感謝ポイント</span>
         <span class="text-2xl font-bold text-pink-500"><%= thanks_points %></span>
       </div>
-      <p class="text-xs text-gray-400">これまでに綴った「ありがとう」の数です</p>
+      <p class="text-xs text-gray-400">今月に綴った「ありがとう」の数です</p>
+      <% if thanks_recipients_summary.present? %>
+        <div class="mt-3 flex flex-wrap gap-2">
+          <% thanks_recipients_summary.each do |item| %>
+            <span class="inline-flex items-center gap-1 rounded-full bg-pink-50 px-3 py-1 text-xs text-pink-700">
+              <%= item[:label] %>
+              <span class="font-semibold"><%= item[:count] %></span>
+            </span>
+          <% end %>
+        </div>
+      <% else %>
+        <p class="text-xs text-gray-400 mt-2">まだ感謝の相手が記録されていません。</p>
+      <% end %>
     </div>
   </div>
 </div>
