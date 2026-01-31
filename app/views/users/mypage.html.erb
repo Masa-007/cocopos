@@ -16,6 +16,7 @@
       </h1>
       <p class="mypage-subtitle mb-8">あなたの心の記録を花のように咲かせよう</p>
 
+
       <!-- 季節切替ボタン -->
       <div class="text-center mb-10">
         <%= link_to "次の季節のデザインを見てみる 🌈",
@@ -75,6 +76,8 @@
         <div class="bg-white rounded-3xl shadow-lg p-8 mb-14">
           <h2 class="text-2xl font-bold mb-4 text-gray-800">🌈 あなたの気分メーター（心の整理箱）</h2>
 
+
+
           <% if @mood_chart_data.present? %>
             <canvas
               id="moodChartCanvas"
@@ -89,6 +92,9 @@
         </div>
 
         <%= render "users/future_posts_summary", future_posts: @future_posts %>
+
+        <%= render "users/thanks_points", thanks_points: @thanks_points %>
+
 
       </turbo-frame>
 

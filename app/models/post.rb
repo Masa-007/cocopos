@@ -15,6 +15,25 @@ class Post < ApplicationRecord
     organize: 1,
     thanks: 2
   }
+  THANKS_RECIPIENTS = {
+    family: '家族',
+    friend: '友人',
+    partner: '恋人',
+    work: '仕事',
+    self: '自分',
+    other: 'その他'
+  }.freeze
+
+  attribute :thanks_recipient, :integer
+
+  enum thanks_recipient: {
+    family: 0,
+    friend: 1,
+    partner: 2,
+    work: 3,
+    self: 4,
+    other: 5
+  }, _prefix: :thanks_recipient
 
   MOODS = {
     excited: { label: '🤩 ワクワク', score: 5 },
@@ -31,6 +50,8 @@ class Post < ApplicationRecord
   validates :post_type, presence: true
 
   validates :mood, presence: true, if: :organize?
+  validates :thanks_recipient, presence: true, if: :thanks?
+  validates :thanks_recipient_other, presence: true, if: :thanks_recipient_other?
 
   validates :progress,
             numericality: { only_integer: true, in: 0..100 },
@@ -61,6 +82,19 @@ class Post < ApplicationRecord
 
   def post_type_color
     POST_TYPE_INFO[post_type.to_sym][:color]
+  end
+  
+  def thanks_recipient_tag
+    return unless thanks?
+    return unless thanks_recipient
+
+    label = THANKS_RECIPIENTS[thanks_recipient.to_sym]
+    return "##{label}" unless thanks_recipient_other?
+
+    detail = thanks_recipient_other.to_s.strip
+    return "##{label}" if detail.blank?
+
+    "##{label}（#{detail}）"
   end
 
   def display_name
@@ -94,6 +128,10 @@ class Post < ApplicationRecord
 
   def organize?
     post_type == 'organize'
+  end
+  
+  def thanks_recipient_other?
+    thanks_recipient == 'other'
   end
 
   private
