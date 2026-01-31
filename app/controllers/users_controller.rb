@@ -2,7 +2,7 @@
 
 class UsersController < ApplicationController
   before_action :authenticate_user!
-
+  include MypageInsights
   def mypage
     @user = current_user
     today = Time.zone.today
@@ -26,17 +26,23 @@ class UsersController < ApplicationController
       }
     end
 
-       # 🌱 ---- 未来宣言箱（TODO/進捗/期限） ----
+    @mood_insight = build_mood_insight(mood_posts)
+
+    # 🌱 ---- 未来宣言箱（TODO/進捗/期限） ----
     @future_posts = current_user.posts
                                 .future
                                 .where(created_at: @first_day.beginning_of_day..@last_day.end_of_day)
                                 .select(:id, :title, :progress, :deadline, :created_at)
                                 .order(:created_at)
 
-    @thanks_points = current_user.posts
-                                 .thanks
-                                 .where(created_at: ..@last_day.end_of_day)
-                                 .count
+    @future_insight = build_future_insight(@future_posts)
+
+    thanks_posts = current_user.posts
+                               .thanks
+                               .where(created_at: @first_day.beginning_of_day..@last_day.end_of_day)
+    @thanks_points = thanks_posts.count
+    @thanks_recipients_summary = build_thanks_recipients_summary(thanks_posts)
+    @thanks_insight = build_thanks_insight(@thanks_recipients_summary)
     render :mypage
   end
 
@@ -109,6 +115,22 @@ class UsersController < ApplicationController
                         .select(:id, :title, :body, :post_type, :created_at, :is_public)
 
     @posts_by_date = posts.group_by { |p| p.created_at.to_date }
+
+    @monthly_post_count = posts.size
+    @monthly_post_streak = calculate_monthly_post_streak(@posts_by_date)
+  end
+
+  def calculate_monthly_post_streak(posts_by_date)
+    streak_end = [Time.zone.today.to_date, @last_day].min
+    streak = 0
+
+    while streak_end >= @first_day
+      break unless posts_by_date[streak_end]&.any?
+
+      streak += 1
+      streak_end -= 1
+    end
+    streak
   end
 
   # ---- 季節切替 ----

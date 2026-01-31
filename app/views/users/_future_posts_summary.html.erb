@@ -5,6 +5,8 @@
     <p class="text-sm text-gray-500">タイトル・進捗・期限を月ごとに一覧で確認できます。</p>
   </div>
 
+  <p class="text-sm text-gray-500 mb-4"><%= future_insight %></p>
+
   <% if future_posts.present? %>
     <div class="space-y-4">
       <% future_posts.each do |post| %>
