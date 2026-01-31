@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_12_19_081129) do
+ActiveRecord::Schema[7.1].define(version: 2026_01_31_080401) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -61,6 +61,8 @@ ActiveRecord::Schema[7.1].define(version: 2025_12_19_081129) do
     t.integer "mood_score"
     t.integer "progress", default: 0, null: false
     t.date "deadline"
+    t.integer "thanks_recipient"
+    t.string "thanks_recipient_other"
     t.index ["created_at"], name: "index_posts_on_created_at"
     t.index ["user_id"], name: "index_posts_on_user_id"
   end

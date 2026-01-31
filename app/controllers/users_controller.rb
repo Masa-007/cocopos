@@ -33,6 +33,10 @@ class UsersController < ApplicationController
                                 .select(:id, :title, :progress, :deadline, :created_at)
                                 .order(:created_at)
 
+    @thanks_points = current_user.posts
+                                 .thanks
+                                 .where(created_at: ..@last_day.end_of_day)
+                                 .count
     render :mypage
   end
 

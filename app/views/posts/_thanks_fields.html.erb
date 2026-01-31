@@ -1,1 +1,26 @@
-<!-- app/views/posts/_thanks_fields.html.erb -->
+<div class="mb-8 relative z-10" data-post-type-fields-target="thanks">
+  <label class="block text-lg font-bold text-gray-800 mb-4">💌 宛先の#を選択</label>
+
+  <div class="grid sm:grid-cols-2 gap-4">
+    <% Post::THANKS_RECIPIENTS.each do |key, label| %>
+      <label class="relative cursor-pointer select-none">
+        <%= f.radio_button :thanks_recipient, key,
+              class: "absolute inset-0 opacity-0 cursor-pointer peer" %>
+        <div class="card-ui p-4 border-2 border-gray-200 rounded-xl text-center transition-all
+                    peer-checked:border-orange-400 peer-checked:ring-2 peer-checked:ring-orange-200
+                    bg-white hover:bg-orange-50">
+          #<strong><%= label %></strong>
+        </div>
+      </label>
+    <% end %>
+  </div>
+
+  <div class="mt-4">
+    <label class="block text-sm font-semibold text-gray-700 mb-2">#その他 の場合のみ自由入力</label>
+    <%= f.text_field :thanks_recipient_other,
+          class: "w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-orange-400 focus:outline-none",
+          maxlength: 30,
+          placeholder: "例：先生、部活、保育園 など" %>
+  </div>
+</div>
+

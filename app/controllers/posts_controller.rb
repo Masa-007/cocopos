@@ -180,6 +180,8 @@ class PostsController < ApplicationController
       :is_public,
       :comment_allowed,
       :mood,
+      :thanks_recipient,
+      :thanks_recipient_other,
       :deadline,
       :progress,
       milestones_attributes: %i[
@@ -201,6 +203,8 @@ class PostsController < ApplicationController
       :is_public,
       :comment_allowed,
       :mood,
+      :thanks_recipient,
+      :thanks_recipient_other,
       :deadline,
       :progress,
       milestones_attributes: %i[
