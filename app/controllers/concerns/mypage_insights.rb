@@ -4,7 +4,7 @@ module MypageInsights
   private
 
   def build_mood_insight(mood_posts)
-    return '今月は心の整理箱の記録が少なめです。無理のないペースで書いてみましょう。' if mood_posts.size < 2
+    return '今月は心の整理箱の記録がまだ少なめです。無理のないペースで書いてみましょう。' if mood_posts.size < 2
 
     mood_counts = mood_posts.map(&:mood).tally
     top_mood = mood_counts.max_by { |_, count| count }&.first
@@ -59,7 +59,7 @@ module MypageInsights
   end
 
   def build_thanks_insight(summary)
-    return '今月は感謝箱の記録が少なめです。身近なありがとうを思い出してみましょう。' if summary.blank?
+    return '今月は感謝箱の記録がまだ少なめです。身近なありがとうを思い出してみましょう。' if summary.blank?
 
     top = summary.first
     "最近は#{top[:label]}への感謝が多いようです。温かな気持ちを大切にしましょう。"

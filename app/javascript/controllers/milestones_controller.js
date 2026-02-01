@@ -10,7 +10,11 @@ export default class extends Controller {
   add() {
     if (this.itemTargets.length >= 10) return;
 
+    const uniqueId = Date.now().toString();
     const content = this.templateTarget.content.cloneNode(true);
+    content.querySelectorAll("[name]").forEach((field) => {
+      field.name = field.name.replace(/NEW_RECORD/g, uniqueId);
+    });
     this.listTarget.appendChild(content);
 
     this.updateCount();
