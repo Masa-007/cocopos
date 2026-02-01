@@ -1,10 +1,10 @@
 <% return unless post.future? %>
 
-<div class="px-8 pb-6 border-t bg-gray-50">
+<div class="px-8 pt-6 pb-8 border-t bg-gray-50">
   <!-- 進捗 -->
   <% if post.progress.present? %>
-    <div class="mb-4">
-      <div class="flex items-center justify-between text-sm mb-1">
+    <div class="mb-8">
+      <div class="flex items-center justify-between text-sm mb-2">
         <span class="font-bold text-gray-700">🌱 進捗</span>
         <span class="text-gray-600"><%= post.progress %>%</span>
       </div>
@@ -20,16 +20,29 @@
 
   <!-- 期限 -->
   <% if post.deadline.present? %>
-    <% days_left = (post.deadline - Date.current).to_i %>
+    <% days_diff = (post.deadline - Date.current).to_i %>
 
     <div class="text-sm text-gray-700">
       <span class="font-bold">📅 期限：</span>
       <%= post.deadline.strftime("%Y年%m月%d日") %>
     </div>
 
-    <% if days_left <= 7 %>
-      <div class="mt-3 p-3 bg-yellow-100 text-yellow-800 rounded-xl text-sm">
-        ⏰ 期限まであと <strong><%= days_left %>日</strong>
+    <% if days_diff > 0 && days_diff <= 7 %>
+      <!-- 期限が近い -->
+      <div class="mt-5 p-4 bg-yellow-100 text-yellow-800 rounded-xl text-sm">
+        ⏰ 期限まであと <strong><%= days_diff %>日</strong>
+      </div>
+
+    <% elsif days_diff == 0 %>
+      <!-- 今日が期限 -->
+      <div class="mt-5 p-4 bg-orange-100 text-orange-800 rounded-xl text-sm">
+        📌 <strong>本日が期限です</strong>
+      </div>
+
+    <% elsif days_diff < 0 %>
+      <!-- 期限超過 -->
+      <div class="mt-5 p-4 bg-red-100 text-red-800 rounded-xl text-sm">
+        ⚠️ 期限から <strong><%= days_diff.abs %>日</strong> 経過しています
       </div>
     <% end %>
   <% end %>
