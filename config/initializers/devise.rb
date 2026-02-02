@@ -7,7 +7,7 @@ Devise.setup do |config|
   config.secret_key = ENV['DEVISE_SECRET_KEY'] if Rails.env.production?
 
   # 📮 メール送信設定（最低限）
-  config.mailer_sender = ENV['MAILER_SENDER']
+  config.mailer_sender = ENV.fetch('MAILER_SENDER', 'masaapp.information@gmail.com')
 
   # ORM設定（標準）
   require 'devise/orm/active_record'
