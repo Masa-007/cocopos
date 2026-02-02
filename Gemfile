@@ -20,6 +20,7 @@ gem 'kaminari'
 gem 'omniauth-google-oauth2'
 gem 'omniauth-rails_csrf_protection'
 
+gem 'meta-tags'
 
 gem 'foreman', '~> 0.90.0'
 gem 'propshaft'

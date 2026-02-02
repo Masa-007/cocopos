@@ -19,6 +19,9 @@ class PostsController < ApplicationController
     @posts = apply_sub_filter(@posts)
     @posts = sort_posts(@posts)
     @posts = paginate_posts(@posts)
+
+    @page_title = '投稿一覧 | cocopos'
+    @page_description = 'cocoposで公開されている投稿一覧です。'
   end
 
   # 投稿詳細
