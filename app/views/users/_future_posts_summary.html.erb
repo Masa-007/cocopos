@@ -1,28 +1,28 @@
 <!-- 🌱 未来宣言箱（TODO / 進捗 / 期限） -->
-<div class="bg-white rounded-3xl shadow-lg p-8 mb-14">
-  <!-- ヘッダー（中央寄せ） -->
+<div class="bg-white rounded-3xl border-2 border-green-200 shadow-md p-6 mb-10">
+  <!-- ヘッダー -->
   <div class="flex flex-col items-center text-center gap-2 mb-4">
-    <h2 class="text-2xl font-bold text-gray-800">
+    <h2 class="text-xl font-bold text-gray-800">
       🌱 未来宣言箱のTODOメモ
     </h2>
     <p class="text-sm text-gray-500">
-      タイトル・進捗・期限を月ごとに一覧で確認できます。
+      タイトル・進捗・期限を月ごとに確認できます。
     </p>
   </div>
 
   <!-- 補足テキスト -->
-  <p class="text-sm text-gray-500 text-center mb-6">
+  <p class="text-sm text-gray-500 text-center mb-5">
     <%= future_insight %>
   </p>
 
   <% if future_posts.present? %>
-    <div class="space-y-6">
+    <div class="space-y-5">
       <% future_posts.each do |post| %>
         <div class="rounded-2xl border border-green-100 bg-green-50/40 p-4">
-          <div class="flex flex-col items-center gap-6">
+          <div class="flex flex-col items-center gap-5">
             <!-- TODO 情報 -->
             <div class="text-center">
-              <p class="text-xs text-green-700 font-semibold">
+              <p class="text-sm text-green-700 font-semibold">
                 TODO
               </p>
 
@@ -32,13 +32,13 @@
                             class: "hover:underline") %>
               </h3>
 
-              <p class="text-xs text-gray-500 mt-1">
+              <p class="text-sm text-gray-500 mt-1">
                 <%= l post.created_at, format: :short %> 投函
               </p>
             </div>
 
             <!-- 進捗・期限 -->
-            <div class="flex flex-col items-center gap-5 text-sm text-gray-700 w-full max-w-sm">
+            <div class="flex flex-col items-center gap-4 text-sm text-gray-700 w-full max-w-sm">
               <div class="flex items-center justify-center gap-3 flex-wrap">
                 <span class="inline-flex items-center gap-1 rounded-full bg-white px-3 py-1 shadow-sm">
                   🎯 進捗
@@ -67,7 +67,7 @@
       <% end %>
     </div>
   <% else %>
-    <p class="text-gray-500 text-center">
+    <p class="text-sm text-gray-500 text-center">
       この月には未来宣言箱の投稿がありません。
     </p>
   <% end %>

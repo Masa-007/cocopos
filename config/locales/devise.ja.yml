@@ -18,7 +18,7 @@ ja:
         cancel_title: "アカウント削除"
         cancel_notice: "削除すると全てのデータが失われます。"
         cancel_account: "アカウントを削除する"
-        cancel_confirm: "本当に削除しますか？"
+        cancel_confirm: "本当に削除しますか？😢"
         cancel_attention: |
           この操作は取り消せません。
           削除すると、投稿などのデータがすべて失われます。
@@ -40,6 +40,10 @@ ja:
       confirmed: "アカウントを確認しました。"
       send_instructions: "アカウント確認のメールを送信しました。"
       send_paranoid_instructions: "もしメールアドレスが登録済みであれば、確認用のメールを送信しました。"
+    
+    omniauth_callbacks:
+      success: "%{kind} アカウントで認証に成功しました。"
+      failure: "%{kind} アカウントでの認証に失敗しました。理由: %{reason}"
 
     failure:
       already_authenticated: "すでにログインしています。"
@@ -51,7 +55,7 @@ ja:
       unauthenticated: "続行するにはログインが必要です。"
 
     mailer:
-      confirmation_instructions:
+      confirmation_instructions: "アカウント確認の案内"
 
     passwords:
       no_token: "パスワード再設定用のトークンが無効です。"
@@ -79,5 +83,6 @@ ja:
         forgot_your_password: "パスワードをお忘れですか？"
         didnt_receive_confirmation: "確認メールを受け取っていませんか？"
         didnt_receive_unlock: "ロック解除メールを受け取っていませんか？"
-        sign_in_with: "%{provider}でログイン"
+        sign_in_with: "Googleアカウントでログイン"
+        sign_up_with: "Googleアカウントで新規登録"
         back: "戻る"

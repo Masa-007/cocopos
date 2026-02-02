@@ -9,7 +9,7 @@
 
         <% if @minimum_password_length %>
           <em class="text-sm text-gray-500">
-            <%= t('devise.passwords.edit.minimum_password_length', count: @minimum_password_length, default: '（%{count}文字以上）') %>
+            <%= t('devise.passwords.edit.minimum_password_length', count: @minimum_password_length, default: '英数字（%{count}文字以上）') %>
           </em><br />
         <% end %>
         <%= f.password_field :password, autofocus: true, autocomplete: "new-password" %>
@@ -28,5 +28,5 @@
     <div class="mt-6 space-y-3 text-center">
     <%= render "devise/shared/links" %>
   </div>
-  
+
 </div>

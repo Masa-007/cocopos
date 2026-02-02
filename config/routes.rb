@@ -2,7 +2,8 @@
 
 Rails.application.routes.draw do
   # Devise（ユーザー認証）
-  devise_for :users, controllers: { registrations: "users/registrations" }
+  devise_for :users, controllers: { registrations: "users/registrations",
+                                    omniauth_callbacks: "users/omniauth_callbacks" }
 
   # ルートページ
   root 'static_pages#top'
