@@ -37,6 +37,14 @@ Devise.setup do |config|
   # Remember me クッキー設定（HTTPS対応）
   config.rememberable_options = { secure: true } if Rails.env.production?
 
+  if ENV['GOOGLE_CLIENT_ID'].present? && ENV['GOOGLE_CLIENT_SECRET'].present?
+    config.omniauth :google_oauth2,
+                    ENV['GOOGLE_CLIENT_ID'],
+                    ENV['GOOGLE_CLIENT_SECRET'],
+                    prompt: 'select_account',
+                    image_aspect_ratio: 'square',
+                    image_size: 50
+  end
   # サインアウトメソッド
   config.sign_out_via = :delete
 

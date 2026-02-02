@@ -3,7 +3,8 @@
 class User < ApplicationRecord
   # Deviseモジュール
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable
+         :recoverable, :rememberable, :validatable,
+         :omniauthable, omniauth_providers: [:google_oauth2]
 
   # アソシエーション
   has_many :posts, dependent: :destroy
@@ -16,6 +17,19 @@ class User < ApplicationRecord
   # 管理者フラグ
   def admin?
     admin
+  end
+
+  def self.from_omniauth(auth)
+    user = find_by(provider: auth.provider, uid: auth.uid) || find_by(email: auth.info.email)
+    user ||= new
+
+    user.provider ||= auth.provider
+    user.uid ||= auth.uid
+    user.email ||= auth.info.email
+    user.name ||= auth.info.name.presence || auth.info.email&.split('@')&.first || 'Googleユーザー'
+    user.password ||= Devise.friendly_token[0, 20]
+    user.save
+    user
   end
 
   # 表示名（匿名対応）

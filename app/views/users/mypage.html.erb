@@ -83,13 +83,11 @@
                 posts_by_date: @posts_by_date %>
         </div>
 
-        
-
-        <%= render "users/mood_meter", mood_insight: @mood_insight, mood_chart_data: @mood_chart_data %>
-
         <%= render "users/future_posts_summary",
                    future_posts: @future_posts,
                    future_insight: @future_insight %>
+
+        <%= render "users/mood_meter", mood_insight: @mood_insight, mood_chart_data: @mood_chart_data %>
 
         <%= render "users/thanks_points",
                    thanks_points: @thanks_points,
