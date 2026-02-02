@@ -161,6 +161,8 @@ GEM
       net-pop
       net-smtp
     marcel (1.1.0)
+    meta-tags (2.22.3)
+      actionpack (>= 6.0.0)
     mini_mime (1.1.5)
     minitest (5.26.0)
     msgpack (1.8.0)
@@ -382,6 +384,7 @@ DEPENDENCIES
   foreman (~> 0.90.0)
   kaminari
   listen (~> 3.8)
+  meta-tags
   omniauth-google-oauth2
   omniauth-rails_csrf_protection
   openai
