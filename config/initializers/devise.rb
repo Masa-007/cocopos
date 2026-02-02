@@ -7,7 +7,7 @@ Devise.setup do |config|
   config.secret_key = ENV['DEVISE_SECRET_KEY'] if Rails.env.production?
 
   # 📮 メール送信設定（最低限）
-  config.mailer_sender = 'no-reply@cocopos.onrender.com'
+  config.mailer_sender = ENV['MAILER_SENDER']
 
   # ORM設定（標準）
   require 'devise/orm/active_record'

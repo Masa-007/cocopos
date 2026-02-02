@@ -9,9 +9,14 @@ services:
     volumes:
       - .:/myapp
       - /myapp/node_modules
+    env_file:
+      - .env
     environment:
       RAILS_ENV: development
       DATABASE_URL: postgresql://postgres:password@db:5432/myapp_development
+      SMTP_USERNAME: "masaapp.information@gmail.com"
+      SMTP_PASSWORD: "ciaa evyx fxjy ekxa"
+
     command: bash -c "bundle exec foreman start -f Procfile.dev"
     stdin_open: true
     tty: true
