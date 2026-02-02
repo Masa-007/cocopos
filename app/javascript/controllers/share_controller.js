@@ -7,13 +7,15 @@ export default class extends Controller {
 
   share(event) {
     event.preventDefault();
-    const hashtag = this.selectedHashtag();
-    const text = `cocoposで心を投函しました📮\n#cocopos\n${hashtag}\n`;
-    const url = this.urlValue || `${window.location.origin}/`;
-    const shareUrl = new URL("https://twitter.com/intent/tweet");
 
+    const hashtag = this.selectedHashtag();
+    const url = (this.urlValue || `${window.location.origin}/`).trim();
+
+    // URL の前にスペースが入らないように、必ず改行直後に URL を置く
+    const text = `cocoposで心を投函しました📮\n#cocopos\n${hashtag}\n${url}`;
+
+    const shareUrl = new URL("https://twitter.com/intent/tweet");
     shareUrl.searchParams.set("text", text);
-    shareUrl.searchParams.set("url", url);
 
     window.open(shareUrl.toString(), "_blank", "noopener,noreferrer");
     window.location.href = "/mypage";
