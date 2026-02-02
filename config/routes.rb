@@ -2,7 +2,7 @@
 
 Rails.application.routes.draw do
   # Devise（ユーザー認証）
-  devise_for :users
+  devise_for :users, controllers: { registrations: "users/registrations" }
 
   # ルートページ
   root 'static_pages#top'

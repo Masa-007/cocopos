@@ -31,6 +31,16 @@ Rails.application.configure do
   # メール（Deviseなどで必須）
   config.action_mailer.perform_caching = false
   config.action_mailer.default_url_options = { host: 'https://cocopos.onrender.com' }
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    address: ENV.fetch('SMTP_ADDRESS', 'smtp.sendgrid.net'),
+    port: ENV.fetch('SMTP_PORT', 587),
+    domain: ENV.fetch('SMTP_DOMAIN', 'cocopos.onrender.com'),
+    user_name: ENV.fetch('SMTP_USERNAME', nil),
+    password: ENV.fetch('SMTP_PASSWORD', nil),
+    authentication: ENV.fetch('SMTP_AUTHENTICATION', 'plain'),
+    enable_starttls_auto: ENV.fetch('SMTP_ENABLE_STARTTLS_AUTO', 'true') == 'true'
+  }
 
   # ログ関連
   config.log_level = :info
