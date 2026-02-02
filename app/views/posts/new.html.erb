@@ -199,7 +199,11 @@
         <div class="action-icon">👤</div>
         <h3 class="text-lg font-bold mb-1 text-gray-800">マイページを見る</h3>
       <% end %>
-      <a href="#" data-controller="share" data-action="click->share#share" class="action-card">
+      <a href="https://cocopos.onrender.com/"
+         data-controller="share"
+         data-action="click->share#share"
+         data-share-url-value="<%= root_url %>"
+         class="action-card">
         <div class="action-icon">🐦</div>
         <h3 class="text-lg font-bold mb-1 text-gray-800">Xで共有する</h3>
       </a>
