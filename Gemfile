@@ -13,6 +13,8 @@ gem 'rails', '~> 7.1.3'
 
 gem 'devise'
 
+gem 'resend'
+
 gem 'openai'
 
 gem 'kaminari'

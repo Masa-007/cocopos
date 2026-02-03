@@ -59,7 +59,7 @@ ja:
 
     passwords:
       no_token: "パスワード再設定用のトークンが無効です。"
-      send_instructions: "パスワード再設定のメールを送信しました。"
+      send_paranoid_instructions: "パスワード再設定のメールを送信しました。"
       updated: "パスワードを変更しました。"
       new:
         forgot_your_password: "パスワードをお忘れですか？"
