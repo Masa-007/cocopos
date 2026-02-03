@@ -15,8 +15,9 @@ Rails.application.configure do
   config.require_master_key = true
 
   # 静的ファイル配信
-  # Renderなどの環境変数を優先、無ければtrueをフォールバック
-  config.public_file_server.enabled = ENV['RAILS_SERVE_STATIC_FILES'].present? || ENV['RENDER'].present? || true
+  # Render の場合は通常 RAILS_SERVE_STATIC_FILES が設定されます（無ければ RENDER を見る）
+  config.public_file_server.enabled =
+    ENV['RAILS_SERVE_STATIC_FILES'].present? || ENV['RENDER'].present?
 
   # アセット
   config.assets.compile = false
@@ -30,10 +31,15 @@ Rails.application.configure do
 
   # メール（Deviseなどで必須）
   config.action_mailer.perform_caching = false
-  config.action_mailer.default_url_options = { host: "cocopos.net", protocol: 'https' }
+  config.action_mailer.default_url_options = { host: 'cocopos.net', protocol: 'https' }
   config.action_mailer.delivery_method = :resend
   config.action_mailer.perform_deliveries = true
   config.action_mailer.raise_delivery_errors = true
+
+  # 実行時に Resend のキーが無いのは致命なので、production 起動時に検知して落とす
+  if ENV['RESEND_API_KEY'].blank?
+    raise 'RESEND_API_KEY is missing'
+  end
 
   # ログ関連
   config.log_level = :info
@@ -42,9 +48,9 @@ Rails.application.configure do
   config.log_formatter = ::Logger::Formatter.new
 
   if ENV['RAILS_LOG_TO_STDOUT'].present?
-    logger           = ActiveSupport::Logger.new($stdout)
+    logger = ActiveSupport::Logger.new($stdout)
     logger.formatter = config.log_formatter
-    config.logger    = ActiveSupport::TaggedLogging.new(logger)
+    config.logger = ActiveSupport::TaggedLogging.new(logger)
   end
 
   # I18n
@@ -53,10 +59,9 @@ Rails.application.configure do
   # データベース
   config.active_record.dump_schema_after_migration = false
 
-  # セキュリティ（Renderのドメインを許可）
+  # セキュリティ（許可ホスト）
   config.hosts << 'cocopos.onrender.com'
   config.hosts << 'cocopos-staging.onrender.com'
   config.hosts << 'cocopos.net'
   config.hosts << 'www.cocopos.net'
 end
-
