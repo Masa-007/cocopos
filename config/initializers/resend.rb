@@ -1,5 +1,5 @@
-# config/initializers/resend.rb
-require "resend"
+# frozen_string_literal: true
 
-Resend.api_key = ENV.fetch("RESEND_API_KEY")
-
+Resend.configure do |config|
+  config.api_key = ENV['RESEND_API_KEY']
+end
