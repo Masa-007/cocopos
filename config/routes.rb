@@ -7,7 +7,8 @@ Rails.application.routes.draw do
 
   # ルートページ
   root 'static_pages#top'
-
+  get 'privacy_policy', to: 'static_pages#privacy_policy'
+  get 'terms', to: 'static_pages#terms', as: :terms
   # 投稿関連（ネスト構造）
   resources :posts do
     # コメント（投稿に紐づく）
