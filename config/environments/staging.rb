@@ -1,31 +1,19 @@
 # frozen_string_literal: true
-
-require 'active_support/core_ext/integer/time'
+require_relative "production"
 
 Rails.application.configure do
-  # 基本設定
-  config.cache_classes = true
-  config.eager_load = true
+  config.consider_all_requests_local = true
 
-  # エラーレポート
-  config.consider_all_requests_local = true # ステージングではtrueでOK（エラー内容が見える）
+  config.action_mailer.default_url_options = {
+    host: "cocopos-staging.onrender.com",
+    protocol: "https"
+  }
 
-  # 静的ファイルの配信
-  config.public_file_server.enabled = ENV['RAILS_SERVE_STATIC_FILES'].present? || true
+  config.action_mailer.delivery_method = :resend
+  config.action_mailer.perform_deliveries = true
+  config.action_mailer.raise_delivery_errors = true
 
-  # アセット
-  config.assets.compile = false
+  # ホスト許可（
+  config.hosts << "cocopos-staging.onrender.com"
 
-  # Active Storage
-  config.active_storage.service = :local
-
-  # ログ
-  config.log_level = :info
-  config.i18n.fallbacks = true
-
-  # ホスト許可
-  config.hosts << 'cocopos-staging.onrender.com'
-
-  # DB接続（DATABASE_URLを使用）
-  # database.yml 側で ENV["DATABASE_URL"] を参照しているためここは不要
 end
