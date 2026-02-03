@@ -13,7 +13,7 @@ services:
       - .env
     environment:
       RAILS_ENV: development
-      DATABASE_URL: postgresql://postgres:password@db:5432/myapp_development
+      DATABASE_URL: ${DATABASE_URL}
 
     command: bash -c "bundle exec foreman start -f Procfile.dev"
     stdin_open: true
@@ -24,9 +24,9 @@ services:
   db:
     image: postgres:15
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: myapp_development
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
