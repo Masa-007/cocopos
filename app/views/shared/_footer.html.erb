@@ -3,7 +3,8 @@
   <div class="space-x-6 text-gray-600 mb-3">
     <%= link_to "利用規約", terms_path, class: "hover:underline" %>
     <%= link_to "プライバシーポリシー", privacy_policy_path, class: "hover:underline" %>
-    <a href="#" class="hover:underline">お問い合わせ</a>
+    <%= link_to "お問い合わせ", ENV["CONTACT_FORM_URL"].presence || "https://docs.google.com/forms/d/e/1FAIpQLSfRkhyv8YEp7pCJUgYavKyGRA4qS6aeYDPmr9eH7sFgF8c3Xg/viewform?usp=header",
+                class: "hover:underline", target: "_blank", rel: "noopener" %>
   </div>
   <p class="text-gray-600 text-sm">© 2025 cocopos. All rights reserved.</p>
 </footer>

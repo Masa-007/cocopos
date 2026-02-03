@@ -82,7 +82,11 @@
       </p>
       <p class="ml-4">
         Googleアナリティクスについて、詳しくは
-        <%= link_to 'こちら', 'https://marketingplatform.google.com/about/analytics/terms/jp/', class: "link link-accent", target: :_blank, rel: "noopener noreferrer" %>
+        <%= link_to 'こちら',
+            'https://marketingplatform.google.com/about/analytics/terms/jp/',
+            class: "text-blue-600 hover:text-blue-800 underline",
+            target: :_blank,
+            rel: "noopener noreferrer" %>
         からご確認ください。
       </p>
     </div>
@@ -104,6 +108,13 @@
         お客様の情報の開示、情報の訂正、利用停止、削除をご希望の場合は、
         お問い合わせフォームよりご連絡ください。
       </p>
+      <%= link_to "お問い合わせフォームはこちら",
+                  ENV["CONTACT_FORM_URL"].presence || "https://docs.google.com/forms/d/e/1FAIpQLSfRkhyv8YEp7pCJUgYavKyGRA4qS6aeYDPmr9eH7sFgF8c3Xg/viewform?usp=header",
+                  class: "text-blue-600 hover:text-blue-800 underline",
+                  target: "_blank",
+                  rel: "noopener" %>
+    </div>
+
       <p>
         この場合、必ず、運転免許証のご提示等当方が指定する方法により、
         ご本人からのご請求であることの確認をさせていただきます。
