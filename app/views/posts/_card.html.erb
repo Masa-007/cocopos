@@ -51,7 +51,7 @@
       <% end %>
 
       <p class="text-gray-700 leading-relaxed">
-        <%= truncate(strip_tags(post.body), length: 100) %>
+        <%= truncate(markdown_plain_text(post.body), length: 100) %>
       </p>
     </div>
   <% end %>

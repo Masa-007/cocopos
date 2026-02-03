@@ -71,8 +71,8 @@
 
       <!-- 本文 -->
       <div class="post-body p-8">
-        <div class="prose max-w-none">
-          <p class="text-lg text-gray-800 leading-relaxed whitespace-pre-wrap"><%= @post.body %></p>
+        <div class="post-body-content max-w-none">
+          <%= render_markdown(@post.body) %>
         </div>
       </div>
 
