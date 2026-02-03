@@ -10,6 +10,18 @@ body {
   background-attachment: fixed;
 }
 
+.bg-posts-gradient,
+body.posts-index,
+body.posts-show {
+  background: linear-gradient(135deg, #f9f6ff 0%, #fff3e6 100%);
+}
+
+body.posts-index,
+body.posts-show {
+  background: linear-gradient(135deg, #f9f6ff 0%, #fff3e6 100%);
+}
+
+
 body.users-mypage_posts {
   background: linear-gradient(135deg, #f4f7e2 0%, #ffffff 100%);
 }

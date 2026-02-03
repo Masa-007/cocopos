@@ -1,9 +1,11 @@
 # frozen_string_literal: true
 
 class UsersController < ApplicationController
+  helper PostsHelper
+
   before_action :authenticate_user!
   include MypageInsights
-  
+
   def mypage
     @user = current_user
     today = Time.zone.today
@@ -41,14 +43,16 @@ class UsersController < ApplicationController
     thanks_posts = current_user.posts
                                .thanks
                                .where(created_at: @first_day.beginning_of_day..@last_day.end_of_day)
+
     @thanks_points = thanks_posts.count
     @thanks_recipients_summary = build_thanks_recipients_summary(thanks_posts)
     @thanks_insight = build_thanks_insight(@thanks_recipients_summary)
+
     render :mypage
   end
 
   def mypage_posts
-    @user  = current_user
+    @user = current_user
     @posts = filtered_posts.page(params[:page])
     prepare_season_info
     render :mypage_posts
@@ -111,9 +115,10 @@ class UsersController < ApplicationController
       posts
     end
   end
+
   # ---- カレンダー（日付関連）----
   def prepare_calendar_date(today)
-    @year  = (params[:year]  || today.year).to_i
+    @year  = (params[:year] || today.year).to_i
     @month = (params[:month] || today.month).to_i
     @first_day = Date.new(@year, @month, 1)
     @last_day  = @first_day.end_of_month
@@ -155,6 +160,7 @@ class UsersController < ApplicationController
       streak += 1
       streak_end -= 1
     end
+
     streak
   end
 
