@@ -70,17 +70,29 @@
 
 /* カテゴリ別（トーンは維持しつつ、紙に合う彩度に調整） */
 .post-card-header.future {
-  background: linear-gradient(135deg, rgba(209, 250, 229, 0.95) 0%, rgba(167, 243, 208, 0.95) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(209, 250, 229, 0.95) 0%,
+    rgba(167, 243, 208, 0.95) 100%
+  );
   color: #047857;
 }
 
 .post-card-header.organize {
-  background: linear-gradient(135deg, rgba(233, 213, 255, 0.95) 0%, rgba(216, 180, 254, 0.95) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(233, 213, 255, 0.95) 0%,
+    rgba(216, 180, 254, 0.95) 100%
+  );
   color: #6d28d9;
 }
 
 .post-card-header.thanks {
-  background: linear-gradient(135deg, rgba(252, 231, 243, 0.95) 0%, rgba(251, 207, 232, 0.95) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(252, 231, 243, 0.95) 0%,
+    rgba(251, 207, 232, 0.95) 100%
+  );
   color: #be185d;
 }
 
@@ -90,12 +102,15 @@
   z-index: 1;
 
   padding: 22px;
-  flex-grow: 1;
 
   display: flex;
   flex-direction: column;
 
   min-height: 160px;
+
+  /* 余白を吸ってフッターを確実に最下部へ */
+  flex: 1 1 auto;
+  min-height: 0;
 
   /* 罫線（薄く） */
   background-image: linear-gradient(
@@ -115,7 +130,11 @@
   left: 0;
   width: 10px;
   height: 100%;
-  background: linear-gradient(180deg, rgba(247, 217, 184, 0.9) 0%, rgba(240, 200, 160, 0.9) 100%);
+  background: linear-gradient(
+    180deg,
+    rgba(247, 217, 184, 0.9) 0%,
+    rgba(240, 200, 160, 0.9) 100%
+  );
   opacity: 0.75;
 }
 
@@ -169,6 +188,8 @@
   background: rgba(255, 255, 255, 0.6);
 
   min-height: 72px;
+
+  /* ボトム固定（本文量に依存しない） */
   margin-top: auto;
 }
 
@@ -205,7 +226,7 @@
   min-height: 36px;
 }
 
-/* ボタン（重複定義を統合・1つだけ） */
+/* ボタン（統合） */
 .comment-btn,
 .flower-btn {
   display: flex;
@@ -219,7 +240,11 @@
   border-radius: 999px;
   border: 1px solid rgba(21, 128, 61, 0.18);
 
-  background: linear-gradient(180deg, rgba(206, 244, 217, 0.95) 0%, rgba(186, 247, 208, 0.95) 100%);
+  background: linear-gradient(
+    180deg,
+    rgba(206, 244, 217, 0.95) 0%,
+    rgba(186, 247, 208, 0.95) 100%
+  );
   color: #166534;
 
   cursor: pointer;
@@ -241,7 +266,11 @@
 
 /* ホバー（コメントは青寄せ、花は緑寄せで差を作る） */
 .comment-btn:hover {
-  background: linear-gradient(135deg, rgba(224, 242, 254, 0.95) 0%, rgba(186, 230, 253, 0.95) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(224, 242, 254, 0.95) 0%,
+    rgba(186, 230, 253, 0.95) 100%
+  );
   color: #0369a1;
   border-color: rgba(3, 105, 161, 0.18);
   transform: scale(1.08);
@@ -249,7 +278,11 @@
 }
 
 .flower-btn:hover {
-  background: linear-gradient(135deg, rgba(220, 252, 231, 0.95) 0%, rgba(187, 247, 208, 0.95) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(220, 252, 231, 0.95) 0%,
+    rgba(187, 247, 208, 0.95) 100%
+  );
   color: #166534;
   border-color: rgba(22, 101, 52, 0.18);
   transform: scale(1.08);
@@ -323,7 +356,11 @@
   right: -20px;
   width: 120px;
   height: 120px;
-  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0));
+  background: radial-gradient(
+    circle at 30% 30%,
+    rgba(255, 255, 255, 0.75),
+    rgba(255, 255, 255, 0)
+  );
   transform: rotate(-12deg);
   pointer-events: none;
 }
@@ -344,7 +381,8 @@
   color: #5a4732;
   font-weight: 700;
 
-  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease,
+    border-color 0.2s ease;
   cursor: pointer;
 }
 
@@ -388,4 +426,3 @@
   color: #4b3a2a;
   margin-right: 8px;
 }
-

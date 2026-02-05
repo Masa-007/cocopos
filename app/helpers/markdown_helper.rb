@@ -2,7 +2,7 @@
 
 module MarkdownHelper
   def render_markdown(text)
-    return "" if text.blank?
+    return '' if text.blank?
 
     html = markdown_to_html(text.to_s)
     sanitize(
@@ -39,7 +39,7 @@ module MarkdownHelper
     flush_list = lambda do
       next if list_items.empty?
 
-      tag = list_type == :ol ? "ol" : "ul"
+      tag = list_type == :ol ? 'ol' : 'ul'
       items_html = list_items.map { |item| "<li>#{inline_markdown(item)}</li>" }.join
       blocks << "<#{tag}>#{items_html}</#{tag}>"
       list_items.clear
@@ -47,7 +47,7 @@ module MarkdownHelper
     end
 
     lines.each do |line|
-      if line.strip.start_with?("```")
+      if line.strip.start_with?('```')
         if in_code_block
           blocks << "<pre><code>#{code_block.join("\n")}</code></pre>"
           code_block.clear
@@ -82,7 +82,7 @@ module MarkdownHelper
       if line.match?(/\A---+\s*\z/)
         flush_paragraph.call
         flush_list.call
-        blocks << "<hr>"
+        blocks << '<hr>'
         next
       end
 
@@ -95,9 +95,7 @@ module MarkdownHelper
 
       if (list_item = line.match(/\A\s*[-*]\s+(.+)\z/))
         flush_paragraph.call
-        if list_type && list_type != :ul
-          flush_list.call
-        end
+        flush_list.call if list_type && list_type != :ul
         list_type ||= :ul
         list_items << list_item[1]
         next
@@ -105,9 +103,7 @@ module MarkdownHelper
 
       if (list_item = line.match(/\A\s*\d+\.\s+(.+)\z/))
         flush_paragraph.call
-        if list_type && list_type != :ol
-          flush_list.call
-        end
+        flush_list.call if list_type && list_type != :ol
         list_type ||= :ol
         list_items << list_item[1]
         next
@@ -116,9 +112,7 @@ module MarkdownHelper
       paragraph << line
     end
 
-    if in_code_block
-      blocks << "<pre><code>#{code_block.join("\n")}</code></pre>"
-    end
+    blocks << "<pre><code>#{code_block.join("\n")}</code></pre>" if in_code_block
 
     flush_paragraph.call
     flush_list.call
@@ -129,12 +123,12 @@ module MarkdownHelper
   def inline_markdown(text)
     segments = text.split(/(`[^`]+`)/)
     segments.map! do |segment|
-      if segment.start_with?("`") && segment.end_with?("`")
+      if segment.start_with?('`') && segment.end_with?('`')
         "<code>#{segment[1..-2]}</code>"
       else
-        segment = segment.gsub(/\*\*(.+?)\*\*/, "<strong>\\1</strong>")
-        segment = segment.gsub(/\*(.+?)\*/, "<em>\\1</em>")
-        segment.gsub(/\[(.+?)\]\((https?:\/\/[^\s)]+)\)/, '<a href="\\2" target="_blank" rel="noopener">\\1</a>')
+        segment = segment.gsub(/\*\*(.+?)\*\*/, '<strong>\\1</strong>')
+        segment = segment.gsub(/\*(.+?)\*/, '<em>\\1</em>')
+        segment.gsub(%r{\[(.+?)\]\((https?://[^\s)]+)\)}, '<a href="\\2" target="_blank" rel="noopener">\\1</a>')
       end
     end
     segments.join

@@ -90,7 +90,7 @@ class PostsController < ApplicationController
 
   # 投稿取得
   def set_post
-    @post = Post.includes(:user, comments: :user, flowers: :user).find(params[:id])
+    @post = Post.includes(:user, comments: :user, flowers: :user).find_by!(public_uuid: params[:public_uuid])
   end
 
   # 権限確認

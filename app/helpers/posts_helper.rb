@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module PostsHelper
   def selected_filter?(current, value)
     current = current.presence
@@ -5,8 +7,8 @@ module PostsHelper
 
     if value.blank?
       current.blank?
-    elsif value == "all"
-      current.blank? || current == "all"
+    elsif value == 'all'
+      current.blank? || current == 'all'
     else
       current == value
     end
@@ -14,29 +16,30 @@ module PostsHelper
 
   def sub_filter_options(filter)
     case filter
-    when "future"
+    when 'future'
       [
-        { value: "", text: "詳細フィルターなし" },
-        { value: "future_achieved", text: "達成済のみ" },
-        { value: "future_unachieved", text: "未達のみ" }
+        { value: '', text: '詳細フィルターなし' },
+        { value: 'future_achieved', text: '達成済のみ' },
+        { value: 'future_unachieved', text: '未達のみ' }
       ]
-    when "organize"
+    when 'organize'
       options = Post::MOODS.map do |key, data|
         { value: key.to_s, text: data[:label] }
       end
-      [{ value: "", text: "詳細フィルターなし" }] + options
-    when "thanks"
+      [{ value: '', text: '詳細フィルターなし' }] + options
+    when 'thanks'
       options = Post::THANKS_RECIPIENTS.map do |key, label|
         { value: key.to_s, text: label }
       end
-      [{ value: "", text: "詳細フィルターなし" }] + options
+      [{ value: '', text: '詳細フィルターなし' }] + options
     else
       []
     end
   end
 
   def show_post_actions?(post, from:)
-    return true if from == "mypage"
+    return true if from == 'mypage'
+
     post.is_public?
   end
 
@@ -52,20 +55,20 @@ module PostsHelper
     if post.comment_allowed?
       content_tag(
         :span,
-        "💬 意見募集中",
-        class: "px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded-full font-bold"
+        '💬 意見募集中',
+        class: 'px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded-full font-bold'
       )
     else
       content_tag(
         :span,
-        "💭 コメント不要",
-        class: "px-2 py-1 bg-gray-200 text-xs rounded-full"
+        '💭 コメント不要',
+        class: 'px-2 py-1 bg-gray-200 text-xs rounded-full'
       )
     end
   end
 
   def render_markdown(text)
-    return "" if text.blank?
+    return '' if text.blank?
 
     escaped_text = ERB::Util.html_escape(text)
     lines = escaped_text.split("\n")
@@ -92,7 +95,7 @@ module PostsHelper
     end
 
     lines.each do |line|
-      if line.strip.start_with?("```")
+      if line.strip.start_with?('```')
         flush_paragraph.call
         flush_list.call
 
@@ -121,7 +124,7 @@ module PostsHelper
 
       if line.match?(/^\s*[-*]\s+/)
         flush_paragraph.call
-        content = line.sub(/^\s*[-*]\s+/, "")
+        content = line.sub(/^\s*[-*]\s+/, '')
         list_items << format_inline_markdown(content)
         next
       end
@@ -136,9 +139,7 @@ module PostsHelper
       paragraph_lines << line
     end
 
-    if in_code_block
-      html << "<pre><code>#{code_lines.join("\n")}</code></pre>"
-    end
+    html << "<pre><code>#{code_lines.join("\n")}</code></pre>" if in_code_block
 
     flush_paragraph.call
     flush_list.call
@@ -147,19 +148,17 @@ module PostsHelper
   end
 
   def markdown_plain_text(text)
-    return "" if text.blank?
+    return '' if text.blank?
 
     escaped = ERB::Util.html_escape(text)
 
-    escaped = escaped.gsub(/^\s*```.*$/, "")
-    escaped = escaped.gsub(/^\s*\#{1,6}\s+/, "")
-    escaped = escaped.gsub(/^\s*[-*]\s+/, "")
+    escaped = escaped.gsub(/^\s*```.*$/, '')
+    escaped = escaped.gsub(/^\s*\#{1,6}\s+/, '')
+    escaped = escaped.gsub(/^\s*[-*]\s+/, '')
     escaped = escaped.gsub(/\[([^\]]+)\]\(([^)]+)\)/, '\1')
     escaped = escaped.gsub(/\*\*(.+?)\*\*/, '\1')
     escaped = escaped.gsub(/`([^`]+)`/, '\1')
-    escaped = escaped.gsub(/\*(.+?)\*/, '\1')
-
-    escaped
+    escaped.gsub(/\*(.+?)\*/, '\1')
   end
 
   private

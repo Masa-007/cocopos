@@ -48,6 +48,7 @@ class Post < ApplicationRecord
 
   validates :body, presence: true, length: { maximum: 1000 }
   validates :post_type, presence: true
+  validates :public_uuid, presence: true, uniqueness: true
 
   validates :mood, presence: true, if: :organize?
   validates :thanks_recipient, presence: true, if: :thanks?
@@ -83,7 +84,7 @@ class Post < ApplicationRecord
   def post_type_color
     POST_TYPE_INFO[post_type.to_sym][:color]
   end
-  
+
   def thanks_recipient_tag
     return unless thanks?
     return unless thanks_recipient
@@ -104,6 +105,10 @@ class Post < ApplicationRecord
       user&.name.presence || '名無しユーザー'
     end
   end
+  
+  def to_param
+    public_uuid
+  end
 
   def flower_count
     self[:flowers_count] || 0
@@ -112,7 +117,7 @@ class Post < ApplicationRecord
   def flowered_by?(user)
     flowers.exists?(user_id: user.id)
   end
-
+  before_validation :assign_public_uuid, on: :create
   before_save :assign_mood_score
 
   def assign_mood_score
@@ -129,12 +134,17 @@ class Post < ApplicationRecord
   def organize?
     post_type == 'organize'
   end
-  
+
   def thanks_recipient_other?
     thanks_recipient == 'other'
   end
 
   private
+
+  def assign_public_uuid
+    self.public_uuid ||= SecureRandom.uuid
+  end
+
 
   def deadline_cannot_be_in_the_past
     return if deadline.blank?

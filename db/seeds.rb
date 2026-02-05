@@ -1,20 +1,23 @@
 # frozen_string_literal: true
+seed_uuid = SecureRandom.uuid
+seed_password = SecureRandom.uuid
 
 user = User.create!(
-  name: 'Masa',
-  email: 'masa@example.com',
-  password: 'password',
-  password_confirmation: 'password'
+  name: "user-#{seed_uuid}",
+  email: "#{seed_uuid}@example.invalid",
+  password: seed_password,
+  password_confirmation: seed_password
 )
 
 post = user.posts.create!(
-  body: 'これはテスト投稿です',
+  title: "title-#{SecureRandom.uuid}",
+  body: "body-#{SecureRandom.uuid}",
   post_type: 'future',
   comment_allowed: true
 )
 
 post.comments.create!(
   user: user,
-  body: 'いいですね！',
+  content: "comment-#{SecureRandom.uuid}",
   is_anonymous: false
 )

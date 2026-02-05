@@ -7,6 +7,13 @@ class Comment < ApplicationRecord
 
   validates :content, presence: true
   validate :content_does_not_include_ng_words
+  validates :public_uuid, presence: true, uniqueness: true
+
+  before_validation :assign_public_uuid, on: :create
+
+  def to_param
+    public_uuid
+  end
 
   # コメントに含まれるNGワードをチェック
   def content_does_not_include_ng_words
@@ -29,5 +36,11 @@ class Comment < ApplicationRecord
   # 指定ユーザーが花をつけたかどうか
   def flowered_by?(user)
     flowers.exists?(user_id: user.id)
+  end
+
+  private
+
+  def assign_public_uuid
+    self.public_uuid ||= SecureRandom.uuid
   end
 end

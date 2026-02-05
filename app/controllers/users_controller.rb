@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 class UsersController < ApplicationController
   helper PostsHelper
 
@@ -35,7 +34,7 @@ class UsersController < ApplicationController
     @future_posts = current_user.posts
                                 .future
                                 .where(created_at: @first_day.beginning_of_day..@last_day.end_of_day)
-                                .select(:id, :title, :progress, :deadline, :created_at)
+                                .select(:id, :public_uuid, :title, :progress, :deadline, :created_at)
                                 .order(:created_at)
 
     @future_insight = build_future_insight(@future_posts)
@@ -142,7 +141,7 @@ class UsersController < ApplicationController
     range = @first_day.beginning_of_day..@last_day.end_of_day
     posts = current_user.posts
                         .where(created_at: range)
-                        .select(:id, :title, :body, :post_type, :created_at, :is_public)
+                        .select(:id, :public_uuid, :title, :body, :post_type, :created_at, :is_public)
 
     @posts_by_date = posts.group_by { |p| p.created_at.to_date }
 
