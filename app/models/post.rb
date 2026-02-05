@@ -105,7 +105,7 @@ class Post < ApplicationRecord
       user&.name.presence || '名無しユーザー'
     end
   end
-  
+
   def to_param
     public_uuid
   end
@@ -144,7 +144,6 @@ class Post < ApplicationRecord
   def assign_public_uuid
     self.public_uuid ||= SecureRandom.uuid
   end
-
 
   def deadline_cannot_be_in_the_past
     return if deadline.blank?

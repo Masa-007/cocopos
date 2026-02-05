@@ -164,9 +164,9 @@ RSpec.describe MypageInsights do
       summary = insights.expose(:build_thanks_recipients_summary, posts)
 
       expect(summary).to eq([
-        { label: '友人', count: 2 },
-        { label: '家族', count: 1 }
-      ])
+                              { label: '友人', count: 2 },
+                              { label: '家族', count: 1 }
+                            ])
     end
 
     it '集計が空ならデフォルトメッセージを返す' do
@@ -192,9 +192,9 @@ RSpec.describe MypageInsights do
       summary = insights.expose(:build_thanks_recipients_summary, posts)
 
       expect(summary).to eq([
-        { label: '友人', count: 1 },
-        { label: '家族', count: 1 }
-      ])
+                              { label: '友人', count: 1 },
+                              { label: '家族', count: 1 }
+                            ])
     end
   end
 end

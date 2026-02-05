@@ -15,7 +15,7 @@ Rails.application.routes.draw do
     resources :comments, only: %i[create destroy edit update]
   end
 
-    # 花ボタンは投稿IDベースで扱う
+  # 花ボタンは投稿IDベースで扱う
   resources :posts, only: [] do
     resource :flower, only: %i[create destroy], controller: :flowers
 

@@ -28,7 +28,7 @@ RSpec.describe Openai::GenerateText do
     result = described_class.call(prompt: '原文')
 
     expect(result.success?).to be(true)
-    expect(result.options).to eq(['案1のみ', '原文'])
+    expect(result.options).to eq(%w[案1のみ 原文])
   end
 
   it 'API呼び出しが失敗した場合は失敗オブジェクトを返す' do

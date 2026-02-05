@@ -4,7 +4,9 @@ require 'rails_helper'
 
 RSpec.describe '投稿管理', type: :request do
   let(:user) { User.create!(name: 'Owner', email: "owner_#{SecureRandom.hex(4)}@example.com", password: 'password') }
-  let(:other_user) { User.create!(name: 'Other', email: "other_#{SecureRandom.hex(4)}@example.com", password: 'password') }
+  let(:other_user) do
+    User.create!(name: 'Other', email: "other_#{SecureRandom.hex(4)}@example.com", password: 'password')
+  end
 
   before do
     host! 'www.cocopos.net'

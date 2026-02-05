@@ -38,7 +38,7 @@ RSpec.describe 'Posts', type: :request do
 
       location = response.headers['Location']
       expect(location).to be_present
-      expect(location).to match(%r{/posts/[0-9a-f\-]{36}})
+      expect(location).to match(%r{/posts/[0-9a-f-]{36}})
 
       created_uuid = location.split('/posts/').last
       created_post = Post.find_by!(public_uuid: created_uuid)

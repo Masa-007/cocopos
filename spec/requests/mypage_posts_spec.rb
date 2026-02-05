@@ -15,10 +15,14 @@ RSpec.describe 'マイページ投稿一覧', type: :request do
     host! 'www.cocopos.net'
     sign_in user
 
-    @future_achieved = Post.create!(user:, title: '達成済み', body: 'future achieved body', post_type: :future, progress: 100, is_public: true)
-    @future_unachieved = Post.create!(user:, title: '未達成', body: 'future unachieved body', post_type: :future, progress: 10, is_public: true)
-    @organize_happy = Post.create!(user:, title: '嬉しい整理', body: 'organize happy body', post_type: :organize, mood: :happy, is_public: true)
-    @thanks_friend = Post.create!(user:, title: '友人へ感謝', body: 'thanks friend body', post_type: :thanks, thanks_recipient: :friend, is_public: true)
+    @future_achieved = Post.create!(user:, title: '達成済み', body: 'future achieved body', post_type: :future,
+                                    progress: 100, is_public: true)
+    @future_unachieved = Post.create!(user:, title: '未達成', body: 'future unachieved body', post_type: :future,
+                                      progress: 10, is_public: true)
+    @organize_happy = Post.create!(user:, title: '嬉しい整理', body: 'organize happy body', post_type: :organize,
+                                   mood: :happy, is_public: true)
+    @thanks_friend = Post.create!(user:, title: '友人へ感謝', body: 'thanks friend body', post_type: :thanks,
+                                  thanks_recipient: :friend, is_public: true)
     @private_post = Post.create!(user:, title: '非公開投稿', body: 'private body', post_type: :future, is_public: false)
   end
 

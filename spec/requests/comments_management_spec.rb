@@ -3,16 +3,24 @@
 require 'rails_helper'
 
 RSpec.describe 'コメント管理', type: :request do
-  let(:owner) { User.create!(name: 'Owner', email: "comment_owner_#{SecureRandom.hex(4)}@example.com", password: 'password') }
-  let(:other_user) { User.create!(name: 'Other', email: "comment_other_#{SecureRandom.hex(4)}@example.com", password: 'password') }
-  let(:admin_user) { User.create!(name: 'Admin', email: "comment_admin_#{SecureRandom.hex(4)}@example.com", password: 'password', admin: true) }
+  let(:owner) do
+    User.create!(name: 'Owner', email: "comment_owner_#{SecureRandom.hex(4)}@example.com", password: 'password')
+  end
+  let(:other_user) do
+    User.create!(name: 'Other', email: "comment_other_#{SecureRandom.hex(4)}@example.com", password: 'password')
+  end
+  let(:admin_user) do
+    User.create!(name: 'Admin', email: "comment_admin_#{SecureRandom.hex(4)}@example.com", password: 'password',
+                 admin: true)
+  end
 
   before do
     host! 'www.cocopos.net'
   end
 
   it 'comment_allowedがfalseの投稿にはコメント作成できない' do
-    post_record = Post.create!(user: owner, body: 'no comment', post_type: :future, is_public: true, comment_allowed: false)
+    post_record = Post.create!(user: owner, body: 'no comment', post_type: :future, is_public: true,
+                               comment_allowed: false)
     sign_in other_user
 
     post post_comments_path(post_record), params: { comment: { content: 'コメント' } }
@@ -22,7 +30,8 @@ RSpec.describe 'コメント管理', type: :request do
   end
 
   it '非公開投稿は所有者以外コメント作成できない' do
-    post_record = Post.create!(user: owner, body: 'private', post_type: :future, is_public: false, comment_allowed: true)
+    post_record = Post.create!(user: owner, body: 'private', post_type: :future, is_public: false,
+                               comment_allowed: true)
     sign_in other_user
 
     post post_comments_path(post_record), params: { comment: { content: 'コメント' } }

@@ -14,10 +14,14 @@ RSpec.describe '投稿一覧フィルタ', type: :request do
   before do
     host! 'www.cocopos.net'
 
-    @future_achieved = Post.create!(user:, title: '達成済み', body: 'future achieved', post_type: :future, progress: 100, is_public: true)
-    @future_unachieved = Post.create!(user:, title: '未達成', body: 'future unachieved', post_type: :future, progress: 20, is_public: true)
-    @organize_happy = Post.create!(user:, title: '嬉しい日', body: 'organize happy', post_type: :organize, mood: :happy, is_public: true)
-    @thanks_friend = Post.create!(user:, title: '友人に感謝', body: 'thanks friend', post_type: :thanks, thanks_recipient: :friend, is_public: true)
+    @future_achieved = Post.create!(user:, title: '達成済み', body: 'future achieved', post_type: :future, progress: 100,
+                                    is_public: true)
+    @future_unachieved = Post.create!(user:, title: '未達成', body: 'future unachieved', post_type: :future, progress: 20,
+                                      is_public: true)
+    @organize_happy = Post.create!(user:, title: '嬉しい日', body: 'organize happy', post_type: :organize, mood: :happy,
+                                   is_public: true)
+    @thanks_friend = Post.create!(user:, title: '友人に感謝', body: 'thanks friend', post_type: :thanks,
+                                  thanks_recipient: :friend, is_public: true)
     @private_post = Post.create!(user:, title: '非公開', body: 'private body', post_type: :future, is_public: false)
   end
 

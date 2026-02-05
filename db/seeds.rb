@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 seed_uuid = SecureRandom.uuid
 seed_password = SecureRandom.uuid
 

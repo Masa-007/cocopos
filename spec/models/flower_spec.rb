@@ -3,8 +3,12 @@
 require 'rails_helper'
 
 RSpec.describe '花機能', type: :request do
-  let(:owner) { User.create!(name: 'Owner', email: "flower_owner_#{SecureRandom.hex(4)}@example.com", password: 'password') }
-  let(:other_user) { User.create!(name: 'Other', email: "flower_other_#{SecureRandom.hex(4)}@example.com", password: 'password') }
+  let(:owner) do
+    User.create!(name: 'Owner', email: "flower_owner_#{SecureRandom.hex(4)}@example.com", password: 'password')
+  end
+  let(:other_user) do
+    User.create!(name: 'Other', email: "flower_other_#{SecureRandom.hex(4)}@example.com", password: 'password')
+  end
 
   before do
     host! 'www.cocopos.net'
