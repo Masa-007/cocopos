@@ -30,18 +30,26 @@ class FlowersController < ApplicationController
 
   def set_flowerable
     if params[:comment_id].present?
-      @flowerable = Comment.find_by!(public_uuid: params[:comment_id])
+      @flowerable = find_comment!(params[:comment_id])
     elsif params[:post_id].present?
-      @flowerable = Post.find_by!(public_uuid: params[:post_id])
+      @flowerable = find_post!(params[:post_id])
     else
       raise ActiveRecord::RecordNotFound
     end
   end
 
+  def find_post!(post_id)
+    Post.find(post_id)
+  end
+
+  def find_comment!(comment_id)
+    Comment.find(comment_id)
+  end
+
   def ensure_flowerable_visible
     post = @flowerable.is_a?(Comment) ? @flowerable.post : @flowerable
     return if post.is_public?
-    return if post.user == current_user || current_user.admin?
+    return if post.user == current_user || (current_user.respond_to?(:admin?) && current_user.admin?)
 
     redirect_to posts_path, alert: t('posts.alerts.private')
   end
