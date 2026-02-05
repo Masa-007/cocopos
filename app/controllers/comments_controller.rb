@@ -21,8 +21,7 @@ class CommentsController < ApplicationController
   end
 
   # コメント編集フォーム
-  def edit
-  end
+  def edit; end
 
   # コメント更新
   def update
@@ -43,7 +42,7 @@ class CommentsController < ApplicationController
 
   # 投稿セット
   def set_post
-    @post = Post.find(params[:post_id])
+    @post = Post.find_by!(public_uuid: params[:post_public_uuid])
   end
 
   def ensure_commentable_post
@@ -61,7 +60,7 @@ class CommentsController < ApplicationController
 
   # コメントセット
   def set_comment
-    @comment = @post.comments.find(params[:id])
+    @comment = @post.comments.find_by!(public_uuid: params[:id])
   end
 
   # 編集・削除権限確認

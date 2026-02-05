@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_02_02_085439) do
+ActiveRecord::Schema[7.1].define(version: 2026_02_05_121448) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -22,7 +22,9 @@ ActiveRecord::Schema[7.1].define(version: 2026_02_02_085439) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "flowers_count", default: 0, null: false
+    t.string "public_uuid", null: false
     t.index ["post_id"], name: "index_comments_on_post_id"
+    t.index ["public_uuid"], name: "index_comments_on_public_uuid", unique: true
     t.index ["user_id"], name: "index_comments_on_user_id"
   end
 
@@ -63,7 +65,9 @@ ActiveRecord::Schema[7.1].define(version: 2026_02_02_085439) do
     t.date "deadline"
     t.integer "thanks_recipient"
     t.string "thanks_recipient_other"
+    t.string "public_uuid", null: false
     t.index ["created_at"], name: "index_posts_on_created_at"
+    t.index ["public_uuid"], name: "index_posts_on_public_uuid", unique: true
     t.index ["user_id"], name: "index_posts_on_user_id"
   end
 
