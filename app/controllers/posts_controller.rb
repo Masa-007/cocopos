@@ -33,10 +33,13 @@ class PostsController < ApplicationController
 
   # 新規投稿フォーム
   def new
-    @post = Post.new
+    @post = current_user.posts.new(
+      post_type: params[:post_type].presence || :future,
+      is_public: true,
+      comment_allowed: true
+    )
     @show_loading = true
   end
-
   # 投稿作成
   def create
     @post = current_user.posts.build(post_params_for_create)

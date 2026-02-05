@@ -24,7 +24,13 @@ module PostsHelper
       ]
     when 'organize'
       options = Post::MOODS.map do |key, data|
-        { value: key.to_s, text: data[:label] }
+        label = data[:label].to_s
+        sanitized_label = label.match?(/^_.*_fields$/) ? '' : label
+
+        {
+          value: key.to_s,
+          text: sanitized_label.presence || key.to_s.humanize
+        }
       end
       [{ value: '', text: '詳細フィルターなし' }] + options
     when 'thanks'
