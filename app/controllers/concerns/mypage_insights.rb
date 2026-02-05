@@ -12,22 +12,24 @@ module MypageInsights
 
     scores = mood_posts.map { |post| Post::MOODS[post.mood.to_sym][:score] }
     average = scores.sum / scores.size.to_f
+
     midpoint = scores.size / 2
     first_average = scores.take(midpoint).sum / midpoint.to_f
     second_average = scores.drop(midpoint).sum / (scores.size - midpoint).to_f
 
     negative_moods = %w[tired frustrated sad anxious angry]
     negative_ratio = mood_counts.slice(*negative_moods).values.sum / mood_counts.values.sum.to_f
+
     mood_summary = top_label ? "一番多い気分は「#{top_label}」です。" : nil
 
-    if second_average < first_average - 0.4
+    if negative_ratio >= 0.6
+      "今月は疲れやモヤモヤが多かったようです。悩みや疲れが多い傾向があるようです。休める時間を意識してみてください。#{mood_summary}"
+    elsif average <= 2.2
+      "今月は疲れやモヤモヤが多かったようです。無理のないペースで過ごしましょう。#{mood_summary}"
+    elsif second_average < first_average - 0.4
       "最近は気分が下降気味のようです。今週は大変な日でしたね、お疲れ様でした。#{mood_summary}"
     elsif second_average > first_average + 0.4
       "最近は気分が上向きのようです。この調子で小さな喜びを大切にしましょう。#{mood_summary}"
-    elsif negative_ratio >= 0.6
-      "悩みや疲れが多い傾向があるようです。休める時間を意識してみてください。#{mood_summary}"
-    elsif average <= 2.2
-      "今月は疲れやモヤモヤが多かったようです。無理のないペースで過ごしましょう。#{mood_summary}"
     else
       "気分は安定しています。今のペースを大切にしましょう。#{mood_summary}"
     end
@@ -54,7 +56,8 @@ module MypageInsights
 
   def build_thanks_recipients_summary(thanks_posts)
     tags = thanks_posts.map(&:thanks_recipient_tag).compact
-    tags.tally.map { |label, count| { label: label.delete_prefix('#'), count: count } }
+    tags.tally
+        .map { |label, count| { label: label.delete_prefix('#'), count: } }
         .sort_by { |item| [-item[:count], item[:label]] }
   end
 
