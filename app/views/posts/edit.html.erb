@@ -96,12 +96,16 @@
           </div>
         </div>
 
-          <!-- 📦 箱ごとの追加フィールド -->
-          <div id="post-type-fields">
-            <%= render "posts/future_fields",   f: f, post: @post %>
+        <div id="post-type-fields">
+          <% case @post.post_type %>
+          <% when 'future' %>
+            <%= render "posts/future_fields", f: f, post: @post %>
+          <% when 'organize' %>
             <%= render "posts/organize_fields", f: f, post: @post %>
-            <%= render "posts/thanks_fields",   f: f, post: @post %>
-          </div>
+          <% when 'thanks' %>
+            <%= render "posts/thanks_fields", f: f, post: @post %>
+          <% end %>
+        </div>
 
         <!-- タイトル -->
         <div class="mb-8">

@@ -1,3 +1,36 @@
-<div data-post-type-fields-target="organize" class="hidden">
-  <%= render "posts/mood_selector", f: f, post: post %>
+<!-- 🌈 気分選択（心の整理箱専用） -->
+<div
+  id="moodSection"
+  class="mb-8 relative z-10 "
+  
+>
+  <label class="block text-lg font-bold text-gray-800 mb-4">
+    😊 今の気分を選んでください
+  </label>
+
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+    <% Post::MOODS.each do |key, info| %>
+      <% emoji = info[:label][/^\S+/] %>
+      <% text  = info[:label].sub(/^\S+\s*/, "") %>
+
+      <label class="relative cursor-pointer select-none">
+        <%= f.radio_button :mood, key,
+              checked: post.mood == key.to_s,
+              class: "absolute inset-0 opacity-0 cursor-pointer peer z-20" %>
+
+        <div class="p-4 text-center border-2 border-gray-200 rounded-xl bg-white
+                    transition-all
+                    peer-checked:border-purple-400
+                    peer-checked:ring-2
+                    peer-checked:ring-purple-200">
+          <span class="text-2xl"><%= emoji %></span>
+          <p class="text-sm text-gray-700 mt-1 font-medium"><%= text %></p>
+        </div>
+      </label>
+    <% end %>
+  </div>
+
+  <p class="text-sm text-gray-500 mt-2">
+    ※ 心の整理箱では気分の選択が必須です
+  </p>
 </div>
