@@ -96,11 +96,6 @@
           </div>
         </div>
 
-        <!-- 🌈 気分（心の整理箱のみ表示） -->
-        <% if @post.organize? %>
-          <%= render "posts/mood_selector", f: f, post: @post %>
-        <% end %>
-
           <!-- 📦 箱ごとの追加フィールド -->
           <div id="post-type-fields">
             <%= render "posts/future_fields",   f: f, post: @post %>
