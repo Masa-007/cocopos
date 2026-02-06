@@ -45,19 +45,20 @@
     </div>
 
     <!-- 本文 -->
-    <div class="px-6 py-4">
+    <div class="post-card-body">
       <% if post.title.present? %>
-        <h3 class="font-bold mb-2 text-lg"><%= h(post.title) %></h3>
+         <h3 class="post-title"><%= h(post.title) %></h3>
       <% end %>
 
       <p class="text-gray-700 leading-relaxed">
-        <%= truncate(strip_tags(post.body.to_s), length: 100) %>
+         <p class="post-content">
+           <%= truncate(strip_tags(post.body.to_s), length: 100) %>
       </p>
     </div>
   <% end %>
 
   <!-- フッター -->
-  <div class="flex justify-between items-center text-sm text-gray-600 px-6 py-4 bg-gray-50 border-t">
+  <div class="post-card-footer">
     <div class="flex items-center gap-2 flex-wrap">
       <span><%= post.display_name %></span>
 

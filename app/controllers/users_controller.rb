@@ -54,7 +54,9 @@ class UsersController < ApplicationController
   end
 
   def prepare_future_section
-    @future_posts = future_posts_in_month
+    base_posts = future_posts_in_month
+    @todo_filter = todo_filter_param # 初期は unachieved
+    @future_posts = apply_todo_filter(base_posts)
     @future_insight = build_future_insight(@future_posts)
   end
 
@@ -63,7 +65,24 @@ class UsersController < ApplicationController
                 .future
                 .where(created_at: month_range)
                 .select(:id, :public_uuid, :title, :progress, :deadline, :created_at)
-                .order(:created_at)
+                .order(Arel.sql('deadline IS NULL ASC, deadline ASC, created_at ASC'))
+  end
+
+  def todo_filter_param
+    allowed = %w[all achieved unachieved]
+    value = params[:todo_filter].presence
+    allowed.include?(value) ? value : 'unachieved'
+  end
+
+  def apply_todo_filter(posts)
+    case @todo_filter
+    when 'achieved'
+      posts.where(progress: 100)
+    when 'unachieved'
+      posts.where(progress: nil).or(posts.where.not(progress: 100))
+    else # 'all'
+      posts
+    end
   end
 
   def prepare_thanks_section
