@@ -4,6 +4,7 @@
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: 24px;
   align-items: stretch;
+  grid-auto-rows: 1fr;
 }
 
 /* フェードイン（1回だけ定義） */
@@ -37,6 +38,12 @@
   animation: fadeIn 0.45s ease-out;
 }
 
+.post-card-link {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-height: 0;
+}
 /* 便箋の内枠（破線） */
 .post-card::after {
   content: "";
@@ -155,8 +162,12 @@
 /* 本文抜粋 */
 .post-content {
   color: #4b3a2a;
-  line-height: 1.75;
+  line-height: 1.8;
   font-size: 15px;
+  box-sizing: border-box;
+  min-height: calc(1.8em * 3 );
+  max-height: calc(1.8em * 3 + 15px);
+  height: calc(1.8em * 3 + 20px);
 
   word-wrap: break-word;
 
