@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+return if Rails.env.test?
+
 seed_uuid = SecureRandom.uuid
 seed_password = SecureRandom.uuid
 
