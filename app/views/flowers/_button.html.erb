@@ -1,11 +1,11 @@
-
 <% flowered = user_signed_in? && Flower.exists?(user: current_user, flowerable: flowerable) %>
 
-<% url = if flowerable.is_a?(Comment)
-            post_comment_flower_path(flowerable.post_id, flowerable.id)
-          else
-            post_flower_path(flowerable.id)
-          end %>
+<% url =
+     if flowerable.is_a?(Comment)
+       post_comment_flower_path(flowerable.post, flowerable)
+     else
+       post_flower_path(flowerable)
+     end %>
 
 <%= form_with url: url,
               method: flowered ? :delete : :post,

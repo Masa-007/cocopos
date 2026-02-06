@@ -29,21 +29,21 @@ class FlowersController < ApplicationController
   private
 
   def set_flowerable
-    if params[:comment_id].present?
-      @flowerable = find_comment!(params[:comment_id])
-    elsif params[:post_id].present?
-      @flowerable = find_post!(params[:post_id])
+    if params[:comment_public_uuid].present?
+      @flowerable = find_comment!(params[:comment_public_uuid])
+    elsif params[:post_public_uuid].present?
+      @flowerable = find_post!(params[:post_public_uuid])
     else
       raise ActiveRecord::RecordNotFound
     end
   end
 
-  def find_post!(post_id)
-    Post.find(post_id)
+  def find_post!(public_uuid)
+    Post.find_by!(public_uuid: public_uuid)
   end
 
-  def find_comment!(comment_id)
-    Comment.find(comment_id)
+  def find_comment!(public_uuid)
+    Comment.find_by!(public_uuid: public_uuid)
   end
 
   def ensure_flowerable_visible
