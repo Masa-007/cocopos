@@ -94,4 +94,23 @@ jobs:
 
       - name: Run RuboCop
         run: bundle exec rubocop
-        
+
+  eslint:
+    name: ESLint
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install npm dependencies
+        run: npm ci
+
+      - name: Run ESLint
+        run: npm run lint

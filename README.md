@@ -1,6 +1,7 @@
 # ココポス（cocopos） README
 
 ## CI / 品質チェック
+[![CI](https://github.com/<OWNER>/<REPO>/actions/workflows/ci.yml/badge.svg)](https://github.com/<OWNER>/<REPO>/actions/workflows/ci.yml)
 
 本リポジトリでは GitHub Actions を用いた CI を導入しています。
 
@@ -8,6 +9,7 @@ Pull Request 作成時に、以下のチェックが自動で実行されます�
 
 - RSpec（Rails テスト）
 - RuboCop（Ruby 静的解析）
+- ESLint（JavaScript 静的解析）
 
 すべてのチェックが通過することを前提に開発を進めています。
 
