@@ -5,10 +5,10 @@ export default class extends Controller {
   static values = { data: Array };
 
   connect() {
-    console.log("🎨 mood-chart connected");
-    console.log("data:", this.dataValue);
-
     if (!this.hasDataValue || this.dataValue.length === 0) return;
+
+    // 既存があれば必ず破棄（Turbo遷移/戻る対策）
+    this.destroyChart();
 
     const canvas = this.element;
     const ctx = canvas.getContext("2d");
@@ -16,16 +16,15 @@ export default class extends Controller {
     const labels = this.dataValue.map((d) => d.date);
     const scores = this.dataValue.map((d) => d.score);
 
-    // ▼ score に対応する絵文字（score=2 は「😣 モヤモヤ」で統一）
     const scoreToEmoji = {
-      5: "🤩", // ワクワク
-      4: "😊", // 嬉しい
-      3: "😌", // 穏やか
-      2: "😣", // モヤモヤ（統一）
-      1: "😔", // 悲しい
+      5: "🤩",
+      4: "😊",
+      3: "😌",
+      2: "😣",
+      1: "😔",
     };
 
-    new Chart(ctx, {
+    this.chart = new Chart(ctx, {
       type: "line",
       data: {
         labels,
@@ -35,29 +34,17 @@ export default class extends Controller {
             borderColor: "#8b5cf6",
             borderWidth: 2,
             tension: 0.3,
-            pointRadius: 0, // ← 絵文字を使うので点は消す
+            pointRadius: 0,
           },
         ],
       },
       options: {
         plugins: { legend: { display: false } },
         scales: {
-          x: {
-            offset: true, // ← 両端に余白をつけて違和感を解消
-            ticks: {
-              maxRotation: 0,
-              minRotation: 0,
-            },
-          },
-          y: {
-            min: 0,
-            max: 5,
-            ticks: { stepSize: 1 },
-          },
+          x: { offset: true, ticks: { maxRotation: 0, minRotation: 0 } },
+          y: { min: 0, max: 5, ticks: { stepSize: 1 } },
         },
       },
-
-      // ▼ 絵文字を描画するカスタムプラグイン
       plugins: [
         {
           afterDatasetDraw(chart) {
@@ -70,8 +57,7 @@ export default class extends Controller {
             ctx.textBaseline = "middle";
 
             meta.data.forEach((point, i) => {
-              const score = scores[i];
-              const emoji = scoreToEmoji[score] || "🌟";
+              const emoji = scoreToEmoji[scores[i]] || "🌟";
               ctx.fillText(emoji, point.x, point.y);
             });
 
@@ -80,5 +66,21 @@ export default class extends Controller {
         },
       ],
     });
+  }
+
+  disconnect() {
+    // Turboが要素を入れ替えるときも呼ばれるので確実に破棄
+    this.destroyChart();
+  }
+
+  destroyChart() {
+    // Chart.js 側が保持している既存インスタンスも拾って破棄
+    const existing = Chart.getChart(this.element);
+    if (existing) existing.destroy();
+
+    if (this.chart) {
+      this.chart.destroy();
+      this.chart = null;
+    }
   }
 }

@@ -148,16 +148,26 @@ body.users-mypage_posts {
 }
 
 
-.nav-button:nth-of-type(4) {
+.nav-button.signup-button {
   background: linear-gradient(135deg, #c4f3d5, #8ee5a1);
   color: #0f3f1a;
   border-color: #8ee5a1;
 }
-.nav-button:nth-of-type(4):hover {
+.nav-button.signup-button:hover {
   background: linear-gradient(135deg, #a9eac1, #6fdb8a);
   transform: translateY(-2px);
 }
 
+.nav-button.mypage-button {
+  background: linear-gradient(135deg, #d9f2e6, #aee5cc);
+  color: #1f5a3f;
+  border-color: #aee5cc;
+}
+
+.nav-button.mypage-button:hover {
+  background: linear-gradient(135deg, #c4ead8, #8fd8b8);
+  transform: translateY(-2px);
+}
 
 .btn-primary {
   background: linear-gradient(135deg,#ffa9a9,#ff7b7b); color:#fff; font-weight:bold;
