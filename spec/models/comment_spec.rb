@@ -19,6 +19,20 @@ RSpec.describe Comment, type: :model do
     expect(comment.errors[:content].join).to include('使用できない単語')
   end
 
+  it 'contentにURLが含まれている場合は無効になる' do
+    comment = described_class.new(user:, post: post_record, content: 'https://example.com を見て')
+
+    expect(comment).not_to be_valid
+    expect(comment.errors[:content]).to include('にURLが含まれています')
+  end
+
+  it 'contentにメールアドレスが含まれている場合は無効になる' do
+    comment = described_class.new(user:, post: post_record, content: 'mail me at test@example.com')
+
+    expect(comment).not_to be_valid
+    expect(comment.errors[:content]).to include('にメールアドレスが含まれています')
+  end
+
   it '作成時にpublic_uuidが自動で付与される' do
     comment = described_class.create!(user:, post: post_record, content: 'UUID付き')
 

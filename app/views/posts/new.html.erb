@@ -5,7 +5,18 @@
       <h1 class="text-4xl font-bold text-gray-800 mb-2">✏️ 新しい投稿</h1>
       <p class="text-gray-600">あなたの心を投函してください</p>
     </div>
-
+    
+    <% if @post.errors.any? %>
+      <div class="mb-6 p-4 rounded-lg border border-red-300 bg-red-50 text-red-700">
+        <p class="font-bold mb-2">入力内容を確認してください：</p>
+        <ul class="list-disc pl-5">
+          <% @post.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+    
     <%= form_with model: @post,
       id: "postForm",
       local: true,

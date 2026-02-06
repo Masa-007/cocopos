@@ -10,6 +10,7 @@ RSpec.describe Post, type: :model do
       post = described_class.new(user:, body: '未来に向けて頑張る', post_type: :future)
 
       expect(post).to be_valid
+      expect(post.errors[:mood]).to be_empty
     end
 
     it 'organize投稿ではmoodが必須である' do
@@ -23,7 +24,7 @@ RSpec.describe Post, type: :model do
       post = described_class.new(user:, body: 'ありがとう', post_type: :thanks, thanks_recipient: nil)
 
       expect(post).not_to be_valid
-      expect(post.errors[:thanks_recipient]).to be_present
+      expect(post.errors[:thanks_recipient]).to include('を選択してください')
     end
 
     it 'future投稿で過去の日付のdeadlineは無効である' do
@@ -53,7 +54,12 @@ RSpec.describe Post, type: :model do
       expect(post).not_to be_valid
       expect(post.errors[:body]).to include('にURLが含まれています')
     end
+    it 'bodyにメールアドレスが含まれている場合は無効になる' do
+      post = described_class.new(user:, body: '連絡先は test@example.com です', post_type: :future)
 
+      expect(post).not_to be_valid
+      expect(post.errors[:body]).to include('にメールアドレスが含まれています')
+    end
     it 'bodyに電話番号が含まれている場合は無効になる' do
       post = described_class.new(user:, body: '連絡先は090-1234-5678です', post_type: :future)
 

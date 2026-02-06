@@ -3,7 +3,7 @@ ja:
     notices:
       created: "投稿を作成しました。"
       updated: "投稿を更新しました。"
-      deleted: "投稿を削除しました。" 
+      deleted: "投稿を削除しました。"
     alerts:
       unauthorized: "権限がありません。"
       private_post: "この投稿は非公開です。"

@@ -40,13 +40,15 @@ class PostsController < ApplicationController
     )
     @show_loading = true
   end
+
   # 投稿作成
   def create
     @post = current_user.posts.build(post_params_for_create)
     disable_comment_if_private(@post)
+    validate_required_fields_by_post_type(@post)
 
     if request.format.json?
-      if @post.save
+      if @post.errors.empty? && @post.save
         render json: {
           success: true,
           data: {
@@ -61,9 +63,10 @@ class PostsController < ApplicationController
           errors: @post.errors.full_messages
         }, status: :unprocessable_entity
       end
-    elsif @post.save
+    elsif @post.errors.empty? && @post.save
       redirect_to post_path(@post), notice: t('posts.notices.created')
     else
+      flash.now[:alert] = [t('posts.alerts.failed'), @post.errors.full_messages.to_sentence].join(' ')
       render :new, status: :unprocessable_entity
     end
   end
@@ -199,6 +202,13 @@ class PostsController < ApplicationController
     return fallback unless hash.key?(key)
 
     ActiveModel::Type::Boolean.new.cast(hash[key])
+  end
+
+  def validate_required_fields_by_post_type(post)
+    return unless post.future?
+    return if post.deadline.present?
+
+    post.errors.add(:deadline, 'を入力してください')
   end
 
   # create 用パラメータ

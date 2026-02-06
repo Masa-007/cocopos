@@ -23,9 +23,13 @@ class Comment < ApplicationRecord
     ng_words = defined?(NG_WORDS) ? NG_WORDS : []
     matched_words = ng_words.select { |word| content.include?(word) }
 
-    return unless matched_words.any?
+    errors.add(:content, "に使用できない単語が含まれています: #{matched_words.join(', ')}") if matched_words.any?
 
-    errors.add(:content, "に使用できない単語が含まれています: #{matched_words.join(', ')}")
+    url_regex = %r{https?://\S+|www\.\S+}
+    errors.add(:content, 'にURLが含まれています') if content.match?(url_regex)
+
+    email_regex = /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i
+    errors.add(:content, 'にメールアドレスが含まれています') if content.match?(email_regex)
   end
 
   # いいね（花）の数を返す
