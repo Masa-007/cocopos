@@ -8,6 +8,9 @@ class CommentsController < ApplicationController
   before_action :set_comment, only: %i[edit update destroy]
   before_action :authorize_user!, only: %i[edit update destroy]
 
+  # コメント編集フォーム
+  def edit; end
+
   # コメント作成
   def create
     @comment = @post.comments.build(comment_params)
@@ -19,9 +22,6 @@ class CommentsController < ApplicationController
       redirect_to post_path(@post), alert: t('comments.alerts.failed')
     end
   end
-
-  # コメント編集フォーム
-  def edit; end
 
   # コメント更新
   def update

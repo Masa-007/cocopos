@@ -11,7 +11,7 @@ class FlowersController < ApplicationController
 
     respond_to do |format|
       format.turbo_stream
-      format.html { redirect_back fallback_location: root_path, notice: '花を贈りました🌸' }
+      format.html { redirect_back fallback_location: root_path, notice: t('flowers.notices.created') }
     end
   end
 
@@ -22,7 +22,7 @@ class FlowersController < ApplicationController
 
     respond_to do |format|
       format.turbo_stream
-      format.html { redirect_back fallback_location: root_path, notice: '花を取り消しました🌿' }
+      format.html { redirect_back fallback_location: root_path, notice: t('flowers.notices.destroyed') }
     end
   end
 

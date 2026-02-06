@@ -4,7 +4,7 @@ require 'active_support/core_ext/integer/time'
 
 Devise.setup do |config|
   # 🔑 本番での暗号化キー（必須）
-  config.secret_key = ENV['DEVISE_SECRET_KEY'] if Rails.env.production?
+  config.secret_key = ENV.fetch('DEVISE_SECRET_KEY', nil) if Rails.env.production?
 
   # 📮 メール送信設定（最低限）
   config.mailer_sender = ENV.fetch('MAILER_SENDER', 'ENV.fetch("MAIL-FROM")')
@@ -40,8 +40,8 @@ Devise.setup do |config|
 
   if ENV['GOOGLE_CLIENT_ID'].present? && ENV['GOOGLE_CLIENT_SECRET'].present?
     config.omniauth :google_oauth2,
-                    ENV['GOOGLE_CLIENT_ID'],
-                    ENV['GOOGLE_CLIENT_SECRET'],
+                    ENV.fetch('GOOGLE_CLIENT_ID', nil),
+                    ENV.fetch('GOOGLE_CLIENT_SECRET', nil),
                     prompt: 'select_account',
                     image_aspect_ratio: 'square',
                     image_size: 50

@@ -10,7 +10,7 @@ class Post < ApplicationRecord
 
   accepts_nested_attributes_for :milestones, allow_destroy: true
 
-  enum post_type: {
+  enum :post_type, {
     future: 0,
     organize: 1,
     thanks: 2
@@ -26,14 +26,14 @@ class Post < ApplicationRecord
 
   attribute :thanks_recipient, :integer
 
-  enum thanks_recipient: {
+  enum :thanks_recipient, {
     family: 0,
     friend: 1,
     partner: 2,
     work: 3,
     self: 4,
     other: 5
-  }, _prefix: :thanks_recipient
+  }, prefix: :thanks_recipient
 
   MOODS = {
     excited: { label: '🤩 ワクワク', score: 5 },

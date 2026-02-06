@@ -1,51 +1,67 @@
 # frozen_string_literal: true
 
 class User < ApplicationRecord
-  # Deviseモジュール
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable,
          :omniauthable, omniauth_providers: [:google_oauth2]
 
-  # アソシエーション
   has_many :posts, dependent: :destroy
   has_many :comments, dependent: :destroy
   has_many :flowers, dependent: :destroy
 
-  # バリデーション
   validates :name, presence: true, length: { maximum: 50 }
 
-  # 管理者フラグ
   def admin?
     admin
   end
 
   def self.from_omniauth(auth)
-    user = find_by(provider: auth.provider, uid: auth.uid) || find_by(email: auth.info.email)
-    user ||= new
-
-    user.provider ||= auth.provider
-    user.uid ||= auth.uid
-    user.email ||= auth.info.email
-    user.name ||= auth.info.name.presence || auth.info.email&.split('@')&.first || 'Googleユーザー'
-    user.password ||= Devise.friendly_token[0, 20]
+    user = find_or_initialize_from_auth(auth)
+    apply_auth_attributes(user, auth)
+    ensure_password(user)
     user.save
     user
   end
 
-  # 表示名（匿名対応）
   def display_name
     name.presence || '匿名ユーザー'
   end
 
-  # 🤖 AI文章生成：1日1回のみ利用可
   def ai_available_today?
     return true if last_ai_used_at.nil?
 
     last_ai_used_at < Time.current.beginning_of_day
   end
 
-  # 🤖 本日のAI残り利用回数（表示用）
   def ai_remaining_count
     ai_available_today? ? 1 : 0
+  end
+
+  class << self
+    private
+
+    def find_or_initialize_from_auth(auth)
+      find_by(provider: auth.provider, uid: auth.uid) ||
+        find_by(email: auth.info.email) ||
+        new
+    end
+
+    def apply_auth_attributes(user, auth)
+      user.provider ||= auth.provider
+      user.uid ||= auth.uid
+      user.email ||= auth.info.email
+      user.name ||= derive_name_from_auth(auth)
+      user
+    end
+
+    def derive_name_from_auth(auth)
+      auth.info.name.presence ||
+        auth.info.email&.split('@')&.first ||
+        'Googleユーザー'
+    end
+
+    def ensure_password(user)
+      user.password ||= Devise.friendly_token[0, 20]
+    end
   end
 end

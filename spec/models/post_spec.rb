@@ -54,12 +54,14 @@ RSpec.describe Post, type: :model do
       expect(post).not_to be_valid
       expect(post.errors[:body]).to include('にURLが含まれています')
     end
+
     it 'bodyにメールアドレスが含まれている場合は無効になる' do
       post = described_class.new(user:, body: '連絡先は test@example.com です', post_type: :future)
 
       expect(post).not_to be_valid
       expect(post.errors[:body]).to include('にメールアドレスが含まれています')
     end
+
     it 'bodyに電話番号が含まれている場合は無効になる' do
       post = described_class.new(user:, body: '連絡先は090-1234-5678です', post_type: :future)
 
