@@ -5,7 +5,6 @@ class PostsController < ApplicationController
   before_action :set_post, only: %i[show edit update destroy]
   before_action :authorize_user!, only: %i[edit update destroy]
 
-  # 投稿一覧
   def index
     @posts = Post.includes(:user, comments: :user, flowers: :user)
     @posts = filter_by_visibility(@posts)
@@ -24,7 +23,6 @@ class PostsController < ApplicationController
     @page_description = 'cocoposで公開されている投稿一覧です。'
   end
 
-  # 投稿詳細
   def show
     redirect_to posts_path, alert: t('posts.alerts.private') and return if private_post_blocked?
 
@@ -40,36 +38,26 @@ class PostsController < ApplicationController
     )
     @show_loading = true
   end
+
+  def edit; end
+
   # 投稿作成
   def create
     @post = current_user.posts.build(post_params_for_create)
     disable_comment_if_private(@post)
+    validate_required_fields_by_post_type(@post)
 
-    if request.format.json?
-      if @post.save
-        render json: {
-          success: true,
-          data: {
-            id: @post.id,
-            post_type: @post.post_type,
-            mood: @post.mood
-          }
-        }, status: :ok
-      else
-        render json: {
-          success: false,
-          errors: @post.errors.full_messages
-        }, status: :unprocessable_entity
-      end
-    elsif @post.save
+    saved = @post.errors.empty? && @post.save
+
+    return render_create_json(@post, saved) if request.format.json?
+
+    if saved
       redirect_to post_path(@post), notice: t('posts.notices.created')
     else
+      flash.now[:alert] = [t('posts.alerts.failed'), @post.errors.full_messages.to_sentence].join(' ')
       render :new, status: :unprocessable_entity
     end
   end
-
-  # 編集フォーム
-  def edit; end
 
   # 投稿更新
   def update
@@ -90,6 +78,14 @@ class PostsController < ApplicationController
   end
 
   private
+
+  def render_create_json(post, saved)
+    if saved
+      render json: { success: true, data: { id: post.id, post_type: post.post_type, mood: post.mood } }, status: :ok
+    else
+      render json: { success: false, errors: post.errors.full_messages }, status: :unprocessable_entity
+    end
+  end
 
   # 投稿取得
   def set_post
@@ -188,7 +184,6 @@ class PostsController < ApplicationController
                                 end
 
     updated[:comment_allowed] = updated[:comment_allowed] == true
-
     updated.delete(:post_type)
 
     updated
@@ -199,6 +194,13 @@ class PostsController < ApplicationController
     return fallback unless hash.key?(key)
 
     ActiveModel::Type::Boolean.new.cast(hash[key])
+  end
+
+  def validate_required_fields_by_post_type(post)
+    return unless post.future?
+    return if post.deadline.present?
+
+    post.errors.add(:deadline, 'を入力してください')
   end
 
   # create 用パラメータ
@@ -215,12 +217,7 @@ class PostsController < ApplicationController
       :thanks_recipient_other,
       :deadline,
       :progress,
-      milestones_attributes: %i[
-        id
-        title
-        completed
-        _destroy
-      ]
+      milestones_attributes: %i[id title completed _destroy]
     )
     cast_booleans(permitted, %i[is_public comment_allowed])
   end
@@ -238,12 +235,7 @@ class PostsController < ApplicationController
       :thanks_recipient_other,
       :deadline,
       :progress,
-      milestones_attributes: %i[
-        id
-        title
-        completed
-        _destroy
-      ]
+      milestones_attributes: %i[id title completed _destroy]
     )
     cast_booleans(permitted, %i[is_public comment_allowed])
   end

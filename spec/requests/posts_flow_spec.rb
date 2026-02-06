@@ -25,7 +25,8 @@ RSpec.describe 'Posts', type: :request do
           post_type: 'future',
           is_anonymous: '1',
           is_public: '1',
-          comment_allowed: '1'
+          comment_allowed: '1',
+          deadline: Date.current.to_s
         }
       }
 

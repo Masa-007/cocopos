@@ -15,6 +15,7 @@ RSpec.describe User, type: :model do
 
     expect(user.display_name).to eq('Alice')
   end
+
   it 'last_ai_used_atに応じて本日のAI残回数を返す' do
     user = described_class.new(last_ai_used_at: nil)
     expect(user.ai_remaining_count).to eq(1)

@@ -1,5 +1,17 @@
-require:
+plugins:
   - rubocop-rails
+  - rubocop-rspec
+
+AllCops:
+  NewCops: enable
+  Exclude:
+    - 'db/schema.rb'
+    - 'db/migrate/**/*'
+    - 'bin/**/*'
+    - 'node_modules/**/*'
+    - 'vendor/**/*'
+    - 'tmp/**/*'
+    - 'log/**/*'
 
 Style/Documentation:
   Enabled: false
@@ -7,11 +19,37 @@ Style/Documentation:
 Metrics/BlockLength:
   Exclude:
     - 'config/environments/*.rb'
-
-AllCops:
-  Exclude:
-    - 'db/schema.rb'
-    - 'db/migrate/**/*'
+    - 'config/routes.rb'
+    - 'spec/**/*'
+    - 'Rakefile'
+    - '**/*.rake'
 
 Metrics/ClassLength:
-  Max: 120
+  Max: 200
+
+Metrics/MethodLength:
+  Max: 25
+
+Metrics/AbcSize:
+  Max: 30
+
+Metrics/CyclomaticComplexity:
+  Max: 10
+
+Metrics/PerceivedComplexity:
+  Max: 11
+
+RSpec/MultipleExpectations:
+  Enabled: false
+
+RSpec/ExampleLength:
+  Enabled: false
+
+RSpec/NestedGroups:
+  Max: 4
+
+RSpec/SubjectStub:
+  Enabled: false
+
+RSpec/MultipleMemoizedHelpers:
+  Enabled: false

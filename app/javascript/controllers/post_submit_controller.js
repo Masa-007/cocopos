@@ -27,14 +27,12 @@ export default class extends Controller {
       return;
     }
 
-    // loading 表示
     loading.classList.add("active");
 
     const submitBtn = form.querySelector("[type='submit']");
     if (submitBtn) submitBtn.disabled = true;
 
-    // アニメーション開始時刻
-    const animationDuration = 4500; // ← CSS と必ず合わせる
+    const animationDuration = 4500;
 
     const letter = loading.querySelector(".letter");
     if (letter) {
@@ -43,7 +41,6 @@ export default class extends Controller {
       letter.style.animation = "letterInsert 4.5s ease-in-out forwards";
     }
 
-    // 投稿処理
     fetch(form.action, {
       method: "POST",
       headers: {
@@ -54,9 +51,26 @@ export default class extends Controller {
       body: data,
     })
       .then(async (res) => {
-        if (!res.ok) throw new Error("投稿に失敗しました");
+        // ここで本文を必ず読む（422でもJSONが返る前提）
+        const contentType = res.headers.get("content-type") || "";
+        const isJson = contentType.includes("application/json");
 
-        // ★ アニメーション完了を待ってから完了画面へ
+        const payload = isJson ? await res.json() : null;
+
+        if (!res.ok) {
+          // 422想定：errors を出す
+          const errors = payload?.errors;
+
+          if (Array.isArray(errors) && errors.length > 0) {
+            // 複数エラーなら改行でまとめる
+            throw new Error(errors.join("\n"));
+          }
+
+          // errors が取れない場合のフォールバック
+          throw new Error(payload?.message || "投稿に失敗しました");
+        }
+
+        // 成功時：アニメ後に完了画面
         setTimeout(() => {
           loading.classList.remove("active");
           completion.classList.add("active");

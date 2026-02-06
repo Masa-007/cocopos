@@ -29,7 +29,7 @@ Rails.application.configure do
   config.log_level = :info
   config.log_tags = [:request_id]
   config.active_support.report_deprecations = false
-  config.log_formatter = ::Logger::Formatter.new
+  config.log_formatter = Logger::Formatter.new
 
   if ENV['RAILS_LOG_TO_STDOUT'].present?
     logger = ActiveSupport::Logger.new($stdout)

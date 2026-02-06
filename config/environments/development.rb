@@ -47,7 +47,7 @@ Rails.application.configure do
   # アセット関連
   config.assets.paths += [
     Rails.root.join('app/assets/builds'),
-    Rails.root.join('public/assets')
+    Rails.public_path.join('assets')
   ]
 
   # 開発時：ビルド済みCSSを即反映

@@ -4,6 +4,7 @@ ja:
       user: "ユーザー"
       post: "投稿"
       comment: "コメント"
+      milestone: "マイルストーン"
 
     attributes:
       user:
@@ -12,16 +13,25 @@ ja:
         password: "パスワード"
         password_confirmation: "パスワード（確認用）"
         remember_me: "ログイン状態を保持する"
+
       post:
         title: "タイトル"
         body: "本文"
         post_type: "投稿タイプ"
-        comment_allowed:: "意見募集中"
+        mood: "気分"
+        thanks_recipient: "感謝対象"
+        thanks_recipient_other: "その他の宛先"
+        deadline: "期限日"
+        progress: "進捗"
+        comment_allowed: "意見募集中"
         is_anonymous: "匿名設定"
         is_public: "公開設定"
-        comment_allowed: "コメント許可"
+
       comment:
         body: "コメント内容"
+
+      milestones:
+        title: "マイルストーンタイトル"
 
     errors:
       models:
@@ -35,12 +45,27 @@ ja:
             password_confirmation:
               confirmation: "がパスワードと一致しません"
 
+        # Postだけ「選択してください」に寄せたい項目を上書き
+        post:
+          attributes:
+            post_type:
+              blank: "を選択してください"
+            mood:
+              blank: "を選択してください"
+            thanks_recipient:
+              blank: "を選択してください"
+            deadline:
+              blank: "を入力してください"
+
   errors:
+    format: "%{attribute}%{message}"
+
     template:
       header:
         one: "%{model}にエラーが発生しました"
         other: "%{model}に%{count}件のエラーがあります"
       body: "次の項目を確認してください："
+
     messages:
       not_saved: "保存できませんでした。"
       blank: "を入力してください"

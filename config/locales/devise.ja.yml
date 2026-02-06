@@ -86,3 +86,8 @@ ja:
         sign_in_with: "Googleアカウントでログイン"
         sign_up_with: "Googleアカウントで新規登録"
         back: "戻る"
+    
+    flowers:
+      notices:
+        created: "花を贈りました🌸"
+        destroyed: "花を取り消しました🌿"

@@ -13,6 +13,12 @@
   "scripts": {
     "build": "esbuild app/javascript/application.js app/javascript/controllers/**/*.{js,jsx,ts,tsx} --bundle --sourcemap --format=esm --outdir=public/assets --public-path=/assets",
     "build:css": "npx tailwindcss -i ./app/assets/stylesheets/application.tailwind.css -o ./app/assets/builds/application.css --minify",
-    "tailwind:init": "tailwindcss init -p"
+    "tailwind:init": "tailwindcss init -p",
+    "lint": "eslint app/javascript"
+  },
+  "devDependencies": {
+    "eslint": "^9.39.2",
+    "eslint-plugin-import": "^2.32.0",
+    "globals": "^17.3.0"
   }
 }

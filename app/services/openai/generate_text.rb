@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require 'ostruct'
-
 module Openai
   class GenerateText
     SEPARATOR = '===VERSION_SEPARATOR==='
+
+    Result = Struct.new(:success?, :options, :error, keyword_init: true)
 
     def self.call(prompt:)
       new(prompt).call
@@ -16,6 +16,17 @@ module Openai
     end
 
     def call
+      text = fetch_output_text!
+      options = build_options(text)
+      Result.new(success?: true, options: options)
+    rescue StandardError => e
+      log_error(e)
+      Result.new(success?: false, error: '本文の生成に失敗しました')
+    end
+
+    private
+
+    def fetch_output_text!
       response = @client.responses.create(
         model: 'gpt-4o-mini',
         input: [
@@ -28,29 +39,19 @@ module Openai
       text = response.output_text
       raise 'OpenAI response was empty' if text.blank?
 
-      options = text
-                .split(SEPARATOR)
-                .map(&:strip)
-                .reject(&:blank?)
-
-      # 必ず2案にする（AIが失敗した場合の保険）
-      options << @prompt if options.size < 2
-
-      OpenStruct.new(
-        success?: true,
-        options: options.first(2)
-      )
-    rescue StandardError => e
-      Rails.logger.error("[OpenAI] #{e.class}: #{e.message}")
-      Rails.logger.error(e.backtrace.join("\n"))
-
-      OpenStruct.new(
-        success?: false,
-        error: '本文の生成に失敗しました'
-      )
+      text
     end
 
-    private
+    def build_options(text)
+      options = text.split(SEPARATOR).map(&:strip).compact_blank
+      options << @prompt if options.size < 2
+      options.first(2)
+    end
+
+    def log_error(error)
+      Rails.logger.error("[OpenAI] #{error.class}: #{error.message}")
+      Rails.logger.error(error.backtrace.join("\n"))
+    end
 
     def system_prompt
       <<~PROMPT

@@ -10,55 +10,78 @@ class UsersController < ApplicationController
     @user = current_user
     today = Time.zone.today
 
-    # ---- カレンダー（月切替） ----
-    prepare_calendar_date(today)
-    prepare_season_info
-    load_month_posts_for_calendar
-
-    # 🌈 ---- 気分グラフ（月ごと） ----
-    mood_posts = current_user.posts
-                             .organize
-                             .where.not(mood: nil)
-                             .where(created_at: @first_day.beginning_of_day..@last_day.end_of_day)
-                             .order(:created_at)
-
-    @mood_chart_data = mood_posts.map do |p|
-      {
-        date: p.created_at.strftime('%Y-%m-%d'),
-        score: Post::MOODS[p.mood.to_sym][:score]
-      }
-    end
-
-    @mood_insight = build_mood_insight(mood_posts)
-
-    # 🌱 ---- 未来宣言箱（TODO/進捗/期限） ----
-    @future_posts = current_user.posts
-                                .future
-                                .where(created_at: @first_day.beginning_of_day..@last_day.end_of_day)
-                                .select(:id, :public_uuid, :title, :progress, :deadline, :created_at)
-                                .order(:created_at)
-
-    @future_insight = build_future_insight(@future_posts)
-
-    thanks_posts = current_user.posts
-                               .thanks
-                               .where(created_at: @first_day.beginning_of_day..@last_day.end_of_day)
-
-    @thanks_points = thanks_posts.count
-    @thanks_recipients_summary = build_thanks_recipients_summary(thanks_posts)
-    @thanks_insight = build_thanks_insight(@thanks_recipients_summary)
-
-    render :mypage
+    prepare_calendar(today)
+    prepare_mood_section
+    prepare_future_section
+    prepare_thanks_section
   end
 
   def mypage_posts
     @user = current_user
     @posts = filtered_posts.page(params[:page])
     prepare_season_info
-    render :mypage_posts
   end
 
   private
+
+  def prepare_calendar(today)
+    prepare_calendar_date(today)
+    prepare_season_info
+    load_month_posts_for_calendar
+  end
+
+  def prepare_mood_section
+    mood_posts = mood_posts_in_month
+    @mood_chart_data = build_mood_chart_data(mood_posts)
+    @mood_insight = build_mood_insight(mood_posts)
+  end
+
+  def mood_posts_in_month
+    current_user.posts
+                .organize
+                .where.not(mood: nil)
+                .where(created_at: month_range)
+                .order(:created_at)
+  end
+
+  def build_mood_chart_data(posts)
+    posts.map do |p|
+      {
+        date: p.created_at.strftime('%Y-%m-%d'),
+        score: Post::MOODS[p.mood.to_sym][:score]
+      }
+    end
+  end
+
+  def prepare_future_section
+    @future_posts = future_posts_in_month
+    @future_insight = build_future_insight(@future_posts)
+  end
+
+  def future_posts_in_month
+    current_user.posts
+                .future
+                .where(created_at: month_range)
+                .select(:id, :public_uuid, :title, :progress, :deadline, :created_at)
+                .order(:created_at)
+  end
+
+  def prepare_thanks_section
+    thanks_posts = thanks_posts_in_month
+    @thanks_points = thanks_posts.count
+    @thanks_recipients_summary = build_thanks_recipients_summary(thanks_posts)
+    @thanks_insight = build_thanks_insight(@thanks_recipients_summary)
+  end
+
+  def thanks_posts_in_month
+    current_user.posts
+                .thanks
+                .where(created_at: month_range)
+  end
+
+  def month_range
+    @first_day.beginning_of_day..@last_day.end_of_day
+  end
 
   # ---- 投稿一覧フィルタ ----
   def filtered_posts
@@ -139,9 +162,8 @@ class UsersController < ApplicationController
   end
 
   def load_month_posts_for_calendar
-    range = @first_day.beginning_of_day..@last_day.end_of_day
     posts = current_user.posts
-                        .where(created_at: range)
+                        .where(created_at: month_range)
                         .select(:id, :public_uuid, :title, :body, :post_type, :created_at, :is_public)
 
     @posts_by_date = posts.group_by { |p| p.created_at.to_date }

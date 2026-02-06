@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 module ApplicationHelper
-  def default_meta_tags
+  def default_meta_tags(page_image_path: nil)
+    image_path = page_image_path.presence || 'cocopos.ogp.jpg'
+
     {
       site: 'cocopos',
       title: '心のポスト',
@@ -17,12 +19,12 @@ module ApplicationHelper
         description: :description,
         type: 'website',
         url: request.original_url,
-        image: image_url(@page_image_path.presence || 'cocopos.ogp.jpg'),
+        image: image_url(image_path),
         locale: 'ja_JP'
       },
       twitter: {
         card: 'summary_large_image',
-        image: image_url(@page_image_path.presence || 'cocopos.ogp.jpg')
+        image: image_url(image_path)
       }
     }
   end

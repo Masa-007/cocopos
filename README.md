@@ -1,5 +1,18 @@
 # ココポス（cocopos） README
 
+## CI / 品質チェック
+[![CI](https://github.com/<OWNER>/<REPO>/actions/workflows/ci.yml/badge.svg)](https://github.com/<OWNER>/<REPO>/actions/workflows/ci.yml)
+
+本リポジトリでは GitHub Actions を用いた CI を導入しています。
+
+Pull Request 作成時に、以下のチェックが自動で実行されます。
+
+- RSpec（Rails テスト）
+- RuboCop（Ruby 静的解析）
+- ESLint（JavaScript 静的解析）
+
+すべてのチェックが通過することを前提に開発を進めています。
+
 ## サービス概要
 
 - cocopos (心のポストの略称) は「宣言する」「書き出す」「感謝する」を匿名で安心して投稿できるサービスです。
@@ -218,3 +231,4 @@ comments {
 users ||--o{ posts : "1ユーザーは複数の投稿を持つ (1:多)"
 users ||--o{ comments : "1ユーザーは複数のコメントを持つ (1:多)"
 posts ||--o{ comments : "1投稿は複数のコメントを持つ (1:多)"
+

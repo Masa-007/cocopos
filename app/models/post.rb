@@ -10,7 +10,7 @@ class Post < ApplicationRecord
 
   accepts_nested_attributes_for :milestones, allow_destroy: true
 
-  enum post_type: {
+  enum :post_type, {
     future: 0,
     organize: 1,
     thanks: 2
@@ -26,14 +26,14 @@ class Post < ApplicationRecord
 
   attribute :thanks_recipient, :integer
 
-  enum thanks_recipient: {
+  enum :thanks_recipient, {
     family: 0,
     friend: 1,
     partner: 2,
     work: 3,
     self: 4,
     other: 5
-  }, _prefix: :thanks_recipient
+  }, prefix: :thanks_recipient
 
   MOODS = {
     excited: { label: '🤩 ワクワク', score: 5 },
@@ -50,14 +50,15 @@ class Post < ApplicationRecord
   validates :post_type, presence: true
   validates :public_uuid, presence: true, uniqueness: true
 
-  validates :mood, presence: true, if: :organize?
-  validates :thanks_recipient, presence: true, if: :thanks?
   validates :thanks_recipient_other, presence: true, if: :thanks_recipient_other?
 
   validates :progress,
             numericality: { only_integer: true, in: 0..100 },
             allow_nil: true,
             if: :future?
+
+  validate :mood_presence_for_organize
+  validate :thanks_recipient_presence_for_thanks
 
   validate :deadline_cannot_be_in_the_past, if: :future?
   validate :milestones_only_for_future
@@ -139,6 +140,20 @@ class Post < ApplicationRecord
     thanks_recipient == 'other'
   end
 
+  def mood_presence_for_organize
+    return unless organize?
+    return if mood.present?
+
+    errors.add(:mood, 'を選択してください')
+  end
+
+  def thanks_recipient_presence_for_thanks
+    return unless thanks?
+    return if thanks_recipient.present?
+
+    errors.add(:thanks_recipient, 'を選択してください')
+  end
+
   private
 
   def assign_public_uuid
@@ -178,6 +193,9 @@ class Post < ApplicationRecord
 
     url_regex = %r{https?://\S+|www\.\S+}
     errors.add(:body, 'にURLが含まれています') if body.match?(url_regex)
+
+    email_regex = /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i
+    errors.add(:body, 'にメールアドレスが含まれています') if body.match?(email_regex)
 
     phone_regex = /0\d{1,4}[-\s]?\d{1,4}[-\s]?\d{4}/
     errors.add(:body, 'に電話番号が含まれています') if body.match?(phone_regex)
