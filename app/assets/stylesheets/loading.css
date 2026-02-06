@@ -287,12 +287,13 @@
   /* === 3択アクションを「コンパクト3枚」レイアウトに === */
   .completion-actions {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
+    grid-template-columns: 1fr;
+    gap: 12px;
     margin-top: 16px;
+    width: 100%;
+    max-width: 340px;
   }
 
-  /* 3枚すべて横並び */
   .completion-actions .action-card {
     width: 100%;
     padding: 10px 6px;

@@ -273,8 +273,30 @@ body.users-mypage_posts {
 }
 .icon-box { font-size:3rem; line-height:1; margin-top:8px; }
 
+box-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
 
-.box-title { font-size:1.8rem; font-weight:700; margin-bottom:1rem; }
+.box-header .icon-box {
+  display: flex;          
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;        
+  line-height: 1;
+}
+
+.box-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  text-align: center;
+  margin: 0;
+}
 .green-box .box-title { color:#15803d; }
 .purple-box .box-title { color:#6b46c1; }
 .pink-box .box-title { color:#c53030; }
@@ -307,7 +329,12 @@ body.users-mypage_posts {
   margin-left: 0;
 }
 
-
+.narrow-summary-box {
+  max-width: 640px;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
 
 .login-button {
   background: linear-gradient(135deg, #a3d4ff, #7fc3ff);
