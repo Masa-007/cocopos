@@ -61,6 +61,8 @@ class User < ApplicationRecord
     end
 
     def ensure_password(user)
+      return if user.encrypted_password.present?
+
       user.password ||= Devise.friendly_token[0, 20]
     end
   end

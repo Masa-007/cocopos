@@ -10,7 +10,7 @@
   </p>
 
   <div class="flex items-center justify-between mt-3">
-    <% if comment.user == current_user || current_user.admin? %>
+    <% if comment.user == current_user || current_user&.admin? %>
       <div class="comment-actions flex gap-2">
         <% if comment.user == current_user %>
           <%= link_to t('comments.buttons.edit', default: '編集'), edit_post_comment_path(@post, comment), class: "edit-btn text-sm text-blue-600 hover:underline" %>

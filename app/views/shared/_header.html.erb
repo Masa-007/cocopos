@@ -25,14 +25,14 @@
       <%= link_to "みんなの投稿一覧", posts_path, class: "nav-button", data: { turbo: false } %>
       <%= link_to "投稿を作成する", new_post_path, class: "nav-button new-post-link" %>
       <% if user_signed_in? %>
-        <%= link_to "マイページ", mypage_path, class: "nav-button" %>
+        <%= link_to "マイページ", mypage_path, class: "nav-button mypage-button" %>
         <%= button_to "ログアウト", destroy_user_session_path,
               method: :delete,
               data: { turbo_confirm: "ログアウトしますか？" },
               class: "logout-button" %>
       <% else %>
         <%= link_to "ログイン", new_user_session_path, class: "login-button" %>
-        <%= link_to "新規登録", new_user_registration_path, class: "nav-button" %>
+        <%= link_to "新規登録", new_user_registration_path, class: "nav-button signup-button" %>
       <% end %>
     </nav>
   </div>
