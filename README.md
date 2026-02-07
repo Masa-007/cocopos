@@ -166,7 +166,7 @@ cocopos は解決よりも「心の整理として安心して書けること」
 ---
 
 ## ER 図（Mermaid）
-
+erDiagram
   users {
     bigint id PK "ユーザーID"
     string name "表示名"
