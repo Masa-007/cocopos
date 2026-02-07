@@ -11,8 +11,8 @@
     <div class="post-detail-card bg-white rounded-3xl shadow-lg overflow-hidden">
 
       <!-- ヘッダー -->
-      <div class="post-header p-6 border-b <%= @post.post_type_color %>">
-        <div class="flex items-center justify-between">
+    <div class="post-header p-5 sm:p-6 border-b <%= @post.post_type_color %>">
+        <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div class="flex items-center gap-3">
             <span class="text-4xl"><%= @post.post_type_icon %></span>
             <div>
@@ -23,8 +23,8 @@
             </div>
           </div>
 
-          <% if user_signed_in? && (@post.user == current_user || current_user.admin?) %>
-            <div class="flex gap-2">
+           <div class="flex flex-wrap gap-2 sm:justify-end">
+            <% if user_signed_in? && (@post.user == current_user || current_user.admin?) %>
               <% if @post.user == current_user %>
                 <%= link_to edit_post_path(@post, from: params[:from]),
                             class: "px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition" do %>
@@ -38,9 +38,11 @@
                             class: "px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition" do %>
                 🗑️ 削除
               <% end %>
-            </div>
-          <% end %>
-        </div>
+                <% else %>
+                  <span class="px-4 py-2 rounded-lg opacity-0 pointer-events-none select-none" aria-hidden="true">✏️ 編集</span>
+                  <span class="px-4 py-2 rounded-lg opacity-0 pointer-events-none select-none" aria-hidden="true">🗑️ 削除</span>
+              <% end %>
+          </div>
 
         <% if @post.comment_allowed %>
           <div class="mt-4">
