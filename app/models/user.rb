@@ -15,14 +15,6 @@ class User < ApplicationRecord
     admin
   end
 
-  def self.from_omniauth(auth)
-    user = find_or_initialize_from_auth(auth)
-    apply_auth_attributes(user, auth)
-    ensure_password(user)
-    user.save
-    user
-  end
-
   def display_name
     name.presence || '匿名ユーザー'
   end
@@ -35,6 +27,15 @@ class User < ApplicationRecord
 
   def ai_remaining_count
     ai_available_today? ? 1 : 0
+  end
+
+  def self.from_omniauth(auth)
+    user = find_or_initialize_from_auth(auth)
+    apply_auth_attributes(user, auth)
+    ensure_password(user)
+
+    user.save
+    user
   end
 
   class << self
