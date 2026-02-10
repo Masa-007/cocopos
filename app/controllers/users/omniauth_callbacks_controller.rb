@@ -20,6 +20,7 @@ module Users
       if @user.persisted?
         set_flash_message(:notice, :success, kind: kind) if is_navigational_format?
         sign_in @user, event: :authentication
+        remember_me(@user)
         redirect_to mypage_path
       else
         session["devise.#{kind.downcase}_data"] = request.env['omniauth.auth'].except('extra')
