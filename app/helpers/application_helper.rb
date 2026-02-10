@@ -6,11 +6,11 @@ module ApplicationHelper
 
     {
       site: 'cocopos',
-      title: '心のポスト',
+      title: '心のポスト(目安箱)',
       reverse: true,
       charset: 'utf-8',
       description: '心の記録を花のように咲かせる。未来宣言箱・心の整理箱・感謝箱で気持ちを残せるアプリです。',
-      keywords: '心のポスト,感情,日記,感謝,未来宣言,整理',
+      keywords: '心の目安箱,感情,日記,感謝,未来宣言,整理',
       canonical: request.original_url,
       separator: '|',
       og: {
