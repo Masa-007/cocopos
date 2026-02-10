@@ -216,14 +216,23 @@ body.users-mypage_posts {
   display:flex; flex-direction:column; justify-content:center;
 }
 
+.mail-slot span {
+  line-height: 1;
+  background: linear-gradient(180deg, #ffb3a4, #ff9a8e);
+  width: 80%;
+  margin: 0 auto 30px;
+  height: 50px;
+  border-radius: 10px;
 
-.mail-slot {
-  background:linear-gradient(180deg,#ffb3a4,#ff9a8e);
-  width:80%; margin:0 auto 30px; height:50px; border-radius:10px;
-  display:flex; align-items:center; justify-content:center;
-  box-shadow:inset 0 2px 6px rgba(0,0,0,.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  box-shadow: inset 0 2px 6px rgba(0,0,0,.15);
+
+  text-decoration: none; /* aタグ対策 */
+  cursor: pointer;       /* 押せることを明示 */
 }
-
 
 @keyframes floating { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-10px);} }
 .floating {
