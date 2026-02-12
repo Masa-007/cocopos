@@ -47,6 +47,8 @@ en:
         password_hint: "Leave blank if you don't want to change it"
         characters_or_more: "characters minimum"
         current_password: "Current password"
+        google_reauth_description: "To change username for a Google account, re-authenticate with Google using the link below."
+        google_reauth_link: "Google users click here"
         current_password_hint: "We need your current password to confirm your changes"
         update: "Update"
         reset_title: "Password reset email"
@@ -64,6 +66,8 @@ en:
       updated: "Your account has been updated successfully."
       updated_but_not_signed_in: "Your account has been updated successfully, but since your password was changed, you need to sign in again."
     sessions:
+      google_reauth_required: "Google users must complete Google re-authentication before changing username."
+      google_reauth_success: "Google re-authentication completed. You can now update your username."
       signed_in: "Signed in successfully."
       signed_out: "Signed out successfully."
       already_signed_out: "Signed out successfully."

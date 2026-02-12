@@ -53,5 +53,7 @@ RSpec.describe 'マイページ記録', type: :request do
     expect(response.body).to include('感謝箱の積み重ね')
     expect(response.body).to include('今月の投稿数')
     expect(response.body).to include('連続投稿日数')
+    expect(response.body).to include('/mypage/records?')
+    expect(response.body).to include('from=mypage_records')
   end
 end

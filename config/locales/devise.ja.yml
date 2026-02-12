@@ -12,6 +12,8 @@ ja:
         current_password: "現在のパスワード"
         current_password_hint: "変更を反映するために入力してください"
         update: "更新する"
+        google_reauth_description: "Googleログインユーザーがユーザー名を変更するには、下記リンクからGoogle再認証を行ってください。"
+        google_reauth_link: "Google認証の方は先にこちら"
         reset_title: "パスワード再設定メール"
         reset_notice: "パスワードを忘れた場合は、再設定用のメールを送信できます。"
         reset_action: "再設定メールを送る"
@@ -28,6 +30,8 @@ ja:
       updated: "アカウント情報を更新しました。"
       update_failed: "入力内容をご確認ください。"
       destroyed: "アカウントを削除しました。"
+      google_reauth_required: "Googleログインユーザーのユーザー名変更には、先にGoogle再認証が必要です。"
+      google_reauth_success: "Google再認証が完了しました。続けてユーザー名を更新してください。"
       new:
         sign_up: "新規登録"
         email: "メールアドレス"

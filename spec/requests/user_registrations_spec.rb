@@ -15,6 +15,16 @@ RSpec.describe 'ユーザー登録', type: :request do
     )
   end
 
+  let(:google_user) do
+    User.create!(
+      name: 'Google User',
+      email: "google_user_#{SecureRandom.hex(4)}@example.com",
+      password: 'password',
+      provider: 'google_oauth2',
+      uid: SecureRandom.uuid
+    )
+  end
+
   it '有効な情報でサインアップできる' do
     expect do
       post user_registration_path, params: {
