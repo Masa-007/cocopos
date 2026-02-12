@@ -3,6 +3,8 @@
 require 'rails_helper'
 
 RSpec.describe '投稿管理', type: :request do
+  include ActiveSupport::Testing::TimeHelpers
+
   let(:owner) do
     User.create!(
       name: 'Owner',
@@ -42,8 +44,13 @@ RSpec.describe '投稿管理', type: :request do
   end
 
   it '非公開投稿の詳細は他ユーザーに閲覧させない' do
-    post_record = Post.create!(user: owner, body: 'private post body', post_type: :future, is_public: false,
-                               deadline: Date.current)
+    post_record = Post.create!(
+      user: owner,
+      body: 'private post body',
+      post_type: :future,
+      is_public: false,
+      deadline: Date.current
+    )
     sign_in other_user
 
     get post_path(post_record)
@@ -156,6 +163,25 @@ RSpec.describe '投稿管理', type: :request do
     expect(response.body).to include('感謝対象を選択してください')
   end
 
+  it 'future投稿が達成済みなら期限超過でも達成済み表示を優先する' do
+    post_record = Post.create!(
+      user: owner,
+      body: 'done future',
+      post_type: :future,
+      is_public: true,
+      progress: 100,
+      deadline: 3.days.from_now.to_date
+    )
+    sign_in owner
+
+    travel_to 5.days.from_now do
+      get post_path(post_record)
+
+      expect(response.body).to include('🎉 <strong>達成済み</strong>')
+      expect(response.body).not_to include('期限から <strong>3日</strong> 経過しています')
+    end
+  end
+
   it 'future投稿で期限日未入力だと理由を表示する' do
     sign_in owner
 
@@ -174,8 +200,13 @@ RSpec.describe '投稿管理', type: :request do
   end
 
   it '編集権限のないユーザーはupdateできない' do
-    post_record = Post.create!(user: owner, body: 'edit target', post_type: :future, is_public: true,
-                               deadline: Date.current)
+    post_record = Post.create!(
+      user: owner,
+      body: 'edit target',
+      post_type: :future,
+      is_public: true,
+      deadline: Date.current
+    )
     sign_in other_user
 
     patch post_path(post_record), params: {
@@ -189,8 +220,13 @@ RSpec.describe '投稿管理', type: :request do
   end
 
   it '投稿者は自身の投稿を削除できる' do
-    post_record = Post.create!(user: owner, body: 'delete target', post_type: :future, is_public: true,
-                               deadline: Date.current)
+    post_record = Post.create!(
+      user: owner,
+      body: 'delete target',
+      post_type: :future,
+      is_public: true,
+      deadline: Date.current
+    )
     sign_in owner
 
     delete post_path(post_record)

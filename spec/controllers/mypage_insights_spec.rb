@@ -7,8 +7,8 @@ RSpec.describe MypageInsights do
     Class.new do
       include MypageInsights
 
-      def expose(method_name, *args)
-        send(method_name, *args)
+      def expose(method_name, *args, **kwargs)
+        send(method_name, *args, **kwargs)
       end
     end
   end
@@ -110,6 +110,22 @@ RSpec.describe MypageInsights do
       result = insights.expose(:build_future_insight, [])
 
       expect(result).to include('未来宣言箱の投稿がありません')
+    end
+
+    it '未達成フィルターで未達が0件かつ達成済みがあると達成メッセージを返す' do
+      all_posts = [Post.new(progress: 100), Post.new(progress: 100)]
+
+      result = insights.expose(
+        :build_future_insight,
+        [],
+        all_future_posts: all_posts,
+        todo_filter: 'unachieved'
+      )
+
+      expect(result).to include('今月は')
+      expect(result).to include('目標を達成しています。')
+      expect(result).to include('現在未達の目標はありません。')
+      expect(result).to include('ぜひ新しい目標を立ててみましょう。')
     end
 
     it '期限が近く進捗が低い投稿があると期限メッセージを返す' do

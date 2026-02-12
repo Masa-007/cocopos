@@ -1,8 +1,8 @@
 <!-- 🌱 未来宣言箱（TODO / 進捗 / 期限） -->
 <div class="bg-white rounded-3xl border-2 border-green-200 shadow-md p-6 mb-10 narrow-summary-box">
   <!-- ヘッダー -->
-  <div class="flex flex-col items-center text-left gap-2 mb-4">
-    <h2 class="text-xl font-bold text-gray-800">
+  <div class="flex flex-col items-center text-left mb-1">
+    <h2 class="text-xl font-bold text-gray-500">
       🌱 未来宣言箱のTODOメモ
     </h2>
     <p class="text-sm text-gray-500">
@@ -11,10 +11,11 @@
   </div>
 
   <!-- 補足テキスト -->
-  <p class="text-sm text-gray-500 text-center mb-5">
+  <p class="text-sm text-gray-500 text-center mb-2 whitespace-pre-line leading-relaxed">
     <%= future_insight %>
   </p>
 
+  
   <% base_params = { year: @year, month: @month, season: @season } %>
   <% filter_path = local_assigns.fetch(:filter_path, method(:mypage_path)) %>
 
@@ -79,8 +80,13 @@
       <% end %>
     </div>
   <% else %>
-    <p class="text-sm text-gray-500 text-left">
-      この月には未来宣言箱の投稿がありません。
+    <p class="text-sm text-gray-500 text-center">
+      <% if @todo_filter == 'unachieved' && @achieved_future_count.to_i.positive? %>
+        未達成のTODOはありません。
+      <% else %>
+        この月には未来宣言箱の投稿がありません。
+      <% end %>
     </p>
   <% end %>
 </div>
+

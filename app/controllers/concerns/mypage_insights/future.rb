@@ -4,8 +4,15 @@ module MypageInsights
   module Future
     private
 
-    def build_future_insight(future_posts)
-      return future_insight_empty if future_posts.blank?
+    def build_future_insight(future_posts, all_future_posts: future_posts, todo_filter: 'all')
+      achieved_count = achieved_posts_count(all_future_posts)
+
+      if future_posts.blank?
+        return future_insight_all_achieved(achieved_count) if todo_filter == 'unachieved' && achieved_count.positive?
+
+        return future_insight_empty
+      end
+
       return future_insight_deadline if urgent_low_progress?(future_posts)
 
       avg_progress = average_progress(future_posts)
@@ -42,6 +49,16 @@ module MypageInsights
 
     def future_insight_deadline
       '期限が近いTODOがあるようです。無理のない範囲で一歩進めてみましょう。'
+    end
+
+    def future_insight_all_achieved(achieved_count)
+      "今月は#{achieved_count}件の目標を達成しています。" \
+        "現在未達の目標はありません。\n" \
+        'ぜひ新しい目標を立ててみましょう。'
+    end
+
+    def achieved_posts_count(future_posts)
+      future_posts.count { |post| post.progress.to_i == 100 }
     end
   end
 end

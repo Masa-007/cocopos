@@ -1,10 +1,10 @@
 <!-- 🌈 気分メーター（カレンダーと同期） -->
-<div class="mypage-panel bg-white rounded-3xl border-2 border-purple-200 shadow-md p-5 mb-8 narrow-summary-box">
+<div class="mypage-panel bg-white rounded-3xl border-2 border-purple-200 shadow-md p-5 mb-8 narrow-summary-box text-center">
   <h2 class="text-lg font-bold mb-1 text-gray-800">
     🌈 あなたの気分メーター（心の整理箱）
   </h2>
 
-  <p class="text-sm text-gray-500 mb-2">
+  <p class="text-sm text-gray-500 mb-2 whitespace-pre-line">
     <%= mood_insight %>
   </p>
 
@@ -17,7 +17,7 @@
       data-mood-chart-data-value="<%= mood_chart_data.to_json %>">
     </canvas>
   <% else %>
-    <p class="text-sm text-gray-500">
+    <p class="text-sm text-gray-500 mt-4">
       この月には心の整理箱の投稿がありません。
     </p>
   <% end %>

@@ -13,9 +13,10 @@
 
     <div class="mx-auto mb-6 flex w-full max-w-2xl items-center justify-between">
       <%= link_to "←",
-        mypage_records_path(preserved.merge(year: prev_month.year, month: prev_month.month)),
-        class: "month-nav text-2xl font-bold text-gray-600 hover:text-gray-800 transition-colors duration-200",
-        title: "先月へ" %>
+            mypage_records_path(preserved.merge(year: prev_month.year, month: prev_month.month)),
+            class: "month-nav text-2xl font-bold text-gray-600 hover:text-gray-800 transition-colors duration-200",
+            title: "先月へ" %>
+
       <p class="text-2xl font-bold text-gray-600 tracking-wide">
         <%= "#{@year}年 #{@month}月" %>
       </p>
@@ -25,24 +26,23 @@
           <span class="month-nav text-2xl font-bold text-gray-300" title="翌月へ">→</span>
         <% else %>
           <%= link_to "→",
-            mypage_records_path(preserved.merge(year: next_month.year, month: next_month.month)),
-            class: "month-nav text-2xl font-bold text-gray-600 hover:text-gray-800 transition-colors duration-200",
-            title: "翌月へ" %>
+                mypage_records_path(preserved.merge(year: next_month.year, month: next_month.month)),
+                class: "month-nav text-2xl font-bold text-gray-600 hover:text-gray-800 transition-colors duration-200",
+                title: "翌月へ" %>
         <% end %>
-
       </div>
     </div>
 
-    <div class="mx-auto mb-10 grid w-full max-w-2xl grid-cols-1 gap-3 text-gray-800 md:grid-cols-2">
-      <div class="rounded-2xl bg-white px-4 py-3 shadow-md">
-        <p class="text-xs font-semibold text-gray-500">今月の投稿数</p>
-        <p class="mt-1 text-xl font-bold text-gray-800"><%= @monthly_post_count %> 件</p>
-      </div>
+       <div class="monthly-stats">
+        <div class="monthly-stat-card">
+        <p class="monthly-stat-label">今月の投稿数</p>
+        <p class="monthly-stat-value"><%= @monthly_post_count %> 件</p>
+       </div>
 
-      <div class="rounded-2xl bg-white px-4 py-3 shadow-md">
-        <p class="text-xs font-semibold text-gray-500">連続投稿日数</p>
-        <p class="mt-1 text-xl font-bold text-gray-800"><%= @monthly_post_streak %> 日</p>
-      </div>
+       <div class="monthly-stat-card">
+        <p class="monthly-stat-label">連続投稿日数</p>
+        <p class="monthly-stat-value"><%= @monthly_post_streak %> 日</p>
+       </div>
     </div>
 
     <%= render "users/future_posts_summary",
@@ -60,3 +60,4 @@
                thanks_insight: @thanks_insight %>
   </div>
 </main>
+
