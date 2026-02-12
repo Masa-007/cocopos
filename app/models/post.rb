@@ -192,9 +192,9 @@ class Post < ApplicationRecord
 
   def milestones_limit
     active_count = milestones.reject(&:marked_for_destruction?).size
-    return if active_count <= 10
+    return if active_count <= 15
 
-    errors.add(:base, 'マイルストーンは最大10個までです')
+    errors.add(:base, 'マイルストーンは最大15個までです')
   end
 
   def body_does_not_contain_ng_words
