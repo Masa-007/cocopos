@@ -9,7 +9,7 @@ class User < ApplicationRecord
   has_many :comments, dependent: :destroy
   has_many :flowers, dependent: :destroy
 
-  validates :name, presence: true, length: { maximum: 50 }, uniqueness: { case_sensitive: true }
+  validates :name, presence: true, length: { maximum: 50 }, uniqueness: { case_sensitive: true } # rubocop:disable Rails/UniqueValidationWithoutIndex
 
   def admin?
     admin
