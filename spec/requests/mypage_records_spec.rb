@@ -18,7 +18,8 @@ RSpec.describe 'マイページ記録', type: :request do
       body: 'future body',
       post_type: :future,
       progress: 20,
-      is_public: true
+      is_public: true,
+      deadline: Date.current
     )
 
     Post.create!(
@@ -66,13 +67,19 @@ RSpec.describe 'マイページ記録', type: :request do
       post_type: :future,
       progress: 100,
       is_public: true,
+      deadline: Date.current,
       created_at: Time.zone.now
     )
 
     get mypage_records_path, params: { todo_filter: 'unachieved' }
 
     expect(response).to have_http_status(:ok)
-    expect(response.body).to include('今月は達成済みが1件です。未達の目標がないので、ぜひ新たな目標を立ててみましょう。')
+
+    # 新しい達成メッセージ（改行や表現変更に強いように分割）
+    expect(response.body).to include('今月は1件の目標を達成しています。')
+    expect(response.body).to include('現在未達の目標はありません。')
+    expect(response.body).to include('ぜひ新しい目標を立ててみましょう。')
+
     expect(response.body).to include('未達成のTODOはありません。')
     expect(response.body).not_to include('この月には未来宣言箱の投稿がありません。')
   end

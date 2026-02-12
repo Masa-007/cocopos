@@ -53,8 +53,8 @@ module MypageInsights
 
     def future_insight_all_achieved(achieved_count)
       "今月は#{achieved_count}件の目標を達成しています。" \
-      "現在未達の目標はありません。\n" \
-      "ぜひ新しい目標を立ててみましょう。"
+        "現在未達の目標はありません。\n" \
+        'ぜひ新しい目標を立ててみましょう。'
     end
 
     def achieved_posts_count(future_posts)
