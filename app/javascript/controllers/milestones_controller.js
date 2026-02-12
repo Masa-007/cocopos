@@ -8,7 +8,7 @@ export default class extends Controller {
   }
 
   add() {
-    if (this.itemTargets.length >= 10) return;
+    if (this.itemTargets.length >= 15) return;
 
     const uniqueId = Date.now().toString();
     const content = this.templateTarget.content.cloneNode(true);
@@ -29,7 +29,7 @@ export default class extends Controller {
 
   updateCount() {
     if (this.hasCountTarget) {
-      this.countTarget.textContent = `${this.itemTargets.length} / 10`;
+      this.countTarget.textContent = `${this.itemTargets.length} / 15`;
     }
   }
 }

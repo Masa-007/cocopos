@@ -77,12 +77,12 @@ RSpec.describe Post, type: :model do
       expect(post.errors[:base]).to include('小目標は未来宣言箱のみ設定できます')
     end
 
-    it 'future投稿の小目標は11件以上設定できない' do
+    it 'future投稿の小目標は16件以上設定できない' do
       post = described_class.new(user:, body: '未来', post_type: :future)
-      11.times { |i| post.milestones.build(title: "目標#{i}") }
+      16.times { |i| post.milestones.build(title: "目標#{i}") }
 
       expect(post).not_to be_valid
-      expect(post.errors[:base]).to include('マイルストーンは最大10個までです')
+      expect(post.errors[:base]).to include('マイルストーンは最大15個までです')
     end
   end
 
