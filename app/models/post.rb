@@ -116,7 +116,23 @@ class Post < ApplicationRecord
   end
 
   def flowered_by?(user)
-    flowers.exists?(user_id: user.id)
+    return false unless user
+
+    if flowers.loaded?
+      flowers.any? { |flower| flower.user_id == user.id }
+    else
+      flowers.exists?(user_id: user.id)
+    end
+  end
+
+  def commented_by?(user)
+    return false unless user
+
+    if comments.loaded?
+      comments.any? { |comment| comment.user_id == user.id }
+    else
+      comments.exists?(user_id: user.id)
+    end
   end
   before_validation :assign_public_uuid, on: :create
   before_save :assign_mood_score

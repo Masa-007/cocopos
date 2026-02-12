@@ -39,7 +39,13 @@ class Comment < ApplicationRecord
 
   # 指定ユーザーが花をつけたかどうか
   def flowered_by?(user)
-    flowers.exists?(user_id: user.id)
+    return false unless user
+
+    if flowers.loaded?
+      flowers.any? { |flower| flower.user_id == user.id }
+    else
+      flowers.exists?(user_id: user.id)
+    end
   end
 
   private
