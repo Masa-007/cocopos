@@ -156,6 +156,24 @@ RSpec.describe '投稿管理', type: :request do
     expect(response.body).to include('感謝対象を選択してください')
   end
 
+
+  it 'future投稿が達成済みなら期限超過でも達成済み表示を優先する' do
+    post_record = Post.create!(
+      user: owner,
+      body: 'done future',
+      post_type: :future,
+      is_public: true,
+      progress: 100,
+      deadline: 3.days.ago.to_date
+    )
+    sign_in owner
+
+    get post_path(post_record)
+
+    expect(response.body).to include('🎉 <strong>達成済み</strong>')
+    expect(response.body).not_to include('期限から <strong>3日</strong> 経過しています')
+  end
+  
   it 'future投稿で期限日未入力だと理由を表示する' do
     sign_in owner
 

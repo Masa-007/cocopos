@@ -66,7 +66,12 @@ class UsersController < ApplicationController
     base_posts = future_posts_in_month
     @todo_filter = todo_filter_param # 初期は unachieved
     @future_posts = apply_todo_filter(base_posts)
-    @future_insight = build_future_insight(@future_posts)
+    @achieved_future_count = base_posts.count { |post| post.progress.to_i == 100 }
+    @future_insight = build_future_insight(
+      @future_posts,
+      all_future_posts: base_posts,
+      todo_filter: @todo_filter
+    )
   end
 
   def future_posts_in_month

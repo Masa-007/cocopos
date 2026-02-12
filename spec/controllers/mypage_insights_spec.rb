@@ -112,6 +112,20 @@ RSpec.describe MypageInsights do
       expect(result).to include('未来宣言箱の投稿がありません')
     end
 
+
+    it '未達成フィルターで未達が0件かつ達成済みがあると達成メッセージを返す' do
+      all_posts = [Post.new(progress: 100), Post.new(progress: 100)]
+
+      result = insights.expose(
+        :build_future_insight,
+        [],
+        all_future_posts: all_posts,
+        todo_filter: 'unachieved'
+      )
+
+      expect(result).to include('今月は達成済みが2件です。未達の目標がないので、ぜひ新たな目標を立ててみましょう。')
+    end
+
     it '期限が近く進捗が低い投稿があると期限メッセージを返す' do
       posts = [Post.new(deadline: Date.current + 2.days, progress: 10)]
 
