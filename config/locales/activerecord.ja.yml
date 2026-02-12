@@ -30,22 +30,30 @@ ja:
       comment:
         body: "コメント内容"
 
-      milestones:
+      milestone:
         title: "マイルストーンタイトル"
 
     errors:
+      messages:
+        record_invalid: "%{errors}"
+
       models:
         user:
           attributes:
+            name:
+              blank: "を入力してください"
+              too_long: "は%{count}文字以内で入力してください"
+              taken: "はすでに使われています。別のユーザー名にしてください"
             email:
               blank: "を入力してください"
+              taken: "はすでに登録されています"
+              invalid: "の形式が正しくありません"
             password:
               blank: "を入力してください"
               too_short: "は%{count}文字以上で入力してください"
             password_confirmation:
               confirmation: "がパスワードと一致しません"
 
-        # Postだけ「選択してください」に寄せたい項目を上書き
         post:
           attributes:
             post_type:
@@ -69,8 +77,9 @@ ja:
     messages:
       not_saved: "保存できませんでした。"
       blank: "を入力してください"
-      too_short: "%{count}文字以上で入力してください"
-      invalid: "は不正な値です"
+      too_short: "は%{count}文字以上で入力してください"
+      too_long: "は%{count}文字以内で入力してください"
+      invalid: "は正しくありません"
       taken: "はすでに存在します"
       confirmation: "が一致しません"
 
