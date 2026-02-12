@@ -6,18 +6,17 @@ Rails.application.routes.draw do
     omniauth_callbacks: 'users/omniauth_callbacks'
   }
 
+  devise_scope :user do
+    get 'users/auth/google_oauth2/reauth', to: 'users/registrations#google_reauth', as: :google_reauth_user
+  end
+
   root 'static_pages#top'
   get 'privacy_policy', to: 'static_pages#privacy_policy'
   get 'terms', to: 'static_pages#terms', as: :terms
 
-  # 投稿（public_uuid）配下に、コメントと花をまとめる
   resources :posts, param: :public_uuid do
     resources :comments, only: %i[create destroy edit update]
-
-    # 投稿への花
     resource :flower, only: %i[create destroy], controller: :flowers
-
-    # コメントへの花（コメントも UUID で扱うなら、ここも param を揃えるのが安全）
     resources :comments, param: :public_uuid, only: [] do
       resource :flower, only: %i[create destroy], controller: :flowers
     end

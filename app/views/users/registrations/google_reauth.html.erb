@@ -1,0 +1,13 @@
+<!doctype html>
+<html>
+  <body>
+    <form id="reauth-form" action="/users/auth/google_oauth2" method="post">
+      <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+      <input type="hidden" name="prompt" value="select_account">
+    </form>
+
+    <script>
+      document.getElementById("reauth-form").submit();
+    </script>
+  </body>
+</html>

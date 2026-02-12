@@ -7,7 +7,7 @@ Devise.setup do |config|
   config.secret_key = ENV.fetch('DEVISE_SECRET_KEY', nil) if Rails.env.production?
 
   # 📮 メール送信設定（最低限）
-  config.mailer_sender = ENV.fetch('MAILER_SENDER', 'ENV.fetch("MAIL-FROM")')
+  config.mailer_sender = ENV.fetch('MAIL_FROM', 'no-reply@cocopos.net')
   config.paranoid = true
 
   # ORM設定（標準）
