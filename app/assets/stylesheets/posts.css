@@ -275,6 +275,20 @@
   line-height: 1;
 }
 
+
+.interaction-inactive {
+  background: linear-gradient(180deg, rgba(245, 245, 245, 0.95) 0%, rgba(229, 231, 235, 0.95) 100%);
+  color: #6b7280;
+  border-color: rgba(107, 114, 128, 0.2);
+}
+
+.interaction-active {
+  background: linear-gradient(180deg, rgba(206, 244, 217, 0.95) 0%, rgba(186, 247, 208, 0.95) 100%);
+  color: #166534;
+  border-color: rgba(21, 128, 61, 0.18);
+}
+
+
 /* ホバー（コメントは青寄せ、花は緑寄せで差を作る） */
 .comment-btn:hover {
   background: linear-gradient(

@@ -1,4 +1,5 @@
 <% if post.is_public? %>
+  <% comment_interacted = user_signed_in? && post.commented_by?(current_user) %>
   <div class="flex items-center gap-3">
     <div id="flower_btn_post_<%= post.id %>">
       <%= render "flowers/button", flowerable: post %>
@@ -7,8 +8,8 @@
     <% if post.comment_allowed? %>
       <%= link_to post_path(post, anchor: "comment-form", from: from),
                   data: { turbo: false },
-                  class: "comment-btn" do %>
-        💬 <span><%= post.comments.count %></span>
+                 class: "comment-btn #{comment_interacted ? 'interaction-active' : 'interaction-inactive'}" do %>
+        💬 <span><%= post.comments.size %></span>
       <% end %>
     <% end %>
   </div>

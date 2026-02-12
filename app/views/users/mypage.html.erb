@@ -1,7 +1,6 @@
 <main class="flex-grow pt-20 pb-16 relative z-10 font-['Zen_Maru_Gothic']">
   <div id="season-wrapper" class="<%= @season %> relative">
 
-    <!-- 花びらアニメーション -->
     <div class="petal-layer pointer-events-none absolute inset-0 overflow-hidden">
       <% [10, 25, 40, 60, 80].each_with_index do |left, i| %>
         <div class="petal" style="left:<%= left %>%; animation-delay:<%= i %>s;"></div>
@@ -9,41 +8,26 @@
     </div>
 
     <div class="container mx-auto max-w-6xl px-6 text-center relative z-10">
-
-      <!-- タイトル -->
       <h1 class="mypage-title mb-2">
         <%= { "spring" => "🌸", "summer" => "🌻", "autumn" => "🍁", "winter" => "❄️" }[@season] %> マイページ
       </h1>
       <p class="mypage-subtitle mb-8">あなたの心の記録を花のように咲かせよう</p>
 
-
-      <!-- 季節切替ボタン -->
       <div class="text-center mb-10">
         <%= link_to "次の季節のデザインを見てみる 🌈",
           mypage_path(season: next_season(@season), year: @year, month: @month),
-          class: "inline-block px-5 py-2 text-sm text-white font-semibold rounded-full 
-                  bg-gradient-to-r from-pink-500 via-orange-400 to-yellow-400 
+          class: "inline-block px-5 py-2 text-sm text-white font-semibold rounded-full
+                  bg-gradient-to-r from-pink-500 via-orange-400 to-yellow-400
                   shadow-md hover:scale-105 hover:brightness-110 transition-all duration-300" %>
       </div>
 
-      <!-- ✔ アクションボタン -->
-      <div class="mypage-actions grid md:grid-cols-3 gap-6 mb-12">
-
+      <div class="mypage-actions grid grid-cols-2 gap-4 mb-12 md:grid-cols-2 md:gap-6">
         <%= link_to new_post_path, class: "action-btn green block" do %>
           <div class="action-content flex flex-col items-center text-center">
             <div class="action-icon">✏️</div>
             <h3>投稿を作成する</h3>
             <p>新しい気持ちを投函しよう</p>
             <span>今すぐ投函 →</span>
-          </div>
-        <% end %>
-
-        <%= link_to mypage_posts_path, class: "action-btn blue block" do %>
-          <div class="action-content flex flex-col items-center text-center">
-            <div class="action-icon">📖</div>
-            <h3>投稿を振り返る</h3>
-            <p>過去の記録を見てみよう</p>
-            <span>振り返る →</span>
           </div>
         <% end %>
 
@@ -56,23 +40,27 @@
           </div>
         <% end %>
 
+        <%= link_to mypage_posts_path, class: "action-btn blue block" do %>
+          <div class="action-content flex flex-col items-center text-center">
+            <div class="action-icon">📖</div>
+            <h3>自分の投稿</h3>
+            <p>これまでに書いた投稿を見る</p>
+            <span>振り返る →</span>
+          </div>
+        <% end %>
+
+        <%= link_to mypage_records_path(year: @year, month: @month, season: @season),
+                    class: "action-btn blue block" do %>
+          <div class="action-content flex flex-col items-center text-center">
+            <div class="action-icon">🗂️</div>
+            <h3>これまでの記録</h3>
+            <p>TODOや気分の変化を見る</p>
+            <span>記録を見る →</span>
+          </div>
+        <% end %>
       </div>
 
-      <div class="mx-auto mb-10 flex w-full max-w-3xl flex-row gap-4 text-gray-800">
-          <div class="flex-1 rounded-2xl bg-white px-6 py-4 shadow-md">
-            <p class="text-sm font-semibold text-gray-500">今月の投稿数</p>
-            <p class="mt-2 text-2xl font-bold text-gray-800"><%= @monthly_post_count %> 件</p>
-          </div>
-          <div class="flex-1 rounded-2xl bg-white px-6 py-4 shadow-md">
-            <p class="text-sm font-semibold text-gray-500">連続投稿日数</p>
-            <p class="mt-2 text-2xl font-bold text-gray-800"><%= @monthly_post_streak %> 日</p>
-          </div>
-      </div>
-
-      <!-- 🎯 カレンダー＋気分メーター Turbo Frame 全体 -->
       <turbo-frame id="mypage-frame">
-
-        <!-- 📅 投稿カレンダー（カレンダー内に月送り矢印あり） -->
         <div class="flower-frame mx-auto my-10">
           <%= render "calendar",
                 year: @year,
@@ -82,21 +70,7 @@
                 season: @season,
                 posts_by_date: @posts_by_date %>
         </div>
-
-        <%= render "users/future_posts_summary",
-                   future_posts: @future_posts,
-                   future_insight: @future_insight %>
-
-        <%= render "users/mood_meter", mood_insight: @mood_insight, mood_chart_data: @mood_chart_data %>
-
-        <%= render "users/thanks_points",
-                   thanks_points: @thanks_points,
-                   thanks_recipients_summary: @thanks_recipients_summary,
-                   thanks_insight: @thanks_insight %>
-
-
       </turbo-frame>
-
     </div>
   </div>
 </main>

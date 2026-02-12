@@ -1,4 +1,4 @@
-<% flowered = user_signed_in? && Flower.exists?(user: current_user, flowerable: flowerable) %>
+<% flowered = user_signed_in? && flowerable.flowered_by?(current_user) %>
 
 <% url =
      if flowerable.is_a?(Comment)
@@ -13,7 +13,7 @@
               class: "flower-form" do %>
 
   <button type="submit"
-          class="flower-btn <%= flowered ? 'is-flowered' : 'is-unflowered' %>">
+          class="flower-btn <%= flowered ? 'interaction-active is-flowered' : 'interaction-inactive is-unflowered' %>">
     <span class="flower-icon"><%= flowered ? "🌿" : "🌱" %></span>
     <span class="flower-count"><%= flowerable.flowers.count %></span>
   </button>

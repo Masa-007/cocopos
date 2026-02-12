@@ -11,14 +11,23 @@ class UsersController < ApplicationController
     today = Time.zone.today
 
     prepare_calendar(today)
-    prepare_mood_section
-    prepare_future_section
-    prepare_thanks_section
   end
 
   def mypage_posts
     @user = current_user
     @posts = filtered_posts.page(params[:page])
+    prepare_season_info
+  end
+
+  def mypage_records
+    @user = current_user
+    today = Time.zone.today
+
+    prepare_calendar_date(today)
+    prepare_future_section
+    prepare_mood_section
+    prepare_thanks_section
+    load_month_posts_for_calendar
     prepare_season_info
   end
 

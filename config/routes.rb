@@ -25,6 +25,7 @@ Rails.application.routes.draw do
 
   get 'mypage', to: 'users#mypage', as: :mypage
   get 'mypage/posts', to: 'users#mypage_posts', as: :mypage_posts
+  get 'mypage/records', to: 'users#mypage_records', as: :mypage_records
 
   post '/ai/generate_text', to: 'ai#generate_text'
 end
