@@ -15,7 +15,7 @@ class UsersController < ApplicationController
 
   def mypage_posts
     @user = current_user
-    @posts = filtered_posts.page(params[:page])
+    @posts = filtered_posts.page(params[:page]).per(posts_per_page)
     prepare_season_info
   end
 
@@ -203,6 +203,14 @@ class UsersController < ApplicationController
 
     @monthly_post_count = posts.size
     @monthly_post_streak = calculate_monthly_post_streak(@posts_by_date)
+  end
+
+  def posts_per_page
+    mobile_device? ? 10 : 9
+  end
+
+  def mobile_device?
+    request.user_agent.to_s.match?(/Mobile|Android|iPhone/i)
   end
 
   def calculate_monthly_post_streak(posts_by_date)
