@@ -4,7 +4,7 @@
       <%= link_to "← あなたの投稿一覧に戻る", mypage_posts_path,
                   class: "text-blue-600 hover:underline inline-block mb-6" %>
     <% else %>
-      <%= link_to "← 投稿一覧に戻る", posts_path,
+      <%= link_to "← みんなの投稿一覧に戻る", posts_path,
                   class: "text-blue-600 hover:underline inline-block mb-6" %>
     <% end %>
 
@@ -74,7 +74,7 @@
       <!-- 本文 -->
       <div class="post-body p-8">
         <div class="post-body-content max-w-none">
-          <%= simple_format(h(@post.body.to_s)) %>
+          <%= simple_format(@post.body.to_s) %>
         </div>
       </div>
 
