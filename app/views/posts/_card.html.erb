@@ -1,5 +1,4 @@
 <div class="post-card bg-white rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition">
-
   <%= link_to post_path(post, from: from),
               data: { turbo: false },
               class: "block no-underline text-gray-800" do %>
@@ -33,11 +32,11 @@
         <% end %>
       </span>
 
-        <% if post.thanks? && post.thanks_recipient_tag.present? %>
-          <span class="inline-flex items-center gap-1 text-sm px-1.5 py-0.5 bg-pink-50 text-pink-700 rounded-md">
-            <%= post.thanks_recipient_tag %>
-          </span>
-        <% end %>
+      <% if post.thanks? && post.thanks_recipient_tag.present? %>
+        <span class="inline-flex items-center gap-1 text-sm px-1.5 py-0.5 bg-pink-50 text-pink-700 rounded-md">
+          <%= post.thanks_recipient_tag %>
+        </span>
+      <% end %>
 
       <span class="text-sm text-gray-500">
         <%= l post.created_at, format: :short %>
@@ -47,12 +46,11 @@
     <!-- 本文 -->
     <div class="post-card-body">
       <% if post.title.present? %>
-         <h3 class="post-title"><%= h(post.title) %></h3>
+        <h3 class="post-title"><%= h(post.title) %></h3>
       <% end %>
 
-      <p class="text-gray-700 leading-relaxed">
-         <p class="post-content">
-           <%= truncate(strip_tags(post.body.to_s), length: 100) %>
+      <p class="post-content text-gray-700 leading-relaxed">
+        <%= h(truncate(strip_tags(post.body.to_s), length: 100, escape: false)) %>
       </p>
     </div>
   <% end %>
@@ -79,6 +77,4 @@
 
     <%= render "posts/card_actions", post: post, from: from %>
   </div>
-
 </div>
-
