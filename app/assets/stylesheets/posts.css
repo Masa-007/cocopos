@@ -159,29 +159,25 @@
   line-height: 1.4;
 }
 
-/* 本文抜粋 */
 .post-content {
   color: #4b3a2a;
-  line-height: 1.8;
   font-size: 15px;
+  line-height: 1.8;
   box-sizing: border-box;
-  min-height: calc(1.8em * 3 );
-  max-height: calc(1.8em * 3 + 15px);
-  height: calc(1.8em * 3 + 20px);
+
+  padding: 8px 10px;
+  background: rgba(255, 255, 255, 0.35);
+  border-radius: 10px;
 
   word-wrap: break-word;
 
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
-
   overflow: hidden;
-  text-overflow: ellipsis;
 
-  /* 罫線の上に読みやすく */
-  background: rgba(255, 255, 255, 0.35);
-  border-radius: 10px;
-  padding: 8px 10px;
+  /* 3行 + padding上下(16px) + 欠け防止 */
+  height: calc(1.8em * 3 + 16px + 0.2em);
 }
 
 /* フッター */
