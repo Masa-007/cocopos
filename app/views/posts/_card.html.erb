@@ -32,9 +32,9 @@
         <% end %>
       </span>
 
-      <% if post.thanks? && post.thanks_recipient_tag.present? %>
+      <% if post.thanks? && post.thanks_recipient_list_tag.present? %>
         <span class="inline-flex items-center gap-1 text-sm px-1.5 py-0.5 bg-pink-50 text-pink-700 rounded-md">
-          <%= post.thanks_recipient_tag %>
+          <%= post.thanks_recipient_list_tag %>
         </span>
       <% end %>
 

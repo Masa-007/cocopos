@@ -158,7 +158,15 @@ class PostsController < ApplicationController
 
   # ページネーション
   def paginate_posts(posts)
-    posts.page(params[:page]).per(10)
+    posts.page(params[:page]).per(posts_per_page)
+  end
+
+  def posts_per_page
+    mobile_device? ? 10 : 9
+  end
+
+  def mobile_device?
+    request.user_agent.to_s.match?(/Mobile|Android|iPhone/i)
   end
 
   # 非公開ならコメント不可

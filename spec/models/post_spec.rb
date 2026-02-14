@@ -137,6 +137,18 @@ RSpec.describe Post, type: :model do
       expect(post.thanks_recipient_tag).to eq('#その他')
     end
 
+    it '一覧表示ではthanks投稿でその他を選択した場合に簡略タグを返す' do
+      post = described_class.new(
+        user:,
+        body: 'ありがとう',
+        post_type: :thanks,
+        thanks_recipient: :other,
+        thanks_recipient_other: '会社の先輩'
+      )
+
+      expect(post.thanks_recipient_list_tag).to eq('#その他')
+    end
+
     it 'thanks投稿以外はthanks_recipient_tagがnilになる' do
       post = described_class.new(user:, body: '本文', post_type: :future)
 

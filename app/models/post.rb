@@ -86,6 +86,16 @@ class Post < ApplicationRecord
     POST_TYPE_INFO[post_type.to_sym][:color]
   end
 
+  def thanks_recipient_list_tag
+    return unless thanks?
+    return unless thanks_recipient
+
+    label = THANKS_RECIPIENTS[thanks_recipient.to_sym]
+    return "##{label}" if thanks_recipient_other?
+
+    thanks_recipient_tag
+  end
+
   def thanks_recipient_tag
     return unless thanks?
     return unless thanks_recipient
