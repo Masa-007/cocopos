@@ -26,6 +26,39 @@ body.users-mypage_posts {
   background: linear-gradient(135deg, #f4f7e2 0%, #ffffff 100%);
 }
 
+
+.records-page {
+  position: relative;
+  overflow: hidden;
+  background-color: #fff1f8;
+  background-image:
+    radial-gradient(circle at 8% 18%, rgba(255, 255, 255, 0.9) 0 7%, transparent 32%),
+    radial-gradient(circle at 88% 12%, rgba(255, 210, 236, 0.9) 0 11%, transparent 38%),
+    radial-gradient(circle at 15% 88%, rgba(221, 214, 254, 0.72) 0 12%, transparent 38%),
+    radial-gradient(circle at 90% 82%, rgba(186, 230, 253, 0.68) 0 12%, transparent 37%),
+    linear-gradient(145deg, #ffe0f1 0%, #ffd6ec 18%, #f5d0fe 38%, #ddd6fe 55%, #bfdbfe 72%, #fef3c7 88%, #ffd9ec 100%);
+  background-attachment: fixed;
+}
+
+.records-page::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.5;
+  background-image:
+    radial-gradient(circle at 20% 26%, rgba(255, 255, 255, 0.72) 0 1.2px, transparent 2px),
+    radial-gradient(circle at 72% 28%, rgba(255, 255, 255, 0.72) 0 1.2px, transparent 2px),
+    radial-gradient(circle at 38% 70%, rgba(255, 255, 255, 0.62) 0 1px, transparent 2px),
+    radial-gradient(circle at 84% 68%, rgba(255, 255, 255, 0.65) 0 1px, transparent 2px);
+  background-size: 180px 180px;
+}
+
+.records-page > .container {
+  position: relative;
+  z-index: 1;
+}
+
 .wooden-header {
   background: linear-gradient(135deg, #ffd6cc 0%, #ffb3a4 100%);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);

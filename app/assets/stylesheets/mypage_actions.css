@@ -107,7 +107,6 @@ body.winter .mypage-subtitle { color: #1d4ed8; }
   transform: scale(1.1) rotate(3deg);
 }
 
-
 .action-btn.green {
   background: linear-gradient(135deg, #f0fdf4, #dcfce7);
 }
@@ -140,6 +139,17 @@ body.winter .mypage-subtitle { color: #1d4ed8; }
   background: linear-gradient(135deg, #9ca3af, #6b7280);
 }
 
+.action-btn.records {
+  background: linear-gradient(135deg, #ffe4f3 0%, #ffd1f7 18%, #e4d4ff 36%, #d2e7ff 54%, #d4ffe9 72%, #fff0b3 88%, #ffd0e8 100%);
+}
+
+.action-btn.records .action-icon {
+  background: radial-gradient(circle at 30% 30%, #ffd6ee, #f0abfc 70%);
+}
+
+.action-btn.records span {
+  background: linear-gradient(135deg, #f472b6, #a855f7, #22d3ee);
+}
 
 .action-btn.cursor-default {
   opacity: 0.6;
