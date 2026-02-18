@@ -11,6 +11,8 @@ RSpec.describe 'マイページ投稿一覧', type: :request do
     )
   end
 
+  let(:deadline) { 1.week.from_now.to_date }
+
   let!(:future_achieved) do
     Post.create!(
       user: user,
@@ -18,7 +20,8 @@ RSpec.describe 'マイページ投稿一覧', type: :request do
       body: 'future achieved body',
       post_type: :future,
       progress: 100,
-      is_public: true
+      is_public: true,
+      deadline: deadline
     )
   end
 
@@ -29,7 +32,8 @@ RSpec.describe 'マイページ投稿一覧', type: :request do
       body: 'future unachieved body',
       post_type: :future,
       progress: 10,
-      is_public: true
+      is_public: true,
+      deadline: deadline
     )
   end
 
@@ -57,7 +61,8 @@ RSpec.describe 'マイページ投稿一覧', type: :request do
       title: '非公開投稿',
       body: 'private body',
       post_type: :future,
-      is_public: false
+      is_public: false,
+      deadline: deadline
     )
 
     host! 'www.cocopos.net'
