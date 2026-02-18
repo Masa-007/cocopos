@@ -8,6 +8,10 @@
   <%= csrf_meta_tags %>
   <%= csp_meta_tag %>
 
+  <%= favicon_link_tag 'favicon/favicon.ico' %>
+  <%= favicon_link_tag 'favicon/favicon-32x32.png', rel: 'icon', type: 'image/png', sizes: '32x32' %>
+  <%= favicon_link_tag 'favicon/apple-touch-icon.png', rel: 'apple-touch-icon', type: 'image/png', sizes: '180x180' %>
+
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-TZCCWQN88R"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
