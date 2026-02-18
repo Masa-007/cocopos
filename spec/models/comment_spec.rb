@@ -4,7 +4,8 @@ require 'rails_helper'
 
 RSpec.describe Comment, type: :model do
   let(:user) { User.create!(name: 'Hanako', email: "hanako#{SecureRandom.hex(4)}@example.com", password: 'password') }
-  let(:post_record) { Post.create!(user:, body: '投稿本文', post_type: :future) }
+  let(:deadline) { 1.week.from_now.to_date }
+  let(:post_record) { Post.create!(user:, body: '投稿本文', post_type: :future, deadline:) }
 
   it 'contentがあれば有効である' do
     comment = described_class.new(user:, post: post_record, content: 'コメントです')

@@ -4,10 +4,11 @@ require 'rails_helper'
 
 RSpec.describe Post, type: :model do
   let(:user) { User.create!(name: 'Taro', email: "user#{SecureRandom.hex(4)}@example.com", password: 'password') }
+  let(:deadline) { 1.week.from_now.to_date }
 
   describe 'validations' do
     it 'future投稿は必須項目が揃っていれば有効である' do
-      post = described_class.new(user:, body: '未来に向けて頑張る', post_type: :future)
+      post = described_class.new(user:, body: '未来に向けて頑張る', post_type: :future, deadline: deadline)
 
       expect(post).to be_valid
       expect(post.errors[:mood]).to be_empty
@@ -35,35 +36,35 @@ RSpec.describe Post, type: :model do
     end
 
     it 'future投稿でprogressが範囲外の場合は無効である' do
-      post = described_class.new(user:, body: '進捗', post_type: :future, progress: 120)
+      post = described_class.new(user:, body: '進捗', post_type: :future, progress: 120, deadline: deadline)
 
       expect(post).not_to be_valid
       expect(post.errors[:progress]).to be_present
     end
 
     it 'bodyにNGワードが含まれている場合は無効になる' do
-      post = described_class.new(user:, body: 'これは暴力を含む文です', post_type: :future)
+      post = described_class.new(user:, body: 'これは暴力を含む文です', post_type: :future, deadline: deadline)
 
       expect(post).not_to be_valid
       expect(post.errors[:body].join).to include('禁止されている単語')
     end
 
     it 'bodyにURLが含まれている場合は無効になる' do
-      post = described_class.new(user:, body: '詳細は https://example.com を見て', post_type: :future)
+      post = described_class.new(user:, body: '詳細は https://example.com を見て', post_type: :future, deadline: deadline)
 
       expect(post).not_to be_valid
       expect(post.errors[:body]).to include('にURLが含まれています')
     end
 
     it 'bodyにメールアドレスが含まれている場合は無効になる' do
-      post = described_class.new(user:, body: '連絡先は test@example.com です', post_type: :future)
+      post = described_class.new(user:, body: '連絡先は test@example.com です', post_type: :future, deadline: deadline)
 
       expect(post).not_to be_valid
       expect(post.errors[:body]).to include('にメールアドレスが含まれています')
     end
 
     it 'bodyに電話番号が含まれている場合は無効になる' do
-      post = described_class.new(user:, body: '連絡先は090-1234-5678です', post_type: :future)
+      post = described_class.new(user:, body: '連絡先は090-1234-5678です', post_type: :future, deadline: deadline)
 
       expect(post).not_to be_valid
       expect(post.errors[:body]).to include('に電話番号が含まれています')
@@ -78,7 +79,7 @@ RSpec.describe Post, type: :model do
     end
 
     it 'future投稿の小目標は16件以上設定できない' do
-      post = described_class.new(user:, body: '未来', post_type: :future)
+      post = described_class.new(user:, body: '未来', post_type: :future, deadline: deadline)
       16.times { |i| post.milestones.build(title: "目標#{i}") }
 
       expect(post).not_to be_valid
@@ -88,7 +89,7 @@ RSpec.describe Post, type: :model do
 
   describe 'instance methods' do
     it '投稿タイプに対応するメタ情報を返す' do
-      post = described_class.new(user:, body: '未来', post_type: :future)
+      post = described_class.new(user:, body: '未来', post_type: :future, deadline: deadline)
 
       expect(post.post_type_icon).to eq('🌱')
       expect(post.post_type_name).to eq('未来宣言箱')
@@ -96,19 +97,19 @@ RSpec.describe Post, type: :model do
     end
 
     it '匿名投稿の場合はデフォルトの表示名を返す' do
-      post = described_class.new(user:, body: '本文', post_type: :future, is_anonymous: true)
+      post = described_class.new(user:, body: '本文', post_type: :future, is_anonymous: true, deadline: deadline)
 
       expect(post.display_name).to eq('匿名さん')
     end
 
     it '匿名でない場合はユーザー名を表示名として返す' do
-      post = described_class.new(user:, body: '本文', post_type: :future, is_anonymous: false)
+      post = described_class.new(user:, body: '本文', post_type: :future, is_anonymous: false, deadline: deadline)
 
       expect(post.display_name).to eq('Taro')
     end
 
     it 'ユーザーが紐づかない場合は名無しユーザーを返す' do
-      post = described_class.new(user: nil, body: '本文', post_type: :future, is_anonymous: false)
+      post = described_class.new(user: nil, body: '本文', post_type: :future, is_anonymous: false, deadline: deadline)
 
       expect(post.display_name).to eq('名無しユーザー')
     end
@@ -150,7 +151,7 @@ RSpec.describe Post, type: :model do
     end
 
     it 'thanks投稿以外はthanks_recipient_tagがnilになる' do
-      post = described_class.new(user:, body: '本文', post_type: :future)
+      post = described_class.new(user:, body: '本文', post_type: :future, deadline: deadline)
 
       expect(post.thanks_recipient_tag).to be_nil
     end
@@ -162,19 +163,19 @@ RSpec.describe Post, type: :model do
     end
 
     it 'to_paramはpublic_uuidを返す' do
-      post = described_class.create!(user:, body: '本文', post_type: :future)
+      post = described_class.create!(user:, body: '本文', post_type: :future, deadline: deadline)
 
       expect(post.to_param).to eq(post.public_uuid)
     end
 
     it 'flower_countはnilの場合に0を返す' do
-      post = described_class.create!(user:, body: '本文', post_type: :future)
+      post = described_class.create!(user:, body: '本文', post_type: :future, deadline: deadline)
 
       expect(post.flower_count).to eq(0)
     end
 
     it 'flowered_by?は指定ユーザーが花を付けているとtrueを返す' do
-      post = described_class.create!(user:, body: '本文', post_type: :future)
+      post = described_class.create!(user:, body: '本文', post_type: :future, deadline: deadline)
       another_user = User.create!(name: 'Jiro', email: "jiro#{SecureRandom.hex(4)}@example.com", password: 'password')
       Flower.create!(user: another_user, flowerable: post)
 
@@ -185,16 +186,20 @@ RSpec.describe Post, type: :model do
 
   describe 'scopes' do
     it '新しい投稿順に並んだレコードを返す' do
-      old_post = described_class.create!(user:, body: 'old', post_type: :future, created_at: 2.days.ago)
-      new_post = described_class.create!(user:, body: 'new', post_type: :future, created_at: 1.day.ago)
+      old_post = described_class.create!(user:, body: 'old', post_type: :future, created_at: 2.days.ago,
+                                         deadline: deadline)
+      new_post = described_class.create!(user:, body: 'new', post_type: :future, created_at: 1.day.ago,
+                                         deadline: deadline)
 
       expect(described_class.recent.first).to eq(new_post)
       expect(described_class.recent.last).to eq(old_post)
     end
 
     it 'コメント可能な投稿のみを返す' do
-      visible = described_class.create!(user:, body: 'with opinion', post_type: :future, comment_allowed: true)
-      described_class.create!(user:, body: 'without opinion', post_type: :future, comment_allowed: false)
+      visible = described_class.create!(user:, body: 'with opinion', post_type: :future, comment_allowed: true,
+                                        deadline: deadline)
+      described_class.create!(user:, body: 'without opinion', post_type: :future, comment_allowed: false,
+                              deadline: deadline)
 
       expect(described_class.with_opinion).to contain_exactly(visible)
     end

@@ -1,20 +1,21 @@
 # frozen_string_literal: true
 
-require Rails.root.join('config/initializers/ng_words')
-
 class Post < ApplicationRecord
   belongs_to :user
   has_many :comments, dependent: :destroy
   has_many :flowers, as: :flowerable, dependent: :destroy
   has_many :milestones, dependent: :destroy
 
-  accepts_nested_attributes_for :milestones, allow_destroy: true
+  accepts_nested_attributes_for :milestones,
+                                allow_destroy: true,
+                                reject_if: proc { |attributes| attributes['title'].blank? }
 
   enum :post_type, {
     future: 0,
     organize: 1,
     thanks: 2
   }
+
   THANKS_RECIPIENTS = {
     family: '家族',
     friend: '友人',
@@ -46,10 +47,14 @@ class Post < ApplicationRecord
     angry: { label: '😡 怒り', score: 1 }
   }.freeze
 
+  before_validation :assign_public_uuid, on: :create
+  before_save :assign_mood_score
+
   validates :body, presence: true, length: { maximum: 1000 }
   validates :post_type, presence: true
   validates :public_uuid, presence: true, uniqueness: true
 
+  validates :deadline, presence: true, if: :future?
   validates :thanks_recipient_other, presence: true, if: :thanks_recipient_other?
 
   validates :progress,
@@ -59,7 +64,6 @@ class Post < ApplicationRecord
 
   validate :mood_presence_for_organize
   validate :thanks_recipient_presence_for_thanks
-
   validate :deadline_cannot_be_in_the_past, if: :future?
   validate :milestones_only_for_future
   validate :milestones_limit, if: :future?
@@ -144,26 +148,18 @@ class Post < ApplicationRecord
       comments.exists?(user_id: user.id)
     end
   end
-  before_validation :assign_public_uuid, on: :create
-  before_save :assign_mood_score
+
+  private
+
+  def assign_public_uuid
+    self.public_uuid ||= SecureRandom.uuid
+  end
 
   def assign_mood_score
     return if mood.blank?
     return unless MOODS[mood.to_sym]
 
     self.mood_score = MOODS[mood.to_sym][:score]
-  end
-
-  def future?
-    post_type == 'future'
-  end
-
-  def organize?
-    post_type == 'organize'
-  end
-
-  def thanks_recipient_other?
-    thanks_recipient == 'other'
   end
 
   def mood_presence_for_organize
@@ -178,12 +174,6 @@ class Post < ApplicationRecord
     return if thanks_recipient.present?
 
     errors.add(:thanks_recipient, 'を選択してください')
-  end
-
-  private
-
-  def assign_public_uuid
-    self.public_uuid ||= SecureRandom.uuid
   end
 
   def deadline_cannot_be_in_the_past

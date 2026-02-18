@@ -9,13 +9,14 @@ RSpec.describe '花機能', type: :request do
   let(:other_user) do
     User.create!(name: 'Other', email: "flower_other_#{SecureRandom.hex(4)}@example.com", password: 'password')
   end
+  let(:deadline) { 1.week.from_now.to_date }
 
   before do
     host! 'www.cocopos.net'
   end
 
   it '投稿に花をつけて取り消せる' do
-    post_record = Post.create!(user: owner, body: 'public', post_type: :future, is_public: true)
+    post_record = Post.create!(user: owner, body: 'public', post_type: :future, is_public: true, deadline: deadline)
     sign_in other_user
 
     post post_flower_path(post_record)
@@ -28,7 +29,7 @@ RSpec.describe '花機能', type: :request do
   end
 
   it '非公開投稿には所有者以外が花をつけられない' do
-    post_record = Post.create!(user: owner, body: 'private', post_type: :future, is_public: false)
+    post_record = Post.create!(user: owner, body: 'private', post_type: :future, is_public: false, deadline: deadline)
     sign_in other_user
 
     post post_flower_path(post_record)
@@ -38,7 +39,7 @@ RSpec.describe '花機能', type: :request do
   end
 
   it 'コメントにも花をつけられる' do
-    post_record = Post.create!(user: owner, body: 'public', post_type: :future, is_public: true)
+    post_record = Post.create!(user: owner, body: 'public', post_type: :future, is_public: true, deadline: deadline)
     comment = Comment.create!(user: owner, post: post_record, content: 'コメント')
     sign_in other_user
 

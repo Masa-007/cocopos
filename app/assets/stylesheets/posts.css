@@ -169,16 +169,19 @@
   background: rgba(255, 255, 255, 0.35);
   border-radius: 10px;
 
-  word-wrap: break-word;
+  overflow-wrap: break-word;
 
+  /* line clamp */
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 3; 
+  line-clamp: 3;         
+
   overflow: hidden;
 
-  /* 3行 + padding上下(16px) + 欠け防止 */
   height: calc(1.8em * 3 + 16px + 0.2em);
 }
+
 
 /* フッター */
 .post-card-footer {
