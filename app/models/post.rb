@@ -7,9 +7,9 @@ class Post < ApplicationRecord
   has_many :comments, dependent: :destroy
   has_many :flowers, as: :flowerable, dependent: :destroy
   has_many :milestones, dependent: :destroy
-
-  accepts_nested_attributes_for :milestones, allow_destroy: true
-
+  accepts_nested_attributes_for :milestones, allow_destroy: true, reject_if: proc { |attributes|
+    attributes['title'].blank?
+  }
   enum :post_type, {
     future: 0,
     organize: 1,
@@ -49,6 +49,8 @@ class Post < ApplicationRecord
   validates :body, presence: true, length: { maximum: 1000 }
   validates :post_type, presence: true
   validates :public_uuid, presence: true, uniqueness: true
+
+  validates :deadline, presence: true, if: :future?
 
   validates :thanks_recipient_other, presence: true, if: :thanks_recipient_other?
 

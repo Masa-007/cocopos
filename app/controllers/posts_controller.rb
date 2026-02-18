@@ -45,7 +45,6 @@ class PostsController < ApplicationController
   def create
     @post = current_user.posts.build(post_params_for_create)
     disable_comment_if_private(@post)
-    validate_required_fields_by_post_type(@post)
 
     saved = @post.errors.empty? && @post.save
 
@@ -202,13 +201,6 @@ class PostsController < ApplicationController
     return fallback unless hash.key?(key)
 
     ActiveModel::Type::Boolean.new.cast(hash[key])
-  end
-
-  def validate_required_fields_by_post_type(post)
-    return unless post.future?
-    return if post.deadline.present?
-
-    post.errors.add(:deadline, 'を入力してください')
   end
 
   # create 用パラメータ
