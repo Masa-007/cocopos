@@ -20,7 +20,7 @@ module MypageInsights
       total = summary.sum { |item| item[:count] }
 
       message = select_pattern(label, count, total)
-      "#{message} 温かな気持ちを大切にしましょう。"
+      "#{message} 感謝の気持ちを大切にしましょう。"
     end
 
     def not_enough_message
