@@ -1,0 +1,62 @@
+<div class="bg-white rounded-3xl border-2 border-green-200 shadow-md p-6 mb-10 narrow-summary-box">
+  <div class="flex flex-col items-center text-center text-gray-700">
+
+    <p class="text-lg md:text-xl font-bold text-gray-800 mb-2">
+      🌱未来宣言箱の達成率
+    </p>
+
+    <div class="flex items-baseline justify-center gap-2 mb-3">
+      <span class="text-sm font-medium text-gray-600">
+        今月の達成率
+      </span>
+      <span class="text-xl md:text-2xl font-semibold text-green-600 leading-none">
+        <%= @future_achieved_rate %>%
+      </span>
+    </div>
+
+    <p class="text-sm text-gray-500 leading-relaxed">
+      今月の未来宣言箱 <%= @future_total_count %>件のうち、
+      達成 <%= @future_achieved_count %>件です。
+    </p>
+
+    <%
+      rate  = @future_achieved_rate.to_i
+      total = @future_total_count.to_i
+
+      achieved_comment =
+        if total.zero?
+          "今月は未来宣言箱の投稿がまだありません。まずは小さな目標を1つ書くところから始めてみましょう。"
+        elsif rate == 100
+          [
+            "すべて達成できています。目標設定と実行がきれいに噛み合っています。",
+            "やり切る流れができています。この感覚を大切にしましょう。"
+          ].sample
+        elsif rate >= 70
+          [
+            "かなり順調に進んでいます。残りも丁寧に仕上げていきましょう。",
+            "良いペースです。あと一歩の積み重ねが効いています。"
+          ].sample
+        elsif rate >= 40
+          [
+            "着実に前進しています。未達成のものを少し分解すると動きやすくなりそうです。",
+            "半分近くまで進んでいます。優先順位を見直すとさらに整います。"
+          ].sample
+        elsif rate > 0
+          [
+            "小さくても前進があります。まずは1つ完了させると流れが変わります。",
+            "確実に動き出しています。軽いタスクから終わらせてみましょう。"
+          ].sample
+        else
+          [
+            "今月はまだ達成がありません。目標を少し具体化すると動きやすくなります。",
+            "達成はこれからです。最も小さい一歩から始めてみましょう。"
+          ].sample
+        end
+    %>
+
+    <p class="text-sm text-gray-600 mt-3 leading-relaxed">
+      💬 <%= achieved_comment %>
+    </p>
+
+  </div>
+</div>

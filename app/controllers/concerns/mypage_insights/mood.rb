@@ -42,7 +42,7 @@ module MypageInsights
     def build_mood_summary(mood_counts)
       top_mood = mood_counts.max_by { |_, count| count }&.first
       label = mood_label(top_mood)
-      label ? "一番多い気分は「#{label}」です。" : nil
+      label ? "\n一番多い気分は「#{label}」です。" : nil
     end
 
     def mood_label(mood)
