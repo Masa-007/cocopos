@@ -5,18 +5,28 @@
 body {
   margin: 0;
   color: #333;
-  background: linear-gradient(135deg, #fff5f0 0%, #ffe8e0 100%);
+
+  background-image: linear-gradient(
+    135deg,
+    #ffe8f3 0%,
+    #ffe0f1 15%,
+    #fff0d9 30%,
+    #fff9cc 45%,
+    #eafbe9 60%,
+    #e8f4ff 75%,
+    #f2e9ff 88%,
+    #ffe8f3 100%
+  ) !important;
+
+  background-size: 300% 300% !important;
   background-attachment: fixed;
+  animation: softPinkRainbow 38s ease-in-out infinite;
 }
 
-.bg-posts-gradient,
-body.posts-index,
-body.posts-show {
-  background: linear-gradient(135deg, #f9f6ff 0%, #fff3e6 100%);
-}
-
-body.users-mypage_posts {
-  background: linear-gradient(135deg, #f4f7e2 0%, #ffffff 100%);
+@keyframes softPinkRainbow {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
 .records-page {
@@ -109,7 +119,7 @@ body.users-mypage_posts {
   border: 1px solid transparent;
 }
 
-/* checkmark：ヘッダー内では非表示（ここだけでOK） */
+/* checkmark：ヘッダー内では非表示 */
 .header-nav .checkmark,
 .nav-button .checkmark {
   display: none;
@@ -122,7 +132,6 @@ body.users-mypage_posts {
   display: inline;
 }
 
-/* checkmark：共通見た目 */
 .checkmark {
   font-size: 1rem;
   margin-right: 6px;
@@ -316,7 +325,10 @@ body.users-mypage_posts {
   cursor: pointer;
 }
 
-@keyframes floating { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-10px);} }
+@keyframes floating {
+  0%,100% { transform:translateY(0); }
+  50% { transform:translateY(-10px); }
+}
 .floating {
   animation:floating 3s ease-in-out infinite;
   font-size:3rem;
@@ -370,6 +382,7 @@ body.users-mypage_posts {
   line-height:1;
   margin-top:8px;
 }
+
 .box-header .icon-box {
   display:flex;
   align-items:center;
@@ -491,29 +504,6 @@ body.users-mypage_posts {
 .flash.fade-out {
   opacity: 0;
   transform: translateY(-10px);
-}
-
-.mypage-title {
-  font-size: 2.25rem;
-  font-weight: 700;
-  color: #1f2937;
-  margin-bottom: 0.5rem;
-  text-align: center;
-  letter-spacing: 0.03em;
-  transition: color 0.3s ease;
-}
-body.spring .mypage-title { color: #e879f9; }
-body.summer .mypage-title { color: #38bdf8; }
-body.autumn .mypage-title { color: #f59e0b; }
-body.winter .mypage-title { color: #60a5fa; }
-
-.mypage-subtitle {
-  font-size: 1rem;
-  margin-bottom: 2.5rem;
-  text-align: center;
-  color: #555;
-  letter-spacing: 0.02em;
-  transition: color 0.3s ease;
 }
 
 /* スライドショー */
@@ -706,4 +696,32 @@ body.winter .mypage-title { color: #60a5fa; }
   }
 
   .example-box { font-size: 0.9rem; }
+}
+
+@keyframes topRainbowFlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+body.users-mypage_posts {
+  background-image: linear-gradient(
+    120deg,
+    #ffdede 0%,      /* 淡い赤 */
+    #f3d9ff 25%,     /* 淡い紫 */
+    #fdfcff 38%,     /* メタリック白 */
+    #d9f7e8 55%,     /* 淡いグリーン */
+    #ffe6e6 75%,     /* 赤へ戻る中間 */
+    #ffdede 100%     /* ループ用 */
+  ) !important;
+
+  background-size: 300% 300% !important;
+  background-attachment: fixed;
+  animation: softLoopFlow 50s ease-in-out infinite;
+}
+
+@keyframes softLoopFlow {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
