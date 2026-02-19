@@ -21,7 +21,6 @@
   </script>
 
   <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
-
   <script type="module" src="/assets/application.js" defer></script>
 
   <script>
@@ -37,22 +36,25 @@
   </script>
 </head>
 
-<% body_background_class = if controller_name == "posts" && %w[index show].include?(action_name)
-                             "bg-posts-gradient"
-                           else
-                             "bg-gradient-to-br from-rose-50 to-orange-50"
-                           end %>
+<% body_background_class =
+     if controller_name == "posts" && %w[index show].include?(action_name)
+       "bg-posts-gradient"
+     else
+       "bg-gradient-to-br from-rose-50 to-orange-50"
+     end %>
+
 <body class="flex flex-col min-h-screen <%= body_background_class %> text-gray-800 <%= @season %> <%= controller_name %>-<%= action_name %>">
   <%= render "shared/header" %>
-  
-  <div id="flash-container" class="fixed top-4 right-4 space-y-2 z-50">
+
+  <div id="flash-container" class="fixed top-4 right-4 space-y-2 z-[10000]">
     <% if notice.present? %>
-      <div class="flash flash-notice bg-green-100 border border-green-300 text-green-700 px-4 py-2 rounded-md shadow-sm transition-all">
+      <div class="flash flash-notice">
         <%= notice %>
       </div>
     <% end %>
+
     <% if alert.present? %>
-      <div class="flash flash-alert bg-red-100 border border-red-300 text-red-700 px-4 py-2 rounded-md shadow-sm transition-all">
+      <div class="flash flash-alert">
         <%= alert %>
       </div>
     <% end %>
@@ -62,8 +64,7 @@
     <%= yield %>
   </main>
 
-  <%= render "shared/modal" %> 
-
+  <%= render "shared/modal" %>
   <%= render "shared/footer" %>
 </body>
 </html>

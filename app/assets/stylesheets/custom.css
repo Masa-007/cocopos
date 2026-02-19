@@ -467,46 +467,6 @@ body {
   transform: translateY(-2px);
 }
 
-#flash-container {
-  position: fixed;
-  top: 110px;
-  right: 24px;
-  z-index: 9999;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.flash {
-  min-width: 240px;
-  padding: 10px 16px;
-  border-radius: 10px;
-  font-weight: 600;
-  color: #fff;
-  text-align: center;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  opacity: 0.95;
-  transition: opacity 0.5s ease, transform 0.3s ease;
-}
-
-.flash-notice {
-  background: linear-gradient(135deg, #d7ecff, #a3d4ff);
-  border: 1px solid #a3d4ff;
-  color: #003366;
-}
-
-.flash-alert {
-  background: linear-gradient(135deg, #ffb3b3, #ff8080);
-  border: 1px solid #ff9999;
-  color: #fff;
-}
-
-.flash.fade-out {
-  opacity: 0;
-  transform: translateY(-10px);
-}
-
-/* スライドショー */
 .slideshow-container {
   position: relative;
   width: 100%;
@@ -781,9 +741,65 @@ body::after {
   opacity: 0.15;
 }
 
-/* コンテンツを最前面へ */
-main,
-#flash-container {
+main {
   position: relative;
   z-index: 2;
+}
+
+/* 右上固定・縦積み・少しワイド */
+#flash-container {
+  position: fixed;
+  top: 110px;          /* ヘッダーと被るなら調整 */
+  right: 16px;
+  z-index: 10000;
+
+  display: flex;
+  flex-direction: column;  /* 横一列を強制的に縦へ */
+  align-items: flex-end;   /* 右寄せ */
+  gap: 10px;
+
+  width: min(440px, calc(100vw - 32px));
+  max-width: min(440px, calc(100vw - 32px));
+  pointer-events: none;    /* 背景操作を邪魔しない */
+}
+
+#flash-container .flash {
+  pointer-events: auto;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  max-width: 100%;
+  padding: 11px 16px;
+  border-radius: 12px;
+
+  font-size: 0.9rem;
+  font-weight: 700;
+  line-height: 1.3;
+
+  box-shadow: 0 8px 18px rgba(0,0,0,.15);
+  opacity: 0.96;
+  white-space: normal;      /* 長文は折り返す */
+  word-break: break-word;
+}
+
+/* 色分け（既存があれば上書きされます） */
+#flash-container .flash-notice {
+  background: linear-gradient(135deg, #d7ecff, #a3d4ff);
+  border: 1px solid #a3d4ff;
+  color: #003366;
+}
+
+#flash-container .flash-alert {
+  background: linear-gradient(135deg, #ffb3b3, #ff8080);
+  border: 1px solid #ff9999;
+  color: #ffffff;
+}
+
+#flash-container .flash.fade-out {
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.5s ease, transform 0.3s ease;
 }
