@@ -23,7 +23,7 @@
     <nav class="header-nav" data-menu-target="nav">
       <a href="#" id="howToLink" class="nav-button">使い方</a>
       <%= link_to "みんなの投稿一覧", posts_path, class: "nav-button", data: { turbo: false } %>
-      <%= link_to "投稿を作成する", new_post_path, class: "nav-button new-post-link" %>
+      <%= link_to "投稿を作成する", new_post_path, class: "nav-button new-post-link", data: { turbo: false } %>
       <% if user_signed_in? %>
         <%= link_to "マイページ", mypage_path, class: "nav-button mypage-button" %>
         <%= button_to "ログアウト", destroy_user_session_path,

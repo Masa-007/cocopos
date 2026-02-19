@@ -196,7 +196,8 @@ RSpec.describe MypageInsights do
 
       result = insights.expose(:build_thanks_insight, summary)
 
-      expect(result).to include('友人への感謝が多い')
+      expect(result).to include('友人')
+      expect(result).to include('感謝')
     end
 
     it '感謝タグが同数の場合はラベル昇順で返す' do

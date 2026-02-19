@@ -5,7 +5,7 @@
       <h1 class="text-4xl font-bold text-gray-800 mb-2">✏️ 新しい投稿</h1>
       <p class="text-gray-600">あなたの心を投函してください</p>
     </div>
-    
+
     <% if @post.errors.any? %>
       <div class="mb-6 p-4 rounded-lg border border-red-300 bg-red-50 text-red-700">
         <p class="font-bold mb-2">入力内容を確認してください：</p>
@@ -16,29 +16,30 @@
         </ul>
       </div>
     <% end %>
-    
+
     <%= form_with model: @post,
-      id: "postForm",
       local: true,
+      id: "postForm",
       data: {
         turbo: false,
-        controller: "post-submit post-type-fields post-visibility",
-        action: "submit->post-submit#submit change->post-type-fields#toggle change->post-visibility#check"
+        controller: "post-submit post-type-fields",
+        action: "submit->post-submit#submit change->post-type-fields#toggle"
       } do |f| %>
 
-      <!-- 📮 投函する箱選択 -->
-      <div class="mb-8 relative z-10">
-        <label class="block text-lg font-bold text-gray-800 mb-4">📮 投函する箱を選んでください </label>
+      <!-- 📮 投函する箱 -->
+      <div class="mb-8">
+        <label class="block text-lg font-bold text-gray-800 mb-4">
+          📮 投函する箱を選んでください
+        </label>
 
         <div class="grid md:grid-cols-3 gap-4">
-          <% { future: ["🌱", "未来宣言箱", "目標や決意を投函"],
-               organize: ["🌈", "心の整理箱", "気持ちを書き出す"],
-               thanks: ["💌", "感謝箱", "感謝の気持ちを記録"] }.each do |type, (icon, title, desc)| %>
+          <% { future: ["🌱", "未来宣言箱"],
+               organize: ["🌈", "心の整理箱"],
+               thanks: ["💌", "感謝箱"] }.each do |type, (icon, title)| %>
 
             <label class="relative cursor-pointer select-none">
               <%= f.radio_button :post_type, type,
-                    class: "absolute inset-0 opacity-0 cursor-pointer peer z-20 post-type-radio",
-                    data: { action: "click->mood#toggle" },
+                    class: "absolute inset-0 opacity-0 cursor-pointer peer post-type-radio",
                     required: true %>
 
               <div class="card-ui text-center border-2 border-gray-200 rounded-xl p-4 transition-all
@@ -46,80 +47,53 @@
                           bg-white hover:bg-orange-50">
                 <div class="text-5xl mb-3"><%= icon %></div>
                 <h3 class="text-xl font-bold mb-2"><%= title %></h3>
-                <p class="text-sm text-gray-600"><%= desc %></p>
               </div>
             </label>
 
           <% end %>
         </div>
 
-        <!-- ✨ 注意書き -->
-        <p class="text-sm text-gray-500 mt-2">※ 投稿箱は投函後に変更できません</p>
-      </div>
-      <!-- /投函する箱 -->
-
-      <!-- 💬 コメント設定 -->
-      <div class="mb-8 relative z-10">
-        <label class="block text-lg font-bold text-gray-800 mb-4">💬 コメント設定</label>
-        <div class="flex gap-4">
-          <label class="flex-1 relative cursor-pointer select-none z-10">
-            <%= f.radio_button :comment_allowed, "true",
-                  checked: true,
-                  class: "absolute inset-0 opacity-0 cursor-pointer peer z-20",
-                  onchange: "document.getElementById('comment_allowed').value = true" %>
-            <div class="card-ui p-4 border-2 border-gray-200 rounded-xl text-center transition-all
-                        peer-checked:border-orange-400 peer-checked:ring-2 peer-checked:ring-orange-200
-                        bg-white hover:bg-orange-50">
-              💬<br><strong>コメントを許可する</strong>
-              <p class="text-sm text-gray-600 mt-1">他の人が感想や励ましを書けます</p>
-            </div>
-          </label>
-
-          <label class="flex-1 relative cursor-pointer select-none z-10">
-            <%= f.radio_button :comment_allowed, "false",
-                  class: "absolute inset-0 opacity-0 cursor-pointer peer z-20",
-                  onchange: "document.getElementById('comment_allowed').value = false" %>
-            <div class="card-ui p-4 border-2 border-gray-200 rounded-xl text-center transition-all
-                        peer-checked:border-orange-400 peer-checked:ring-2 peer-checked:ring-orange-200
-                        bg-white hover:bg-orange-50">
-              🚫<br><strong>コメント不要</strong>
-              <p class="text-sm text-gray-600 mt-1">静かに残したい投稿に</p>
-            </div>
-          </label>
-        </div>
-
-        <%= f.hidden_field :comment_allowed, id: "comment_allowed", value: true %>
+        <p class="text-sm text-gray-500 mt-2">
+          ※ 投稿箱は投函後に変更できません
+        </p>
       </div>
 
       <!-- 🔒 公開設定 -->
-      <div class="mb-8 relative z-10">
+      <div class="mb-8">
         <label class="block text-lg font-bold text-gray-800 mb-4">🔒 公開設定</label>
+
         <div class="flex gap-4">
           <label class="flex-1 relative cursor-pointer select-none">
-            <%= f.radio_button :is_public, "true",
-                  checked: true,
+            <%= f.radio_button :is_public, true,
+                  checked: @post.is_public != false,
                   class: "absolute inset-0 opacity-0 cursor-pointer peer" %>
+
             <div class="card-ui p-4 border-2 border-gray-200 rounded-xl text-center transition-all
                         peer-checked:border-orange-400 peer-checked:ring-2 peer-checked:ring-orange-200
                         bg-white hover:bg-orange-50">
-              🌐<br><strong>みんなに公開</strong>
+              🌐<br>
+              <strong>みんなに公開</strong>
               <p class="text-sm text-gray-600 mt-1">投稿一覧に表示されます</p>
             </div>
           </label>
 
           <label class="flex-1 relative cursor-pointer select-none">
-            <%= f.radio_button :is_public, "false",
+            <%= f.radio_button :is_public, false,
+                  checked: @post.is_public == false,
                   class: "absolute inset-0 opacity-0 cursor-pointer peer" %>
+
             <div class="card-ui p-4 border-2 border-gray-200 rounded-xl text-center transition-all
                         peer-checked:border-orange-400 peer-checked:ring-2 peer-checked:ring-orange-200
                         bg-white hover:bg-orange-50">
-              🔒<br><strong>非公開にする</strong>
+              🔒<br>
+              <strong>非公開にする</strong>
               <p class="text-sm text-gray-600 mt-1">自分だけが見られます</p>
             </div>
           </label>
         </div>
       </div>
 
+      <!-- post_type別フィールド -->
       <div id="post-type-fields">
         <div data-post-type-fields-target="future" class="hidden">
           <%= render "posts/future_fields", f: f, post: @post %>
@@ -134,105 +108,39 @@
         </div>
       </div>
 
+      <!-- AI -->
+      <%= render "shared/ai_writer", post: @post %>
+
       <!-- 🖋 タイトル -->
-      <div class="mb-8 relative z-10">
+      <div class="mb-8">
         <label class="block text-lg font-bold text-gray-800 mb-4">🖋 タイトル</label>
         <%= f.text_field :title,
-            id: "post_title",
-            class: "w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-orange-400 focus:outline-none",
-            maxlength: 50,
-            required: true %>
+              class: "w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-orange-400 focus:outline-none",
+              maxlength: 50,
+              required: true %>
         <p class="text-right text-sm text-gray-500 mt-2">50文字以内</p>
       </div>
 
       <!-- 📝 本文 -->
-      <div class="mb-8 relative z-10">
+      <div class="mb-8">
         <label class="block text-lg font-bold text-gray-800 mb-4">📝 本文</label>
         <%= f.text_area :body,
-            rows: 8,
-            id: "post_body",
-            class: "w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-orange-400 focus:outline-none resize-none",
-            maxlength: 1000,
-            required: true %>
+              rows: 8,
+              class: "w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-orange-400 focus:outline-none resize-none",
+              maxlength: 1000,
+              required: true %>
         <p class="text-right text-sm text-gray-500 mt-2">
           <span id="charCount">0</span> / 1000文字
         </p>
       </div>
 
-      <%= render "shared/ai_writer", post: @post %>
-
-      <!-- 匿名設定 -->
-      <div class="mb-8">
-        <label class="flex items-center gap-3 cursor-pointer p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition">
-          <%= f.check_box :is_anonymous,
-                { checked: false, class: "w-5 h-5 text-orange-400 rounded focus:ring-orange-400" },
-                "true",
-                "false" %>
-          <div>
-            <span class="text-gray-800 font-medium block">匿名で投稿する</span>
-            <span class="text-sm text-gray-600">チェックが外れている場合、ユーザー名が表示されます</span>
-          </div>
-        </label>
-      </div>
-
-      <!-- 送信ボタン -->
-      <div class="flex justify-center gap-4 relative z-10">
+      <div class="flex justify-center">
         <%= f.submit "投函する 📮",
               class: "px-12 py-3 bg-gradient-to-r from-orange-400 to-pink-400 text-white text-lg font-bold rounded-full hover:shadow-xl transition transform hover:scale-105" %>
       </div>
 
     <% end %>
-
   </div>
 </main>
 
-<!-- 投函アニメーション -->
-<div id="loadingScreen" class="loading-screen">
-  <div class="postbox-animation">
-    <div class="letter"></div>
-    <div class="postbox"><div class="postbox-slot"></div></div>
-    <p class="loading-text">投函中...</p>
-  </div>
-</div>
-
-<!-- 完了画面 -->
-<div id="completionScreen" class="completion-screen">
-  <div class="completion-content">
-    <div class="checkmark"></div>
-    <div class="completion-message">
-      <h1 class="text-5xl font-extrabold text-gray-800 mb-4 tracking-wide fade-in">📮 投函が完了しました！</h1>
-      <p class="text-lg text-gray-600 mb-10 fade-in-delay2">
-        少し軽くなった心と一緒に、新しい一歩を踏み出していきましょう。
-      </p>
-    </div>
-
-    <div class="completion-actions">
-      <%= link_to posts_path, class: "action-card" do %>
-        <div class="action-icon">📮</div>
-        <h3 class="text-lg font-bold mb-1 text-gray-800">みんなの投稿一覧に戻る</h3>
-      <% end %>
-
-      <%= link_to mypage_path, class: "action-card" do %>
-        <div class="action-icon">👤</div>
-        <h3 class="text-lg font-bold mb-1 text-gray-800">マイページを見る</h3>
-      <% end %>
-
-      <a href="https://www.cocopos.net/"
-         data-controller="share"
-         data-action="click->share#share"
-         data-share-url-value="<%= root_url %>"
-         class="action-card">
-        <div class="action-icon">🐦</div>
-        <h3 class="text-lg font-bold mb-1 text-gray-800">Xで共有する</h3>
-      </a>
-
-      <a href="https://masa-007.github.io/escape-autumn-temptation/"
-         target="_blank"
-         rel="noopener"
-         class="action-card !bg-sky-100 !bg-none hover:!bg-sky-200 transition">
-        <div class="action-icon">🎮</div>
-        <h3 class="text-lg font-bold mb-1 text-gray-800">息抜きをする</h3>
-      </a>
-    </div>
-  </div>
-</div>
+<%= render "posts/post_completion_overlay" %>

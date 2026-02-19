@@ -1,0 +1,60 @@
+.completion-screen {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+
+  overflow: hidden;
+  overscroll-behavior: none;
+  touch-action: none;
+
+  opacity: 0;
+  transform: scale(0.99);
+  pointer-events: none;
+
+  transition: opacity 0.22s ease, transform 0.22s ease;
+
+  /* 不透明・穏やかな虹 */
+  background: linear-gradient(
+    120deg,
+    #ff9a9e,
+    #fbc2eb,
+    #fcd5ce,
+    #d5f5e3,
+    #c7ceea,
+    #e0c3fc
+  );
+
+  background-size: 300% 300%;
+  background-position: 0% 50%;
+}
+
+/* active時のみ動かす */
+.completion-screen.active {
+  opacity: 1;
+  pointer-events: all;
+  animation: completionSoftRainbow 10s ease-in-out infinite;
+}
+
+/* やわらかい光レイヤー（不透明・ブレンドなし） */
+.completion-screen::before {
+  content: "";
+  position: absolute;
+  inset: -20%;
+  pointer-events: none;
+
+  background:
+    radial-gradient(circle at 25% 30%, rgba(255,255,255,0.25), transparent 60%),
+    radial-gradient(circle at 75% 70%, rgba(255,255,255,0.18), transparent 65%);
+
+  filter: blur(40px);
+  opacity: 0.6;
+}
+
+@keyframes completionSoftRainbow {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}

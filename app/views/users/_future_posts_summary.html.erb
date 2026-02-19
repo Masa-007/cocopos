@@ -2,7 +2,7 @@
 <div class="bg-white rounded-3xl border-2 border-green-200 shadow-md p-6 mb-10 narrow-summary-box">
   <!-- ヘッダー -->
   <div class="flex flex-col items-center text-left mb-1">
-    <h2 class="text-xl font-bold text-gray-500">
+    <h2 class="text-xl md:text-2xl font-bold text-gray-800">
       🌱 未来宣言箱のTODOメモ
     </h2>
     <p class="text-sm text-gray-500">
@@ -15,6 +15,7 @@
     <%= future_insight %>
   </p>
 
+  <%= render "users/future_achieved_rate" %>
   
   <% base_params = { year: @year, month: @month, season: @season } %>
   <% filter_path = local_assigns.fetch(:filter_path, method(:mypage_path)) %>
