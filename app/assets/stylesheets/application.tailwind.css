@@ -9,6 +9,8 @@
 @import "comments.css";
 @import "help_modal.css";
 @import "account_delete_modal.css";
+@import "loading_background.css";
+@import "completion_background.css";
 
 @tailwind base;
 @tailwind components;

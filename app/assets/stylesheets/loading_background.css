@@ -1,0 +1,81 @@
+.loading-screen {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  overflow: hidden;
+
+  /* 淡いパステル虹 */
+  background: linear-gradient(
+    120deg,
+    #f4a6b8,
+    #f4c9a6,
+    #f4e6b8,
+    #bfe8d3,
+    #bcdcf4,
+    #d4c6f4,
+    #f4c2e4
+  );
+
+  background-size: 420% 420%;
+  background-position: 0% 50%;
+}
+
+.loading-screen.active {
+  opacity: 1;
+  pointer-events: all;
+  animation: loadingRainbowFlow 5s linear infinite;
+}
+
+/* 回転レイヤー（柔らかい光） */
+.loading-screen::after {
+  content: "";
+  position: absolute;
+  inset: -35%;
+  z-index: 0;
+
+  background: linear-gradient(
+    120deg,
+    #f4a6b8,
+    #f4c9a6,
+    #f4e6b8,
+    #bfe8d3,
+    #bcdcf4,
+    #d4c6f4,
+    #f4c2e4
+  );
+
+  background-size: 420% 420%;
+  background-position: 0% 50%;
+
+  filter: blur(55px) saturate(0.9) contrast(1.02);
+  opacity: 0.7;
+
+  transform-origin: center;
+}
+
+.loading-screen.active::after {
+  animation:
+    loadingRainbowFlow 5s linear infinite,
+    loadingRainbowRotate 7s ease-in-out infinite;
+}
+
+/* 横流れ */
+@keyframes loadingRainbowFlow {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* ゆるい回転 */
+@keyframes loadingRainbowRotate {
+  0%   { transform: rotate(0deg) scale(1.03); }
+  50%  { transform: rotate(1.2deg) scale(1.06); }
+  100% { transform: rotate(0deg) scale(1.03); }
+}

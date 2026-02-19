@@ -58,7 +58,7 @@ body.modal-open {
 
 #helpModal .modal-x {
   position: absolute;
-  top: 16px;
+  top: calc(env(safe-area-inset-top, 0px) + 24px);
   right: 24px;
 
   font-size: 30px;

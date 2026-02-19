@@ -1,0 +1,70 @@
+<!-- 投稿完了オーバーレイ（ローディング＋4択） -->
+<div id="postOverlay">
+
+  <!-- 投函アニメーション -->
+  <div id="loadingScreen" class="loading-screen">
+    <div class="postbox-animation">
+      <div class="letter"></div>
+      <div class="postbox">
+        <div class="postbox-slot"></div>
+      </div>
+      <p class="loading-text">投函中...</p>
+    </div>
+  </div>
+
+  <!-- 完了画面（4択） -->
+  <div id="completionScreen" class="completion-screen">
+    <div class="completion-content">
+      <div class="checkmark"></div>
+
+      <div class="completion-message">
+        <h1 class="text-5xl font-extrabold text-gray-800 mb-4 tracking-wide fade-in">
+          📮 投函が完了しました！
+        </h1>
+        <p class="text-lg text-gray-600 mb-10 fade-in-delay2">
+          少し軽くなった心と一緒に、新しい一歩を踏み出していきましょう。
+        </p>
+      </div>
+
+      <div class="completion-actions">
+
+        <%= link_to posts_path, class: "action-card" do %>
+          <div class="action-icon">📮</div>
+          <h3 class="text-lg font-bold mb-1 text-gray-800">
+            みんなの投稿一覧に戻る
+          </h3>
+        <% end %>
+
+        <%= link_to mypage_path, class: "action-card" do %>
+          <div class="action-icon">👤</div>
+          <h3 class="text-lg font-bold mb-1 text-gray-800">
+            マイページを見る
+          </h3>
+        <% end %>
+
+        <a href="https://www.cocopos.net/"
+           data-controller="share"
+           data-action="click->share#share"
+           data-share-url-value="<%= root_url %>"
+           class="action-card">
+          <div class="action-icon">🐦</div>
+          <h3 class="text-lg font-bold mb-1 text-gray-800">
+            Xで共有する
+          </h3>
+        </a>
+
+        <a href="https://masa-007.github.io/escape-autumn-temptation/"
+           target="_blank"
+           rel="noopener"
+           class="action-card !bg-sky-100 !bg-none hover:!bg-sky-200 transition">
+          <div class="action-icon">🎮</div>
+          <h3 class="text-lg font-bold mb-1 text-gray-800">
+            息抜きをする
+          </h3>
+        </a>
+
+      </div>
+    </div>
+  </div>
+
+</div>
