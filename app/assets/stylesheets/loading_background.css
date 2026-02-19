@@ -8,74 +8,167 @@
 
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.4s ease;
   overflow: hidden;
 
-  /* 淡いパステル虹 */
-  background: linear-gradient(
-    120deg,
-    #f4a6b8,
-    #f4c9a6,
-    #f4e6b8,
-    #bfe8d3,
-    #bcdcf4,
-    #d4c6f4,
-    #f4c2e4
-  );
+  /* 白ベール＋淡いメタリックレインボー */
+  background:
+    /* 白いベール */
+    linear-gradient(
+      rgba(255,255,255,0.35),
+      rgba(255,255,255,0.35)
+    ),
+    /* 柔らかい金属ハイライト */
+    radial-gradient(1000px 480px at 50% 18%,
+      rgba(255,255,255,0.40) 0%,
+      rgba(255,255,255,0.16) 35%,
+      rgba(255,255,255,0.00) 70%
+    ),
+    /* さらに淡めレインボー */
+    linear-gradient(
+      120deg,
+      #4a4e6a 0%,
+      #ff9fd6 16%,
+      #ffd7a8 30%,
+      #fbffbf 44%,
+      #a8fff0 58%,
+      #a5d8ff 72%,
+      #cbb8ff 86%,
+      #ff9fd6 96%,
+      #4a4e6a 100%
+    );
 
-  background-size: 420% 420%;
-  background-position: 0% 50%;
+  background-size: 100% 100%, 100% 100%, 360% 360%;
+  background-position: 0 0, 50% 18%, 0% 50%;
+  background-attachment: fixed;
+
+  filter: saturate(1.04) contrast(1.05);
 }
 
 .loading-screen.active {
   opacity: 1;
   pointer-events: all;
-  animation: loadingRainbowFlow 5s linear infinite;
+  animation: loadingRainbowFlow 8s ease-in-out infinite;
 }
 
-/* 回転レイヤー（柔らかい光） */
-.loading-screen::after {
+.loading-screen .postbox-animation {
+  position: relative;
+  z-index: 3;
+}
+
+.loading-screen .warp-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.loading-screen.active .warp-layer {
+  opacity: 1;
+}
+
+.loading-screen .warp-layer::after {
   content: "";
   position: absolute;
-  inset: -35%;
-  z-index: 0;
+  inset: -20%;
+  background:
+    radial-gradient(circle at 50% 50%,
+      rgba(255,255,255,0.55) 0%,
+      rgba(255,255,255,0.16) 18%,
+      rgba(255,255,255,0.00) 48%
+    ),
+    radial-gradient(circle at 50% 50%,
+      rgba(120,170,255,0.18) 0%,
+      rgba(255,140,200,0.10) 22%,
+      rgba(0,0,0,0.00) 56%
+    );
+  filter: blur(6px);
+  transform-origin: center;
+  mix-blend-mode: screen;
+  animation: warpPulse 2.6s ease-in-out infinite,
+             warpRotate 6.5s linear infinite;
+}
 
-  background: linear-gradient(
-    120deg,
-    #f4a6b8,
-    #f4c9a6,
-    #f4e6b8,
-    #bfe8d3,
-    #bcdcf4,
-    #d4c6f4,
-    #f4c2e4
+.loading-screen .warp-layer::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  background:
+    conic-gradient(from 0deg,
+      rgba(255,255,255,0.00) 0deg,
+      rgba(255,255,255,0.16) 6deg,
+      rgba(255,255,255,0.00) 14deg,
+      rgba(255,255,255,0.12) 22deg,
+      rgba(255,255,255,0.00) 32deg,
+      rgba(255,255,255,0.10) 42deg,
+      rgba(255,255,255,0.00) 55deg,
+      rgba(255,255,255,0.14) 64deg,
+      rgba(255,255,255,0.00) 78deg,
+      rgba(255,255,255,0.12) 92deg,
+      rgba(255,255,255,0.00) 110deg,
+      rgba(255,255,255,0.16) 126deg,
+      rgba(255,255,255,0.00) 145deg,
+      rgba(255,255,255,0.12) 162deg,
+      rgba(255,255,255,0.00) 180deg,
+      rgba(255,255,255,0.14) 196deg,
+      rgba(255,255,255,0.00) 214deg,
+      rgba(255,255,255,0.12) 232deg,
+      rgba(255,255,255,0.00) 252deg,
+      rgba(255,255,255,0.16) 270deg,
+      rgba(255,255,255,0.00) 290deg,
+      rgba(255,255,255,0.12) 312deg,
+      rgba(255,255,255,0.00) 336deg,
+      rgba(255,255,255,0.14) 360deg
+    );
+
+  mask-image: radial-gradient(circle at 50% 50%,
+    rgba(0,0,0,1) 0%,
+    rgba(0,0,0,0.85) 18%,
+    rgba(0,0,0,0.10) 52%,
+    rgba(0,0,0,0.00) 78%
+  );
+  -webkit-mask-image: radial-gradient(circle at 50% 50%,
+    rgba(0,0,0,1) 0%,
+    rgba(0,0,0,0.85) 18%,
+    rgba(0,0,0,0.10) 52%,
+    rgba(0,0,0,0.00) 78%
   );
 
-  background-size: 420% 420%;
-  background-position: 0% 50%;
-
-  filter: blur(55px) saturate(0.9) contrast(1.02);
-  opacity: 0.7;
-
+  mix-blend-mode: soft-light;
+  opacity: 0.9;
+  filter: blur(0.6px);
   transform-origin: center;
+
+  animation: particlePull 1.8s ease-in-out infinite,
+             particleSpin 5.2s linear infinite;
 }
 
-.loading-screen.active::after {
-  animation:
-    loadingRainbowFlow 5s linear infinite,
-    loadingRainbowRotate 7s ease-in-out infinite;
-}
-
-/* 横流れ */
 @keyframes loadingRainbowFlow {
-  0%   { background-position: 0% 50%; }
-  50%  { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0%   { background-position: 0 0, 50% 18%, 0% 50%; }
+  50%  { background-position: 0 0, 50% 18%, 100% 50%; }
+  100% { background-position: 0 0, 50% 18%, 0% 50%; }
 }
 
-/* ゆるい回転 */
-@keyframes loadingRainbowRotate {
-  0%   { transform: rotate(0deg) scale(1.03); }
-  50%  { transform: rotate(1.2deg) scale(1.06); }
-  100% { transform: rotate(0deg) scale(1.03); }
+@keyframes warpPulse {
+  0%   { opacity: 0.70; transform: scale(1.00); }
+  50%  { opacity: 1.00; transform: scale(1.06); }
+  100% { opacity: 0.70; transform: scale(1.00); }
+}
+
+@keyframes warpRotate {
+  0%   { transform: rotate(0deg) scale(1.02); }
+  100% { transform: rotate(360deg) scale(1.02); }
+}
+
+@keyframes particlePull {
+  0%   { transform: scale(1.20); opacity: 0.65; }
+  50%  { transform: scale(0.98); opacity: 0.95; }
+  100% { transform: scale(1.20); opacity: 0.65; }
+}
+
+@keyframes particleSpin {
+  0%   { transform: rotate(0deg) scale(1.15); }
+  100% { transform: rotate(360deg) scale(1.15); }
 }
