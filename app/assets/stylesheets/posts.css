@@ -129,22 +129,6 @@
   background-position: 0 18px;
 }
 
-/* 左綴じ帯（手紙っぽさ） */
-.post-card-body::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 10px;
-  height: 100%;
-  background: linear-gradient(
-    180deg,
-    rgba(247, 217, 184, 0.9) 0%,
-    rgba(240, 200, 160, 0.9) 100%
-  );
-  opacity: 0.75;
-}
-
 /* テキストが帯の上に乗らないように */
 .post-card-body > * {
   position: relative;

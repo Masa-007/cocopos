@@ -25,7 +25,7 @@
           </div>
         </div>
 
-        <h2 class="text-3xl font-bold mb-4 text-gray-600">
+        <h2 class="text-2xl font-bold mb-4 text-gray-600">
           あなたの心を投函しよう
         </h2>
 
@@ -36,7 +36,7 @@
         </p>
 
       <% if user_signed_in? %>
-        <%= link_to "マイページへ →", mypage_path, class: "btn-primary px-8 py-4 text-xl rounded-lg" %>
+        <%= link_to "マイページへ", mypage_path, class: "btn-primary px-8 py-4 text-xl rounded-lg" %>
       <% else %>
         <%= link_to "ログインしてはじめる →", new_user_session_path, class: "btn-primary px-8 py-4 text-xl rounded-lg" %>
       <% end %>

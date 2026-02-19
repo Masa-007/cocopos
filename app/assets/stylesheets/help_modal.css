@@ -1,0 +1,326 @@
+#helpModal {
+  position: fixed;
+  inset: 0;
+  z-index: 9999999;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+
+  padding: clamp(32px, 6vw, 60px) 0;
+  background: rgba(255, 230, 225, 0.18);
+
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.35s ease, visibility 0.35s ease;
+}
+
+#helpModal.active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+#helpModal .modal-content {
+  position: relative;
+  width: min(92%, 1000px);
+  padding: clamp(28px, 4.6vw, 52px);
+  border-radius: 24px;
+
+  background: linear-gradient(
+    180deg,
+    rgba(255, 245, 240, 0.96),
+    rgba(255, 230, 220, 0.94)
+  );
+
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+
+  max-height: calc(100vh - 120px);
+  overflow-y: auto;
+
+  transform: translateY(20px) scale(0.97);
+  opacity: 0;
+  transition: transform 0.35s ease, opacity 0.35s ease;
+}
+
+#helpModal.active .modal-content {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+}
+
+body.modal-open {
+  overflow: hidden;
+  touch-action: none;
+}
+
+#helpModal .modal-x {
+  position: absolute;
+  top: 16px;
+  right: 24px;
+
+  font-size: 30px;
+  color: #ff6b6b;
+  cursor: pointer;
+
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+#helpModal .modal-x:hover {
+  color: #ff4d4d;
+}
+
+/* ===== タイトル周り ===== */
+#helpModal .help-title {
+  font-size: clamp(2rem, 4.6vw, 3.1rem);
+  font-weight: 900;
+  text-align: center;
+  line-height: 1.2;
+  margin: 0 0 1rem;
+  color: #ff8a7a;
+}
+
+#helpModal .help-lead {
+  text-align: center;
+  font-size: clamp(1.05rem, 2.2vw, 1.25rem);
+  font-weight: 700;
+  margin: 0 auto 0.8rem;
+  max-width: 52rem;
+  line-height: 1.6;
+  color: #6b7280;
+}
+
+#helpModal .help-note {
+  text-align: center;
+  font-size: clamp(1rem, 2vw, 1.1rem);
+  font-weight: 600;
+  margin: 0 auto clamp(1.6rem, 3.2vw, 2.4rem);
+  max-width: 54rem;
+  line-height: 1.6;
+  color: #555;
+}
+
+/* ===== 箱カード ===== */
+#helpModal .box-card {
+  width: min(86%, 860px);
+  margin: 0 auto clamp(28px, 4vw, 48px);
+
+  border-radius: 20px;
+  border: 3px solid #ffd6cc;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.10);
+
+  overflow: hidden;
+  text-align: center;
+}
+
+/* 各箱テーマ背景 */
+#helpModal .green-box {
+  background: linear-gradient(
+    135deg,
+    rgba(220, 252, 231, 0.55),
+    rgba(255, 255, 255, 0.95)
+  );
+}
+
+#helpModal .purple-box {
+  background: linear-gradient(
+    135deg,
+    rgba(237, 233, 254, 0.55),
+    rgba(255, 255, 255, 0.95)
+  );
+}
+
+#helpModal .pink-box {
+  background: linear-gradient(
+    135deg,
+    rgba(252, 231, 243, 0.55),
+    rgba(255, 255, 255, 0.95)
+  );
+}
+
+#helpModal .box-slot {
+  font-weight: 800;
+  padding: 10px 12px;
+  font-size: 0.95rem;
+  color: #fff;
+  background: linear-gradient(180deg, #ffb3a4, #ff9a8e);
+}
+
+#helpModal .box-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+#helpModal .icon-box.box-icon {
+  font-size: 2.1rem;
+}
+
+#helpModal .box-title {
+  font-size: clamp(1.35rem, 2.4vw, 1.75rem);
+  font-weight: 900;
+  margin: 0;
+}
+
+#helpModal .green-box .box-title { color: #15803d; }
+#helpModal .purple-box .box-title { color: #6b46c1; }
+#helpModal .pink-box .box-title { color: #c53030; }
+
+/* 説明文とチェックリストの開始位置を揃える */
+#helpModal .box-body {
+  --text-block: min(760px, calc(100% - 56px));
+}
+
+/* 説明文（中央ブロック内で左揃え） */
+#helpModal .box-description {
+  width: var(--text-block);
+  margin: 0 auto 16px;
+
+  text-align: left;
+  line-height: 1.5;
+  font-weight: 700;
+  font-size: clamp(1.05rem, 2.1vw, 1.15rem);
+  color: #555;
+}
+
+/* ✓リスト：説明文と同じブロック幅＆同じ左端 */
+#helpModal .box-features {
+  width: var(--text-block);
+  margin: 12px auto 0;
+  padding: 0;
+
+  list-style: none;
+  text-align: left;
+}
+
+#helpModal .feature-item {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  margin: 0;
+
+  line-height: 1.35;
+  font-weight: 600;
+  font-size: clamp(0.98rem, 2vw, 1.05rem);
+  color: #4b5563;
+}
+
+/* ✓（色付きのみ） */
+#helpModal .feature-item::before {
+  content: "✓";
+  flex-shrink: 0;
+  margin-top: 2px;
+  font-weight: 800;
+}
+
+#helpModal .green-box .feature-item::before { color: #16a34a; }
+#helpModal .purple-box .feature-item::before { color: #7e22ce; }
+#helpModal .pink-box .feature-item::before { color: #db2777; }
+
+/* 例ボックス */
+#helpModal .example-box {
+  margin-top: 16px;
+  border-radius: 14px;
+  padding: 12px 16px;
+}
+
+#helpModal .example-text {
+  margin: 0;
+  font-weight: 600;
+  font-size: clamp(0.95rem, 2vw, 1rem);
+  line-height: 1.6;
+}
+
+#helpModal .green-box .example-box {
+  background: #dcf5e5;
+  border: 1px solid #5ed189;
+}
+#helpModal .green-box .example-text { color: #14532d; }
+
+#helpModal .purple-box .example-box {
+  background: #e9dbff;
+  border: 1px solid #a77bff;
+}
+#helpModal .purple-box .example-text { color: #4b2999; }
+
+#helpModal .pink-box .example-box {
+  background: #ffdbe2;
+  border: 1px solid #ff8fa2;
+}
+#helpModal .pink-box .example-text { color: #8b1a2b; }
+
+/* リンク */
+#helpModal .mypage-link {
+  color: #ff6b6b;
+  font-weight: 800;
+  text-decoration: none;
+  border-bottom: 2px solid rgba(255, 107, 107, 0.35);
+  padding-bottom: 2px;
+  transition: all 0.2s ease;
+}
+
+#helpModal .mypage-link:hover {
+  color: #ff4d4d;
+  border-bottom-color: rgba(255, 77, 77, 0.70);
+}
+
+@media (max-width: 768px) {
+  /* モーダルをよりワイドに */
+  #helpModal .modal-content {
+    width: 100%;
+    padding: 18px 16px;
+    border-radius: 18px;
+  }
+
+  /* ボックスもワイドに */
+  #helpModal .box-card {
+    width: 100%;
+    margin-bottom: 24px;
+  }
+
+  /* テキストブロック幅 */
+  #helpModal .box-body {
+    --text-block: min(100%, calc(100% - 16px));
+  }
+
+  /* タイトル */
+  #helpModal .help-title {
+    font-size: clamp(1.25rem, 4.2vw, 1.6rem);
+  }
+
+  /* リード文 */
+  #helpModal .help-lead {
+    font-size: clamp(0.75rem, 2.6vw, 0.85rem);
+  }
+
+  /* マイページ説明 */
+  #helpModal .help-note {
+    font-size: clamp(0.72rem, 2.4vw, 0.82rem);
+  }
+
+  /* 箱タイトル */
+  #helpModal .box-title {
+    font-size: clamp(0.9rem, 2.8vw, 1.05rem);
+  }
+
+  /* 説明文 */
+  #helpModal .box-description {
+    font-size: clamp(0.8rem, 2.6vw, 0.88rem);
+  }
+
+  /* ✓ リスト */
+  #helpModal .feature-item {
+    font-size: clamp(0.75rem, 2.4vw, 0.85rem);
+    line-height: 1.32;
+  }
+
+  /* 例文 */
+  #helpModal .example-text {
+    font-size: clamp(0.72rem, 2.2vw, 0.8rem);
+  }
+}
