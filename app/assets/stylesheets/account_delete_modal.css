@@ -1,0 +1,47 @@
+/* 背景レイヤー */
+#accountDeleteModal {
+  display: none;
+}
+
+#accountDeleteModal.active {
+  display: flex;
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: rgba(0, 0, 0, 0.45);
+}
+
+/* 中央カード */
+#accountDeleteModal .modal-content {
+  background: #ffffff;
+  border-radius: 18px;
+  width: 100%;
+  max-width: 480px;
+  padding: 24px;
+  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.2);
+  position: relative;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+/* タブレット以上 */
+@media (min-width: 640px) {
+  #accountDeleteModal.active {
+    padding: 32px;
+  }
+
+  #accountDeleteModal .modal-content {
+    padding: 32px;
+  }
+}
+
+/* PC以上 */
+@media (min-width: 1024px) {
+  #accountDeleteModal .modal-content {
+    max-width: 520px;
+    border-radius: 20px;
+  }
+}

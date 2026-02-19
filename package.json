@@ -4,19 +4,20 @@
     "@hotwired/turbo-rails": "^8.0.18",
     "autoprefixer": "^10.4.21",
     "chart.js": "^4.5.1",
-    "esbuild": "^0.24.0",
     "postcss": "^8.5.6",
     "postcss-cli": "^11.0.1",
     "postcss-import": "^16.1.1",
     "tailwindcss": "^3.4.18"
   },
   "scripts": {
-    "build": "esbuild app/javascript/application.js app/javascript/controllers/**/*.{js,jsx,ts,tsx} --bundle --sourcemap --format=esm --outdir=public/assets --public-path=/assets",
-    "build:css": "npx tailwindcss -i ./app/assets/stylesheets/application.tailwind.css -o ./app/assets/builds/application.css --minify",
+    "build": "esbuild app/javascript/application.js --bundle --sourcemap --format=esm --outdir=public/assets --public-path=/assets",
+    "build:css": "BROWSERSLIST_IGNORE_OLD_DATA=1 npx tailwindcss -i ./app/assets/stylesheets/application.tailwind.css -o ./app/assets/builds/application.css --minify",
     "tailwind:init": "tailwindcss init -p",
     "lint": "eslint app/javascript"
   },
   "devDependencies": {
+    "baseline-browser-mapping": "^2.9.19",
+    "esbuild": "^0.27.3",
     "eslint": "^9.39.2",
     "eslint-plugin-import": "^2.32.0",
     "globals": "^17.3.0"

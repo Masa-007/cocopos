@@ -7,6 +7,8 @@
 @import "loading.css";
 @import "post_detail.css";
 @import "comments.css";
+@import "help_modal.css";
+@import "account_delete_modal.css";
 
 @tailwind base;
 @tailwind components;
