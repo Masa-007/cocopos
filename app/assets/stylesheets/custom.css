@@ -72,15 +72,11 @@ body.users-mypage_posts {
 .header-logo {
   font-size: 1.6rem; font-weight: 900; color: #222; letter-spacing: 0.08em;
   text-shadow: 1px 1px 0 #fff, 3px 3px 6px rgba(0,0,0,.15), 6px 6px 10px rgba(0,0,0,.1);
+  text-decoration: none;
   transition: transform .3s, text-shadow .3s;
 }
 .header-logo:hover { transform: scale(1.07); text-shadow: 2px 2px 0 #fff, 4px 4px 10px rgba(0,0,0,.25); }
 .header-subtitle { font-size: .9rem; color: #666; margin-left: 8px; }
-
-.header-logo {
-  text-decoration: none;
-}
-
 
 .header-nav {
   display: flex;
@@ -353,7 +349,7 @@ box-header {
 .purple-box .box-title { color:#6b46c1; }
 .pink-box .box-title { color:#c53030; }
 
-.checkmark { font-weight:bold; margin-right:6px; }
+.checkmark { font-weight:bold; }
 .green-box .checkmark { color:#16a34a; }
 .purple-box .checkmark { color:#7e22ce; }
 .pink-box .checkmark { color:#db2777; }
@@ -721,17 +717,6 @@ body.winter .mypage-title { color: #60a5fa; }
     font-size: 1.4rem;
     text-align: center;
     margin: 0;
-  }
-
-  /* ヘッダー（アイコン＋タイトル）を中央にまとめる用 */
-  .box-header {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    gap: 10px;
-    margin-bottom: 16px;
   }
 
   .box-description,
