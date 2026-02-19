@@ -725,3 +725,65 @@ body.users-mypage_posts {
   50%  { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
 }
+
+body {
+  position: relative;
+  min-height: 100vh;
+  isolation: isolate;
+}
+
+/* 雲レイヤー（右 → 左） */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+
+  background-image: url("/assets/cocopos.back-59f4365d.jpg");
+  background-repeat: repeat;
+  background-size: 900px auto;
+
+  opacity: 0.62;
+
+  /* ぼかしを少し強める（継ぎ目が馴染みやすい） */
+  filter: blur(3.2px);
+  transform: scale(1.02); /* 端のにじみ対策 */
+
+  will-change: background-position, filter;
+  animation: cloudDrift 300s linear infinite;
+}
+
+@keyframes cloudDrift {
+  from { background-position: 0 0; }
+  to   { background-position: -2000px 0; }
+}
+
+/* 継ぎ目を和らげるベール（既存 + 方向性を追加） */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+
+  background:
+    radial-gradient(circle at 20% 15%, rgba(255,255,255,0.55), transparent 55%),
+    radial-gradient(circle at 80% 20%, rgba(255,255,255,0.35), transparent 60%),
+
+    /* 繋ぎ目に出やすい縦・横の“帯”を薄く崩す */
+    linear-gradient(90deg, rgba(255,255,255,0.14), rgba(255,255,255,0.00) 40%, rgba(255,255,255,0.14)),
+    linear-gradient(0deg,  rgba(255,255,255,0.10), rgba(255,255,255,0.00) 45%, rgba(255,255,255,0.10)),
+
+    linear-gradient(135deg, rgba(255,255,255,0.25), rgba(255,255,255,0.10));
+
+  mix-blend-mode: soft-light;
+  opacity: 0.75;
+}
+
+/* コンテンツを最前面へ */
+main,
+#flash-container {
+  position: relative;
+  z-index: 2;
+}
