@@ -778,7 +778,7 @@ body::after {
     linear-gradient(135deg, rgba(255,255,255,0.25), rgba(255,255,255,0.10));
 
   mix-blend-mode: soft-light;
-  opacity: 0.75;
+  opacity: 0.15;
 }
 
 /* コンテンツを最前面へ */
