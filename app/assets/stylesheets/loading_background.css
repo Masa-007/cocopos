@@ -122,14 +122,14 @@
       rgba(255,255,255,0.00) 336deg,
       rgba(255,255,255,0.14) 360deg
     );
-
-  mask-image: radial-gradient(circle at 50% 50%,
+  -webkit-mask-image: radial-gradient(circle at 50% 50%,
     rgba(0,0,0,1) 0%,
     rgba(0,0,0,0.85) 18%,
     rgba(0,0,0,0.10) 52%,
     rgba(0,0,0,0.00) 78%
   );
-  -webkit-mask-image: radial-gradient(circle at 50% 50%,
+
+  mask-image: radial-gradient(circle at 50% 50%,
     rgba(0,0,0,1) 0%,
     rgba(0,0,0,0.85) 18%,
     rgba(0,0,0,0.10) 52%,
@@ -171,4 +171,16 @@
 @keyframes particleSpin {
   0%   { transform: rotate(0deg) scale(1.15); }
   100% { transform: rotate(360deg) scale(1.15); }
+}
+
+@media (max-width: 768px) {
+  .loading-screen {
+    /* モバイルでは fixed 背景を避け、色変化を止めずに負荷を下げる */
+    background-attachment: scroll;
+    background-size: 100% 100%, 100% 100%, 260% 260%;
+  }
+
+  .loading-screen.active {
+    animation-duration: 12s;
+  }
 }
