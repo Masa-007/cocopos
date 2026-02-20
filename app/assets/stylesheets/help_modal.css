@@ -270,11 +270,19 @@ body.modal-open {
 }
 
 @media (max-width: 768px) {
+
+  #helpModal {
+    padding: max(16px, env(safe-area-inset-top, 0px)) 0 calc(140px + env(safe-area-inset-bottom, 0px));
+    align-items: flex-start;
+  }
+
   /* モーダルをよりワイドに */
   #helpModal .modal-content {
     width: 100%;
     padding: 18px 16px;
     border-radius: 18px;
+    max-height: calc(100vh - 32px - env(safe-area-inset-bottom, 0px));
+    padding-bottom: calc(28px + env(safe-area-inset-bottom, 0px));
   }
 
   /* ボックスもワイドに */

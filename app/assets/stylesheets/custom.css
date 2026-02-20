@@ -680,6 +680,33 @@ body.users-mypage_posts {
   animation: softLoopFlow 50s ease-in-out infinite;
 }
 
+@media (max-width: 768px) {
+  body,
+  body.users-mypage_posts {
+    /* iOS Safari でも背景アニメを安定させる */
+    background-attachment: scroll;
+    background-size: 240% 240% !important;
+    animation-duration: 70s;
+  }
+
+  body::before,
+  body.users-mypage_posts::before {
+    /* スマホではコストが高いぼかし＋長尺アニメを弱める */
+    filter: blur(1.6px);
+    opacity: 0.45;
+    animation: cloudDrift 420s linear infinite;
+  }
+
+  body::after,
+  body.users-mypage_posts::after {
+    opacity: 0.1;
+  }
+
+  .records-page {
+    background-attachment: scroll;
+  }
+}
+
 @keyframes softLoopFlow {
   0%   { background-position: 0% 50%; }
   50%  { background-position: 100% 50%; }
@@ -802,4 +829,14 @@ main {
   opacity: 0;
   transform: translateY(-10px);
   transition: opacity 0.5s ease, transform 0.3s ease;
+}
+
+@media (max-width: 768px) {
+  #flash-container {
+    right: 8px;
+    left: auto;
+    width: min(420px, calc(100vw - 16px));
+    max-width: min(420px, calc(100vw - 16px));
+    align-items: flex-end;
+  }
 }
