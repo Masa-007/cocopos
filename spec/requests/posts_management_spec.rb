@@ -25,6 +25,18 @@ RSpec.describe '投稿管理', type: :request do
     host! 'www.cocopos.net'
   end
 
+  it '新規投稿画面にコメント設定が表示される' do
+    sign_in owner
+
+    get new_post_path
+
+    expect(response).to have_http_status(:ok)
+    expect(response.body).to include('💬 コメント設定')
+    expect(response.body).to include('コメントを許可する')
+    expect(response.body).to include('コメント不要')
+    expect(response.body).to include('post-submit post-type-fields post-visibility')
+  end
+
   it '公開投稿でcomment_allowedがtrueならコメント作成できる' do
     post_record = Post.create!(
       user: owner,
