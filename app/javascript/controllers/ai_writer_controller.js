@@ -126,6 +126,10 @@ export default class extends Controller {
     this.modalTarget.classList.add("hidden");
   }
 
+  stopPropagation(event) {
+    event.stopPropagation();
+  }
+
   escapeHtml(str) {
     return str
       .replace(/&/g, "&amp;")

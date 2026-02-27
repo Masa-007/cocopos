@@ -16,7 +16,24 @@ module ApplicationHelper
     }
   end
 
+  def flash_tone_class(level, message)
+    text = message.to_s
+
+    return 'flash-alert' if logout_message?(text)
+    return 'flash-notice' if login_message?(text)
+
+    level.to_sym == :alert ? 'flash-alert' : 'flash-notice'
+  end
+
   private
+
+  def login_message?(text)
+    text.match?(/ログイン|signed in/i)
+  end
+
+  def logout_message?(text)
+    text.match?(/ログアウト|signed out/i)
+  end
 
   def build_og_meta(page_image_path)
     {
