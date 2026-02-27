@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_02_12_084045) do
+ActiveRecord::Schema[7.1].define(version: 2026_02_27_093000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -32,9 +32,10 @@ ActiveRecord::Schema[7.1].define(version: 2026_02_12_084045) do
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "flowerable_type"
-    t.bigint "flowerable_id"
+    t.string "flowerable_type", null: false
+    t.bigint "flowerable_id", null: false
     t.index ["flowerable_type", "flowerable_id"], name: "index_flowers_on_flowerable"
+    t.index ["user_id", "flowerable_type", "flowerable_id"], name: "index_flowers_on_user_and_flowerable_unique", unique: true
     t.index ["user_id"], name: "index_flowers_on_user_id"
   end
 

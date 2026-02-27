@@ -48,13 +48,13 @@
 
   <div id="flash-container" class="fixed top-4 right-4 space-y-2 z-[10000]">
     <% if notice.present? %>
-      <div class="flash flash-notice">
+      <div class="flash <%= flash_tone_class(:notice, notice) %>">
         <%= notice %>
       </div>
     <% end %>
 
     <% if alert.present? %>
-      <div class="flash flash-alert">
+      <div class="flash <%= flash_tone_class(:alert, alert) %>">
         <%= alert %>
       </div>
     <% end %>

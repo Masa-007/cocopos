@@ -216,7 +216,7 @@ body.modal-open {
   margin-bottom: 50px;
 }
 
-.checkmark {
+.completion-content .checkmark {
   width: 100px;
   height: 100px;
   margin: 0 auto 25px;
@@ -229,7 +229,7 @@ body.modal-open {
   animation: checkmarkPop 0.6s ease-out;
 }
 
-.checkmark::after {
+.completion-content .checkmark::after {
   content: "✓";
   font-size: 54px;
   color: white;

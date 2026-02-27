@@ -48,4 +48,16 @@ RSpec.describe '花機能', type: :request do
     expect(response).to have_http_status(:found)
     expect(comment.reload.flowers_count).to eq(1)
   end
+
+  it '別投稿のURLに他投稿コメントUUIDを混ぜても花をつけられない' do
+    post_record = Post.create!(user: owner, body: 'public', post_type: :future, is_public: true, deadline: deadline)
+    other_post = Post.create!(user: owner, body: 'other', post_type: :future, is_public: true, deadline: deadline)
+    comment = Comment.create!(user: owner, post: other_post, content: '別投稿コメント')
+    sign_in other_user
+
+    expect do
+      post post_comment_flower_path(post_record, comment)
+    end.to raise_error(ActiveRecord::RecordNotFound)
+    expect(comment.reload.flowers_count).to eq(0)
+  end
 end
