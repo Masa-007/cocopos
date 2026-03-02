@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 class User < ApplicationRecord
+  DEFAULT_AI_DAILY_LIMIT = 1
+  DEMO_AI_DAILY_LIMIT = 3
+
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable,
          :omniauthable, omniauth_providers: [:google_oauth2]
@@ -20,13 +23,39 @@ class User < ApplicationRecord
   end
 
   def ai_available_today?
-    return true if last_ai_used_at.nil?
+    ai_remaining_count.positive?
+  end
 
-    last_ai_used_at < Time.current.beginning_of_day
+  def ai_daily_limit
+    demo_account? ? DEMO_AI_DAILY_LIMIT : DEFAULT_AI_DAILY_LIMIT
+  end
+
+  def ai_used_count_today
+    return ai_used_count if ai_used_on == Date.current
+
+    # Backward compatibility: records created before counter columns
+    return 1 if last_ai_used_at&.to_date == Date.current
+
+    0
   end
 
   def ai_remaining_count
-    ai_available_today? ? 1 : 0
+    [ai_daily_limit - ai_used_count_today, 0].max
+  end
+
+  def consume_ai_usage!
+    today = Date.current
+    used_count = ai_used_on == today ? ai_used_count : 0
+
+    update!(
+      ai_used_on: today,
+      ai_used_count: used_count + 1,
+      last_ai_used_at: Time.current
+    )
+  end
+
+  def demo_account?
+    self.class.demo_account_emails.include?(email.to_s.downcase)
   end
 
   def self.from_omniauth(auth)
@@ -39,6 +68,11 @@ class User < ApplicationRecord
   end
 
   class << self
+    def demo_account_emails
+      configured_emails = ENV.fetch('DEMO_ACCOUNT_EMAILS', 'cocopos.demo@example.com')
+      configured_emails.split(',').map { |value| value.strip.downcase }.compact_blank
+    end
+
     private
 
     def find_or_initialize_from_auth(auth)

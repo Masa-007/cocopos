@@ -10,6 +10,21 @@ export default class extends Controller {
     animationDuration: { type: Number, default: 4500 },
   };
 
+  connect() {
+    this.unlockPageScroll = this.unlockPageScroll.bind(this);
+    document.addEventListener("turbo:before-cache", this.unlockPageScroll);
+  }
+
+  disconnect() {
+    document.removeEventListener("turbo:before-cache", this.unlockPageScroll);
+    this.unlockPageScroll();
+  }
+
+  unlockPageScroll() {
+    document.documentElement.classList.remove("modal-open");
+    document.body.classList.remove("modal-open");
+  }
+
   submit(event) {
     if (!this.enabledValue) return; // 何もしない（通常submitに任せる）
 
@@ -104,8 +119,7 @@ export default class extends Controller {
       })
       .catch((err) => {
         if (this.animateValue) loading.classList.remove("active");
-        document.documentElement.classList.remove("modal-open");
-        document.body.classList.remove("modal-open");
+        this.unlockPageScroll();
         alert(err.message || "通信エラーが発生しました");
       })
       .finally(() => {

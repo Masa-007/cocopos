@@ -13,7 +13,7 @@ class AiController < ApplicationController
 
     if result.success?
       # AI利用確定（成功時のみ消費）
-      current_user.update!(last_ai_used_at: Time.current)
+      current_user.consume_ai_usage!
 
       render json: {
         options: result.options
@@ -35,7 +35,7 @@ class AiController < ApplicationController
     }, status: :forbidden
   end
 
-  # 1日1回制限（ユーザー単位）
+  # 1日上限制限（ユーザー単位。デモは3回、通常は1回）
   def ensure_ai_available_today!
     return if current_user.ai_available_today?
 

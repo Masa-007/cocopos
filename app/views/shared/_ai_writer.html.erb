@@ -15,14 +15,20 @@
 
     <!-- 残りトークン数 -->
     <span class="text-xs text-gray-500">
-      本日の残り <%= current_user.ai_remaining_count %> / 1
+      本日の残り <%= current_user.ai_remaining_count %> / <%= current_user.ai_daily_limit %>
     </span>
   </div>
 
   <!-- 利用回数の注意 -->
-  <p class="text-xs text-gray-400 mt-2">
-    ※ AI本文補助は1日1回まで利用できます
-  </p>
+  <% if current_user.demo_account? %>
+    <p class="text-xs text-gray-400 mt-2">
+      ※デモアカウントに限り1日3回までAI機能が使用可能です
+    </p>
+  <% else %>
+    <p class="text-xs text-gray-400 mt-2">
+      ※ AI本文補助は1日1回まで利用できます
+    </p>
+  <% end %>
 
   <!-- 🔄 ローディングモーダル -->
   <div

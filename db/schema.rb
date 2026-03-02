@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_02_27_093000) do
+ActiveRecord::Schema[7.1].define(version: 2026_03_02_104000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -84,6 +84,8 @@ ActiveRecord::Schema[7.1].define(version: 2026_02_27_093000) do
     t.datetime "last_ai_used_at"
     t.string "provider"
     t.string "uid"
+    t.date "ai_used_on"
+    t.integer "ai_used_count", default: 0, null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["name"], name: "index_users_on_name", unique: true
     t.index ["provider", "uid"], name: "index_users_on_provider_and_uid", unique: true

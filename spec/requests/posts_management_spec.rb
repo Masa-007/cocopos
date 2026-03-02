@@ -37,6 +37,31 @@ RSpec.describe '投稿管理', type: :request do
     expect(response.body).to include('post-submit post-type-fields post-visibility')
   end
 
+  it 'デモアカウントの新規投稿画面ではAI利用案内が1日3回表示になる' do
+    demo_user = User.create!(
+      name: 'お試しさん',
+      email: 'cocopos.demo@example.com',
+      password: 'password'
+    )
+    sign_in demo_user
+
+    get new_post_path
+
+    expect(response).to have_http_status(:ok)
+    expect(response.body).to include('本日の残り 3 / 3')
+    expect(response.body).to include('※デモアカウントに限り1日3回までAI機能が使用可能です')
+  end
+
+  it '通常アカウントの新規投稿画面ではAI利用案内が従来どおり表示される' do
+    sign_in owner
+
+    get new_post_path
+
+    expect(response).to have_http_status(:ok)
+    expect(response.body).to include('本日の残り 1 / 1')
+    expect(response.body).to include('※ AI本文補助は1日1回まで利用できます')
+  end
+
   it '公開投稿でcomment_allowedがtrueならコメント作成できる' do
     post_record = Post.create!(
       user: owner,

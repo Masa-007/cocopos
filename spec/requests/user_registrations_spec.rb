@@ -70,6 +70,49 @@ RSpec.describe 'ユーザー登録', type: :request do
     expect(user.reload.name).to eq('Updated Name')
   end
 
+  it 'デモアカウントは削除できない' do
+    demo_user = User.create!(
+      name: 'Demo User',
+      email: 'cocopos.demo@example.com',
+      password: 'password'
+    )
+
+    sign_in demo_user
+    allow(User).to receive(:demo_account_emails).and_return(['cocopos.demo@example.com'])
+
+    expect do
+      delete user_registration_path
+    end.not_to change(User, :count)
+
+    expect(response).to redirect_to(edit_user_registration_path)
+    follow_redirect!
+    expect(response.body).to include('デモアカウントは削除出来ません。')
+  end
+
+  it 'デモアカウントはユーザー名を変更できない' do
+    demo_user = User.create!(
+      name: 'お試しさん',
+      email: 'cocopos.demo@example.com',
+      password: 'password'
+    )
+
+    sign_in demo_user
+    allow(User).to receive(:demo_account_emails).and_return(['cocopos.demo@example.com'])
+
+    patch user_registration_path, params: {
+      user: {
+        name: 'Changed Name',
+        email: demo_user.email,
+        current_password: 'password'
+      }
+    }
+
+    expect(response).to redirect_to(edit_user_registration_path)
+    follow_redirect!
+    expect(response.body).to include('デモアカウントのユーザー名は変更できません。')
+    expect(demo_user.reload.name).to eq('お試しさん')
+  end
+
   it 'ログイン中のユーザーは自分のアカウントを削除できる' do
     sign_in user
 
