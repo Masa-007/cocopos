@@ -13,17 +13,17 @@
   <%= favicon_link_tag 'favicon/apple-touch-icon.png', rel: 'apple-touch-icon', type: 'image/png', sizes: '180x180' %>
 
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-TZCCWQN88R"></script>
-  <script>
+  <%= javascript_tag nonce: true do %>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
     gtag('config', 'G-TZCCWQN88R');
-  </script>
+  <% end %>
 
   <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
   <script type="module" src="/assets/application.js" defer></script>
 
-  <script>
+  <%= javascript_tag nonce: true do %>
     document.addEventListener("turbo:load", () => {
       const flashes = document.querySelectorAll(".flash");
       flashes.forEach((flash) => {
@@ -33,7 +33,7 @@
         }, 2000);
       });
     });
-  </script>
+  <% end %>
 </head>
 
 <% body_background_class =

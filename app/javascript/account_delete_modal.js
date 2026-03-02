@@ -18,7 +18,8 @@ document.addEventListener("turbo:load", () => {
 
   const showBlockedFlash = (message) => {
     const flashContainer = document.getElementById("flash-container");
-    if (!flashContainer || !message) return;
+    if (!message) return false;
+    if (!flashContainer) return false;
 
     const flash = document.createElement("div");
     flash.className = "flash bg-red-100 text-red-800 border border-red-300 px-4 py-2 rounded shadow";
@@ -29,6 +30,8 @@ document.addEventListener("turbo:load", () => {
       flash.classList.add("fade-out");
       setTimeout(() => flash.remove(), 500);
     }, 2000);
+
+    return true;
   };
 
   trigger.addEventListener("click", openModal);
@@ -38,7 +41,9 @@ document.addEventListener("turbo:load", () => {
   if (blockedDeleteButton) {
     blockedDeleteButton.addEventListener("click", (e) => {
       e.preventDefault();
-      showBlockedFlash(blockedDeleteButton.dataset.message);
+      const message = blockedDeleteButton.dataset.message;
+      const shown = showBlockedFlash(message);
+      if (!shown && message) window.alert(message);
       closeModal();
     });
   }
