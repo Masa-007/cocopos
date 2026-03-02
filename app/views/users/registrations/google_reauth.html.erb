@@ -6,8 +6,8 @@
       <input type="hidden" name="prompt" value="select_account">
     </form>
 
-    <script>
+    <%= javascript_tag nonce: true do %>
       document.getElementById("reauth-form").submit();
-    </script>
+    <% end %>
   </body>
 </html>
