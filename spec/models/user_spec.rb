@@ -16,12 +16,31 @@ RSpec.describe User, type: :model do
     expect(user.display_name).to eq('Alice')
   end
 
-  it 'last_ai_used_atに応じて本日のAI残回数を返す' do
+  it '通常アカウントはlast_ai_used_atに応じて本日のAI残回数を返す' do
     user = described_class.new(last_ai_used_at: nil)
     expect(user.ai_remaining_count).to eq(1)
 
     user.last_ai_used_at = Time.current
     expect(user.ai_remaining_count).to eq(0)
+  end
+
+  it 'デモアカウントは1日3回までAIを利用できる' do
+    user = described_class.create!(
+      name: "Demo User #{SecureRandom.hex(4)}",
+      email: 'cocopos.demo@example.com',
+      password: 'password'
+    )
+
+    expect(user.ai_daily_limit).to eq(3)
+    expect(user.ai_remaining_count).to eq(3)
+
+    user.consume_ai_usage!
+    expect(user.reload.ai_remaining_count).to eq(2)
+
+    user.consume_ai_usage!
+    user.consume_ai_usage!
+    expect(user.reload.ai_remaining_count).to eq(0)
+    expect(user.ai_available_today?).to be(false)
   end
 
   it 'adminフラグがtrueならadmin?はtrueを返す' do

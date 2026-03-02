@@ -11,6 +11,11 @@ module Users
       self.resource = reload_resource
       prev_unconfirmed_email = fetch_prev_unconfirmed_email(resource)
 
+      if demo_user_name_change?
+        redirect_to edit_user_registration_path, alert: t('devise.registrations.demo_account_name_update_forbidden')
+        return
+      end
+
       return redirect_google_reauth_required if google_user_name_change_without_reauth?
 
       if update_account(resource)
@@ -22,6 +27,15 @@ module Users
         prepare_update_failure(resource)
         render :edit, status: :unprocessable_entity
       end
+    end
+
+    def destroy
+      if current_user&.demo_account?
+        redirect_to edit_user_registration_path, alert: t('devise.registrations.demo_account_destroy_forbidden')
+        return
+      end
+
+      super
     end
 
     def google_reauth
@@ -68,6 +82,13 @@ module Users
       return false if requested_name == resource.name
 
       !recent_google_reauth?
+    end
+
+    def demo_user_name_change?
+      return false unless resource.demo_account?
+
+      requested_name = account_update_params[:name].to_s
+      requested_name.present? && requested_name != resource.name
     end
 
     def google_account?(user)

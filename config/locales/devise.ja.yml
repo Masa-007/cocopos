@@ -4,6 +4,7 @@ ja:
       edit:
         title: "アカウント情報の編集"
         profile_section: "基本情報"
+        demo_account_name_locked: "※デモアカウントのユーザー名は変更できません"
         password_section: "パスワード"
         confirm_section: "確認"
         waiting_confirmation: "確認中のメール: %{email}"
@@ -32,6 +33,8 @@ ja:
       destroyed: "アカウントを削除しました。"
       google_reauth_required: "Googleログインユーザーのユーザー名変更には、先にGoogle再認証が必要です。"
       google_reauth_success: "Google再認証が完了しました。続けてユーザー名を更新してください。"
+      demo_account_destroy_forbidden: "デモアカウントは削除出来ません。"
+      demo_account_name_update_forbidden: "デモアカウントのユーザー名は変更できません。"
       new:
         sign_up: "新規登録"
         email: "メールアドレス"

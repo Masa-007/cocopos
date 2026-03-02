@@ -18,7 +18,12 @@
 
         <div class="field">
           <%= f.label :name, t('activerecord.attributes.user.name') %><br />
-          <%= f.text_field :name, autofocus: true, autocomplete: "name" %>
+          <%= f.text_field :name, autofocus: true, autocomplete: "name", disabled: resource.demo_account? %>
+          <% if resource.demo_account? %>
+            <em class="text-sm text-gray-500">
+              <%= t('devise.registrations.edit.demo_account_name_locked') %>
+            </em>
+          <% end %>
         </div>
 
         <div class="field">
@@ -114,10 +119,19 @@
         キャンセル
       </button>
 
-      <%= link_to t('devise.registrations.edit.cancel_account'),
-                  registration_path(resource_name),
-                  data: { turbo_method: :delete },
-                  class: "btn-danger inline-flex items-center justify-center px-6 py-3 rounded-md" %>
+      <% if resource.demo_account? %>
+        <button type="button"
+                class="btn-danger inline-flex items-center justify-center px-6 py-3 rounded-md"
+                data-demo-account-delete-block
+                data-message="<%= t('devise.registrations.demo_account_destroy_forbidden') %>">
+          <%= t('devise.registrations.edit.cancel_account') %>
+        </button>
+      <% else %>
+        <%= link_to t('devise.registrations.edit.cancel_account'),
+                    registration_path(resource_name),
+                    data: { turbo_method: :delete },
+                    class: "btn-danger inline-flex items-center justify-center px-6 py-3 rounded-md" %>
+      <% end %>
     </div>
   </div>
 </div>
