@@ -13,6 +13,7 @@ import ProgressSliderController from "./progress_slider_controller";
 import MilestonesController from "./milestones_controller";
 import PostTypeFieldsController from "./post_type_fields_controller";
 import PostVisibilityController from "./post_visibility_controller";
+import AutoSubmitController from "./auto_submit_controller";
 
 const application = Application.start();
 
@@ -29,5 +30,6 @@ application.register("progress-slider", ProgressSliderController);
 application.register("milestones", MilestonesController);
 application.register("post-type-fields", PostTypeFieldsController);
 application.register("post-visibility", PostVisibilityController);
+application.register("auto-submit", AutoSubmitController);
 
 window.application = application;
