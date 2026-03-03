@@ -112,6 +112,13 @@ RSpec.describe 'マイページ投稿一覧', type: :request do
     expect(response.body).not_to include('future achieved body')
   end
 
+  it 'フィルターUIの遷移先はマイページ投稿一覧を維持する' do
+    get mypage_posts_path
+
+    expect(response).to have_http_status(:ok)
+    expect(response.body).to include('/mypage/posts?filter=future')
+  end
+
   it 'sort=oldで古い順に並ぶ' do
     future_achieved.update!(created_at: 2.days.ago)
     future_unachieved.update!(created_at: 1.day.ago)
