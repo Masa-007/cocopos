@@ -1,5 +1,6 @@
 <div class="flex justify-end mb-6">
-  <%= form_with url: posts_path, method: :get, local: true, class: "flex gap-2 items-center" do |f| %>
+  <% search_path = local_assigns[:path] || ->(**args) { posts_path(**args) } %>
+  <%= form_with url: search_path.call, method: :get, local: true, class: "flex gap-2 items-center" do |f| %>
     <%= f.text_field :q, value: params[:q], placeholder: "検索",
         class: "border rounded px-2 py-1 text-sm w-40" %>
     <%= f.hidden_field :filter, value: params[:filter] %>
@@ -8,4 +9,3 @@
     <%= f.submit "🔍", class: "bg-blue-500 text-white px-2 py-1 rounded text-sm" %>
   <% end %>
 </div>
-

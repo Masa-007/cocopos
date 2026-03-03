@@ -6,11 +6,11 @@
       <p class="text-gray-600">これまで投函した想いを振り返りましょう</p>
     </div>
 
-    <%= render "posts/search_form" %>
+    <%= render "posts/search_form", path: ->(**args) { mypage_posts_path(**args) } %>
 
      <%= render "posts/filter_sort",
-               path: ->(**args) { posts_path(**args) },
-               from: "public",
+               path: ->(**args) { mypage_posts_path(**args) },
+               from: "mypage",
                pc_label: "絞り込み：",
                filters: [
                  { value: nil,        text: "すべて" },
