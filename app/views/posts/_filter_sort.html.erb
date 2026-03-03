@@ -4,13 +4,13 @@
   <!-- 📱 スマホ：絞り込み + 並び替え + サブ絞り込み（ワイドにしない） -->
   <div class="md:hidden grid grid-cols-2 gap-3">
     <!-- 絞り込み -->
-    <%= form_with url: path.call, method: :get, local: true do |f| %>
+    <%= form_with url: path.call, method: :get, local: true, data: { controller: "auto-submit" } do |f| %>
       <%= f.hidden_field :sort, value: params[:sort] %>
       <%= f.hidden_field :sub_filter, value: params[:sub_filter] %>
 
       <div class="relative">
         <select name="filter"
-                onchange="this.form.submit()"
+                data-action="change->auto-submit#submit"
                 class="w-full appearance-none
                        rounded-xl border border-gray-300
                        bg-white px-4 py-3
@@ -31,13 +31,13 @@
     <% end %>
 
     <!-- 並び替え -->
-    <%= form_with url: path.call, method: :get, local: true do |f| %>
+    <%= form_with url: path.call, method: :get, local: true, data: { controller: "auto-submit" } do |f| %>
       <%= f.hidden_field :filter, value: params[:filter] %>
       <%= f.hidden_field :sub_filter, value: params[:sub_filter] %>
 
       <div class="relative">
         <select name="sort"
-                onchange="this.form.submit()"
+                data-action="change->auto-submit#submit"
                 class="w-full appearance-none
                        rounded-xl border border-gray-300
                        bg-white px-4 py-3
@@ -56,13 +56,13 @@
 
     <% if sub_filter_items.present? %>
       <!-- サブ絞り込み（スマホでもワイドにしない：col-span-2にしない） -->
-      <%= form_with url: path.call, method: :get, local: true do |f| %>
+      <%= form_with url: path.call, method: :get, local: true, data: { controller: "auto-submit" } do |f| %>
         <%= f.hidden_field :filter, value: params[:filter] %>
         <%= f.hidden_field :sort, value: params[:sort] %>
 
         <div class="relative">
           <select name="sub_filter"
-                  onchange="this.form.submit()"
+                  data-action="change->auto-submit#submit"
                   class="w-full appearance-none
                          rounded-xl border border-gray-300
                          bg-white px-4 py-3
@@ -104,13 +104,13 @@
           <% end %>
 
           <% if sub_filter_items.present? %>
-            <%= form_with url: path.call, method: :get, local: true do |f| %>
+            <%= form_with url: path.call, method: :get, local: true, data: { controller: "auto-submit" } do |f| %>
               <%= f.hidden_field :filter, value: params[:filter] %>
               <%= f.hidden_field :sort, value: params[:sort] %>
 
               <div class="ml-auto flex-shrink-0">
                 <select name="sub_filter"
-                        onchange="this.form.submit()"
+                        data-action="change->auto-submit#submit"
                         class="rounded-xl border border-gray-300
                                bg-white px-4 py-2
                                text-gray-800
@@ -132,13 +132,13 @@
     </div>
 
     <!-- 右：並び替え（単独） -->
-    <%= form_with url: path.call, method: :get, local: true do |f| %>
+    <%= form_with url: path.call, method: :get, local: true, data: { controller: "auto-submit" } do |f| %>
       <%= f.hidden_field :filter, value: params[:filter] %>
       <%= f.hidden_field :sub_filter, value: params[:sub_filter] %>
 
       <div class="relative">
         <select name="sort"
-                onchange="this.form.submit()"
+                data-action="change->auto-submit#submit"
                 class="rounded-xl border border-gray-300
                        bg-white px-4 py-2
                        text-gray-800

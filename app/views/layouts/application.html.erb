@@ -20,7 +20,7 @@
     gtag('config', 'G-TZCCWQN88R');
   <% end %>
 
-  <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+  <%= stylesheet_link_tag "application", "data-turbo-track": "reload", preload_links_header: false %>
   <script type="module" src="/assets/application.js" defer></script>
 
   <%= javascript_tag nonce: true do %>
