@@ -26,6 +26,9 @@ export default class extends Controller {
   }
 
   async generate() {
+    const confirmed = window.confirm("本日のAIトークンを使用しますがよろしいですか？");
+    if (!confirmed) return;
+
     const bodyField = document.getElementById("post_body");
     if (!bodyField) return;
 
