@@ -56,6 +56,6 @@ module ApplicationHelper
 
   def resolved_image_url(page_image_path)
     path = page_image_path.presence || '/ogp.jpg'
-    image_url(path)
+    "#{request.base_url}#{path}"
   end
 end

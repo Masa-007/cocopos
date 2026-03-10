@@ -21,9 +21,9 @@
           <%= f.hidden_field :post_type, value: @post.post_type %>
 
           <div class="grid md:grid-cols-3 gap-4 opacity-60 pointer-events-none">
-            <% { future: ["🌱", "未来宣言箱", "目標や決意を投函"],
-                 organize: ["🌈", "心の整理箱", "気持ちを書き出す"],
-                 thanks: ["💌", "感謝箱", "感謝の気持ちを記録"] }.each do |type, (icon, title, desc)| %>
+            <% { future: ["🌱", "未来宣言箱", "やりたいことや目標を書く箱です"],
+                 organize: ["🌈", "心の整理箱", "気持ちを書き出して整理する箱です"],
+                 thanks: ["💌", "感謝箱", "感謝や嬉しかったことを残す箱です"] }.each do |type, (icon, title, desc)| %>
 
               <label class="relative select-none">
                 <%= f.radio_button :post_type, type,
@@ -181,4 +181,3 @@
 
   </div>
 </main>
-
