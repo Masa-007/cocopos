@@ -33,9 +33,9 @@
         </label>
 
         <div class="grid md:grid-cols-3 gap-4">
-          <% { future: ["🌱", "未来宣言箱"],
-               organize: ["🌈", "心の整理箱"],
-               thanks: ["💌", "感謝箱"] }.each do |type, (icon, title)| %>
+          <% { future: ["🌱", "未来宣言箱", "やりたいことや目標を書く箱です"],
+               organize: ["🌈", "心の整理箱", "気持ちを書き出して整理する箱です"],
+               thanks: ["💌", "感謝箱", "感謝や嬉しかったことを残す箱です"] }.each do |type, (icon, title, desc)| %>
 
             <label class="relative cursor-pointer select-none">
               <%= f.radio_button :post_type, type,
@@ -47,6 +47,7 @@
                           bg-white hover:bg-orange-50">
                 <div class="text-5xl mb-3"><%= icon %></div>
                 <h3 class="text-xl font-bold mb-2"><%= title %></h3>
+                <p class="text-sm text-gray-600"><%= desc %></p>
               </div>
             </label>
 
@@ -143,9 +144,6 @@
         </div>
       </div>
 
-      <!-- AI -->
-      <%= render "shared/ai_writer", post: @post %>
-
       <!-- 🖋 タイトル -->
       <div class="mb-8">
         <label class="block text-lg font-bold text-gray-800 mb-4">🖋 タイトル</label>
@@ -168,6 +166,9 @@
           <span id="charCount">0</span> / 1000文字
         </p>
       </div>
+
+      <!-- AI -->
+      <%= render "shared/ai_writer", post: @post %>
 
       <div class="flex justify-center">
         <%= f.submit "投函する 📮",
