@@ -55,7 +55,7 @@ module ApplicationHelper
   end
 
   def resolved_image_url(page_image_path)
-    path = page_image_path.presence || '/ogp.jpg'
-    "#{request.base_url}#{path}"
+    image = page_image_path.presence || 'cocopos.ogp.jpg'
+    image_url(image)
   end
 end
