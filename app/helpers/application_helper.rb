@@ -37,9 +37,9 @@ module ApplicationHelper
 
   def build_og_meta(page_image_path)
     {
-      site_name: :site,
-      title: :title,
-      description: :description,
+      site_name: 'cocopos',
+      title: '心のポスト(目安箱)',
+      description: '心の記録を花のように咲かせる。未来宣言箱・心の整理箱・感謝箱で気持ちを残せるアプリです。',
       type: 'website',
       url: request.original_url,
       image: resolved_image_url(page_image_path),
@@ -50,6 +50,8 @@ module ApplicationHelper
   def build_twitter_meta(page_image_path)
     {
       card: 'summary_large_image',
+      title: '心のポスト(目安箱)',
+      description: '心の記録を花のように咲かせる。未来宣言箱・心の整理箱・感謝箱で気持ちを残せるアプリです。',
       image: resolved_image_url(page_image_path)
     }
   end

@@ -19,7 +19,6 @@ class ApplicationController < ActionController::Base
     @page_title = 'cocopos - 心のポスト(目安箱)'
     @page_description = '心の記録を花のように咲かせる。未来宣言箱・心の整理箱・感謝箱で気持ちを残せるアプリです。'
     @page_image_path = 'cocopos.ogp.jpg'
-
     @page_type = 'website'
   end
 
