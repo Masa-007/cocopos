@@ -1,4 +1,3 @@
-/* 一覧グリッド */
 .posts-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -7,7 +6,6 @@
   grid-auto-rows: 1fr;
 }
 
-/* フェードイン（1回だけ定義） */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -75,7 +73,6 @@
   border-bottom: 1px dashed rgba(101, 74, 41, 0.24);
 }
 
-/* カテゴリ別（トーンは維持しつつ、紙に合う彩度に調整） */
 .post-card-header.future {
   background: linear-gradient(
     135deg,
@@ -115,11 +112,9 @@
 
   min-height: 160px;
 
-  /* 余白を吸ってフッターを確実に最下部へ */
   flex: 1 1 auto;
   min-height: 0;
 
-  /* 罫線（薄く） */
   background-image: linear-gradient(
     to bottom,
     rgba(220, 190, 150, 0.38) 1px,
